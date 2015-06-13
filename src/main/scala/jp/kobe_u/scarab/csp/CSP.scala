@@ -479,49 +479,60 @@ object Or {
 /**
  * `Domain` is a case class representing the domain of variables.
  * It is required to be `lb <= ub`.
- *
- * @constructor Creates a new domain whose bounds are `lb` and `ub`.
- * @param lb the lower bound value of the domain
- * @param ub the upper bound value of the domain
  */
-case class Domain(var domain: Seq[Int]) {
-  def this(lb: Int, ub: Int) = this((lb to ub).toSeq)
-  domain = domain.sorted
-  val lb = domain.head
-  val ub = domain.last
-  val size = domain.size
+case class Domain private (lb: Int, ub: Int, size: Int, private val domainOpt: Option[Seq[Int]]) {
   require(lb <= ub)
-  private var cntgs = true;
   private var ar: Array[Int] = Array.fill[Int](ub - lb + 1)(0)
   val binary = lb == 0 && ub == 1  
   private var hs = HashSet.empty[Int]
 
   val offset = lb
-  
-  cntgs = (ub == lb || ub - lb + 1 == domain.size)
-  if (cntgs)
-    domain = null
-  else {
-    domain.foreach(i => hs += i)
-    var cnt = -1
-    for (i <- lb to ub) {
-      if (hs.contains(i)) {
-        cnt = cnt + 1
-        ar(i - offset) = cnt
-      } else {
-        ar(i - offset) = cnt
+  domainOpt match {
+    case None => ()
+    case Some(domain) =>    
+      domain.foreach(i => hs += i)
+      var cnt = -1
+      for (i <- lb to ub) {
+        if (hs.contains(i)) {
+          cnt = cnt + 1
+          ar(i - offset) = cnt
+        } else {
+          ar(i - offset) = cnt
+        }
       }
-    }
   }
 
-  def isContiguous = cntgs
-  def pos(value: Int): Int = if (cntgs) value - lb else ar(value - offset)
+  def isContiguous = domainOpt.isEmpty
+  def domain: Seq[Int] = domainOpt.get
+  def pos(value: Int): Int = if (isContiguous) value - lb else ar(value - offset)
   
   override def toString = 
-    if (domain == null) s"Domain($lb to $ub)" 
-    else if (domain.size <= 10) s"Domain(${domain.mkString(",")})"
-    else s"Domain(${domain(0)}, ${domain(1)}, ..., ${domain(domain.size - 2)}, ${domain(domain.size - 1)})"
-  
+    domainOpt match {
+      case None => s"Domain($lb to $ub)"
+      case Some(domain) if domain.size <= 10 => s"Domain(${domain.mkString(",")})"
+      case Some(domain) =>
+        s"Domain(${domain(0)}, ${domain(1)}, ..., ${domain(domain.size - 2)}, ${domain(domain.size - 1)})"
+    }
+}
+
+object Domain {
+  /**
+   * Creates a domain.
+   * @param lb the lower bound value of the domain
+   * @param ub the upper bound value of the domain
+   */
+  def apply(lb: Int, ub: Int): Domain = Domain((lb to ub).toSeq)
+  def apply(domain0: Seq[Int]): Domain = {
+    val sorted = domain0.sorted
+    val lb = sorted.head
+    val ub = sorted.last
+    require(lb <= ub)
+    val size = sorted.size
+    val cntgs = (ub == lb || ub - lb + 1 == size)
+    Domain(lb, ub, size,
+      if (cntgs) None
+      else Some(sorted))
+  }
 }
 
 /**
@@ -617,10 +628,10 @@ case class CSP(var variables: IndexedSeq[Var] = IndexedSeq.empty,
    * @throws IllegalArgumentException when `x` is added twice or more
    */
   def int(x: Var, lb: Int, ub: Int): Var =
-    int(x, new Domain(lb, ub))
+    int(x, Domain(lb, ub))
 
   def int(x: Var, d: Seq[Int]): Var =
-    int(x, new Domain(d))
+    int(x, Domain(d))
 
   /**
    * Adds a new anonymous integer variable with the domain `d` to the CSP and returns the variable.
