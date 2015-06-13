@@ -15,12 +15,11 @@
 
 <table class="menu" border="0" cellspacing="0" cellpadding="20" width="900px">
 <tr>
-<td class="menu" bgcolor="#3B5998"><a href="index.html">Home</a></td>
-<td class="menu" bgcolor="#3B5998"><a href="examples.html">Examples</a></td>
-<td class="menu" bgcolor="#3B5998"><a href="doc.html">Documents</a></td>
-<td class="menu" bgcolor="#3B5998"><a href="advanced.html">Advanced Usage</a></td>
-<td class="menu" bgcolor="#3B5998"><a href="tutorial.html">Tutorial</a></td>
-<td class="menu" bgcolor="#3B5998"><a href="apps.html">Apps</a></td>
+<td class="menu" bgcolor="#3B5998"><a href="http://kix.istc.kobe-u.ac.jp/~soh/scarab/">Home</a></td>
+<td class="menu" bgcolor="#3B5998"><a href="http://kix.istc.kobe-u.ac.jp/~soh/scarab/examples.html">Examples</a></td>
+<td class="menu" bgcolor="#3B5998"><a href="http://kix.istc.kobe-u.ac.jp/~soh/scarab/doc.html">Documents</a></td>
+<td class="menu" bgcolor="#3B5998"><a href="http://kix.istc.kobe-u.ac.jp/~soh/scarab/advanced.html">Advanced Usage</a></td>
+<td class="menu" bgcolor="#3B5998"><a href="http://kix.istc.kobe-u.ac.jp/~soh/scarab/apps.html">Apps</a></td>
 </tr>
 </table>
 
@@ -38,7 +37,7 @@ Features of Scarab are follows:
 
 ## How to use it
 
--   Download [the latest version](http://kix.istc.kobe-u.ac.jp/~soh/scarab/scarab168.jar).
+-   Download [the latest version](http://kix.istc.kobe-u.ac.jp/~soh/scarab/scarab-v1-6-9.zip).
 
 ![img](./latin5-diagonal.gif)
 -   Write your own Scarab program. For instance, let&rsquo;s write a program solving Pandiagonal Latin Square **PLS(n)**.  
@@ -83,6 +82,10 @@ Features of Scarab are follows:
 # Release Note
 
 
+
+-   [2015.06.14] [ZIP of Scarab Package](./scarab-v1-6-9.zip) &#x2013; Version 1.6.9 is released.
+
+    -   changes will be updated soon.
 
 -   [2015.05.25] [JAR of Scarab](./scarab168.jar) &#x2013; Version 1.6.8 is released.
 
