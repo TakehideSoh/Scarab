@@ -68,8 +68,8 @@ Features of Scarab are follows:
 
 ## More resources
 
--   you can find more examples [&ldquo;example&rdquo; page](./examples.html).
--   you can also find more documents [&ldquo;documents&rdquo; page](./doc.html).
+-   you can find more examples [&ldquo;example&rdquo; page](http://kix.istc.kobe-u.ac.jp/~soh/scarab/examples.html).
+-   you can also find more documents [&ldquo;documents&rdquo; page](http://kix.istc.kobe-u.ac.jp/~soh/scarab/doc.html).
 
 ## Note
 
