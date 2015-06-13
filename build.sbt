@@ -12,21 +12,33 @@ val buildSettings: Seq[Setting[_]] = inThisBuild(Seq(
   scmInfo := Some(ScmInfo(url("https://github.com/TakehideSoh/Scarab.git"), "https://github.com/TakehideSoh/Scarab.git")),
   developers := List(
     Developer("TakehideSoh", "Takehide Soh", "soh@lion.kobe-u.ac.jp", url("http://kix.istc.kobe-u.ac.jp/~soh/"))
-  )
+  ),
+  bintrayReleaseOnPublish := false,
+  bintrayOrganization := None,
+  bintrayRepository := "maven",
+  bintrayPackage := "Scarab"
 ))
+
+val commonSettings: Seq[Setting[_]] = Seq(
+  bintrayPackage := (bintrayPackage in ThisBuild).value,
+  bintrayRepository := (bintrayRepository in ThisBuild).value
+)
 
 lazy val root = (project in file(".")).
   dependsOn(sat4jCore).
   settings(
     buildSettings,
+    commonSettings,
     name := "Scarab"
   )
 
 // sat4j 2.3.6-R2404
 lazy val sat4jCore = (project in file("org.sat4j.core")).
   settings(
+    commonSettings,
     name := "org.sat4j.core",
     version := "2.3.6-R2404",
     autoScalaLibrary := false,
-    crossPaths := false
+    crossPaths := false,
+    licenses := List("EPL-1.0" -> url("https://www.eclipse.org/legal/epl-v10.html"))
   )
