@@ -1,16 +1,9 @@
 package jp.kobe_u.scarab.solver
 
 import org.sat4j.core.VecInt
-import org.sat4j.minisat.core.ILits
-import org.sat4j.minisat.core.Undoable
-import org.sat4j.specs.Constr
-import org.sat4j.specs.ContradictionException
-import org.sat4j.specs.IVecInt
-import org.sat4j.specs.IteratorInt
-import org.sat4j.specs.MandatoryLiteralListener
-import org.sat4j.specs.Propagatable
-import org.sat4j.specs.UnitPropagationListener
-import org.sat4j.specs.ISolver
+import org.sat4j.minisat.core.{ ILits, Undoable, Solver => MinisatSolver }
+import org.sat4j.specs.{ Constr, ContradictionException, IVecInt, IteratorInt, MandatoryLiteralListener,
+  Propagatable, UnitPropagationListener, ISolver, VarMapper }
 
 /**
  * `Native PB` is a case class for a Pseudo Boolean constraint.
@@ -18,12 +11,21 @@ import org.sat4j.specs.ISolver
  * It reprensents the linear comparison a1*x1 + a2*x2 + ... + an*xn >= -1 * b
  */
 case class NativePB(sat: ISolver, ps: IVecInt, var coef: Seq[Int], var degree: Int) extends Constr with Propagatable with Undoable {
+  def getAssertionLevel(x: IVecInt, y: Int): Int = ???
+  def isSatisfied(): Boolean = ???
+  def toString(x: VarMapper): String = ???
+
   var tmpCoef = Seq.empty[Int]
 
   coef = coef.map(i => if (i > degree) degree else i)
 //  if (coef.min != 1) normalizeGCD
 
-  val voc = sat.getVocabulary
+  val minisat: MinisatSolver[_] = sat match {
+    case x: MinisatSolver[_] => x
+    case _ => sys.error("org.sat4j.minisat.core.Solver was expected")
+  }
+
+  val voc = minisat.getVocabulary
   val maxUnsatisfied = coef.sum - degree
   var counter = 0
   var coefMap: Map[Int, Int] = Map.empty

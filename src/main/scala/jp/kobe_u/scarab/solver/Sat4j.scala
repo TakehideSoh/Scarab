@@ -2,6 +2,7 @@ package jp.kobe_u.scarab.solver
 
 import scala.collection.JavaConversions
 import org.sat4j.minisat.SolverFactory
+import org.sat4j.minisat.core.{ Solver => MinisatSolver }
 import org.sat4j.specs.ISolver
 import org.sat4j.specs.ContradictionException
 import org.sat4j.specs.TimeoutException
@@ -75,6 +76,10 @@ class Sat4j(option: String) extends SatSolver {
     }
     case name => SolverFactory.instance.createSolverByName(name)
   }
+  private def minisat: MinisatSolver[_] = sat4j match {
+    case x: MinisatSolver[_] => x
+    case _ => sys.error("org.sat4j.minisat.core.Solver was expected")
+  }
 
   def reset = sat4j.reset
 
@@ -119,7 +124,7 @@ class Sat4j(option: String) extends SatSolver {
   //    sat4j.addConstr(c)
 
   def addPB(lits: Seq[Int], coef: Seq[Int], degree: Int) = {
-    sat4j.addConstr(new NativePB(sat4j, sat4j.dimacs2internal(new VecInt(lits.toArray)), coef, degree))
+    sat4j.addConstr(new NativePB(minisat, minisat.dimacs2internal(new VecInt(lits.toArray)), coef, degree))
 
   }
   def addConstr(c: org.sat4j.specs.Constr) = {
@@ -127,10 +132,10 @@ class Sat4j(option: String) extends SatSolver {
   }
 
   def getVocabulary =
-    sat4j.getVocabulary
+    minisat.getVocabulary
 
   def dimacs2internal(ints: org.sat4j.specs.IVecInt) =
-    sat4j.dimacs2internal(ints)
+    minisat.dimacs2internal(ints)
 
   def isSatisfiable =
     !clearlyUNSAT && sat4j.isSatisfiable
