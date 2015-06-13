@@ -116,7 +116,7 @@ class OrderEncoder(csp: CSP, satSolver: SatSolver) extends Encoder(csp, satSolve
 
   def extractAssumpLits(cs: Seq[Constraint]): Seq[Int] = {
     var ls: Set[Int] = Set.empty
-    var p: Bool = null
+    var p: Option[Bool] = None
     for (c <- cs)
       for (lits <- simplifier.simplify(toLeZero(c))) {
         if (lits.size == 1) {
@@ -128,21 +128,24 @@ class OrderEncoder(csp: CSP, satSolver: SatSolver) extends Encoder(csp, satSolve
                 val x = sum.coef.keys.head
                 le(sum.coef(x), x, -sum.b)
               } else {
-                if (p == null) p = newBool
-                csp.add(Or(Not(p), LeZero(sum)))
-                code(p)
+                p = p orElse Option(newBool)
+                csp.add(Or(Not(p.get), LeZero(sum)))
+                code(p.get)
               }
             }
             case e => throw new java.lang.Exception(s"Unexpected type is detected in extractAssumpLits: ${e}")
           }
           ls += i
         } else {
-          if (p == null) p = newBool
-          csp.add(Or(lits :+ Not(p)))
+          p = p orElse Option(newBool)
+          csp.add(Or(lits :+ Not(p.get)))
         }
       }
     super.encodeCSP
-    if (p == null) ls.toSeq else (ls + code(p)).toSeq
+    p match {
+      case None    => ls.toSeq
+      case Some(b) => (ls + code(b)).toSeq
+    }
   }
 
   def decode(x: Var) = {
