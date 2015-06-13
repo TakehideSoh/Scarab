@@ -39,21 +39,21 @@ class Sat4j(option: String) extends SatSolver {
   def this() = this("Default")
 
   var clearlyUNSAT = false
-  var xplain: HighLevelXplain[ISolver] = null
-  var musListener: SolutionFoundListener = null
-  var modelstock: Seq[Boolean] = null
+  var xplain: Option[HighLevelXplain[ISolver]] = None
+  var musListener: Option[SolutionFoundListener] = None
+  var modelstock: Option[Seq[Boolean]] = None
   var nof_vars = 0
 
-  var sat4j = option.capitalize match {
+  val sat4j = option.capitalize match {
     case "Iterator" => new ModelIterator(SolverFactory.newDefault)
     case "Dimacs"   => new DimacsStringSolver
     case "Xplain" => {
       val xp = new HighLevelXplain[ISolver](SolverFactory.newDefault)
-      xplain = xp
+      xplain = Option(xp)
       xp
     }
     case "AllXplain" => {
-      musListener = new SolutionFoundListener() {
+      musListener = Option(new SolutionFoundListener() {
         def onSolutionFound(s: Array[Int]) {
           println("ok1")
         }
@@ -68,10 +68,10 @@ class Sat4j(option: String) extends SatSolver {
         def onUnsatTermination() {
           println("ok3")
         }
-      }
+      })
 
       val allMuses = new AllMUSes(true, SolverFactory.instance)
-      allMuses.computeAllMUSesOrdered(musListener)
+      allMuses.computeAllMUSesOrdered(musListener.get)
       allMuses.getSolverInstance
     }
     case name => SolverFactory.instance.createSolverByName(name)
@@ -83,10 +83,11 @@ class Sat4j(option: String) extends SatSolver {
 
   def reset = sat4j.reset
 
-  def newVar(n: Int) = {
-    if (xplain != null) sat4j.newVar(n * 4)
-    else sat4j.newVar(n)
-  }
+  def newVar(n: Int): Unit =
+    xplain match {
+      case Some(_) => sat4j.newVar(n * 4)
+      case None    => sat4j.newVar(n)
+    }
 
   //  def addAllClauses(clauses: Seq[Seq[Int]]) =
   //    for (clause <- clauses) addClause(clause)
@@ -97,13 +98,10 @@ class Sat4j(option: String) extends SatSolver {
 
   def addClause(lits: Seq[Int], cIndex: Int): Int = {
     try {
-      if (xplain != null)
-        xplain.addClause(new VecInt(lits.toArray), cIndex)
-      else {
-//        println(lits)
-        sat4j.addClause(new VecInt(lits.toArray))
+      xplain match {
+        case Some(xp) => xp.addClause(new VecInt(lits.toArray), cIndex)
+        case None     => sat4j.addClause(new VecInt(lits.toArray))
       }
-
     } catch {
       case e: ContradictionException         => clearlyUNSAT = true
       case e: java.lang.NoClassDefFoundError => println(s"$e ${lits}")
@@ -145,12 +143,10 @@ class Sat4j(option: String) extends SatSolver {
     sat4j.model
 
   def model(v: Int) = {
-    if (modelstock != null) {
-      modelstock(v - 1)
-    } else {
-      sat4j.model(v)
+    modelstock match {
+      case Some(ms) => ms(v - 1)
+      case None     => sat4j.model(v)
     }
-
   }
 
   //  def findModel: Array[Int] =
@@ -168,11 +164,11 @@ class Sat4j(option: String) extends SatSolver {
 //    println(s"ts $ts")
 //    println(s"fs $fs")    
     
-    modelstock = (1 to nof_vars).map(sat4j.model(_))
+    modelstock = Option((1 to nof_vars).map(sat4j.model(_)))
 
     sat4j.addClause(new VecInt(ts.toArray))
     while (isSatisfiable(fs)) {
-      modelstock = (1 to nof_vars).map(sat4j.model(_))
+      modelstock = Option((1 to nof_vars).map(sat4j.model(_)))
       ts = ps.filter(i => if (i < 0) !sat4j.model(math.abs(i)) else sat4j.model(i)).map(-_)
       fs = ps.filter(i => if (i < 0) sat4j.model(math.abs(i)) else !sat4j.model(i)).map(-_)
       //      ts = ps.filter(i => sat4j.model(i)).map(-_)
@@ -180,7 +176,7 @@ class Sat4j(option: String) extends SatSolver {
       sat4j.addClause(new VecInt(ts.toArray))
     }
 
-    Option(modelstock)
+    modelstock
   }
 
   def findBackbone(ps: Seq[Int]): Set[Int] = {
@@ -248,19 +244,26 @@ class Sat4j(option: String) extends SatSolver {
   def setNumberOfVariables(n: Int): Unit = { nof_vars = n }
 
   def minExplain: Array[Int] = {
-    if (xplain != null) {
-      sat4j.unsatExplanation
-      xplain.minimalExplanation
-    } else
-      throw new UnsupportedOperationException("This SAT Solver does not support minimal explanation.")
+    xplain match {
+      case Some(xp) =>
+        sat4j.unsatExplanation
+        xp.minimalExplanation
+      case None =>
+        throw new UnsupportedOperationException("This SAT Solver does not support minimal explanation.")
+    }      
   }
 
   def minAllExplain {
     println("ok")
     val allMuses = new AllMUSes(true, SolverFactory.instance)
-    allMuses.computeAllMSS(musListener);
-    allMuses.computeAllMUSesOrdered(musListener)
-    //    allMuses.computeAllMUSesOrdered(musListener)
+    musListener match {
+      case Some(ml) =>
+        allMuses.computeAllMSS(ml)
+        allMuses.computeAllMUSesOrdered(ml)
+        //    allMuses.computeAllMUSesOrdered(musListener)
+      case None =>
+        throw new UnsupportedOperationException("This SAT Solver does not support minimal all explanation.")
+    }    
   }
 
 }
