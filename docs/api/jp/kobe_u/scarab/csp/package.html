@@ -1,0 +1,655 @@
+<!DOCTYPE html >
+<html>
+        <head>
+          <title>csp - Scarab version 1.6.9 Core API Specification 1.6.9 - jp.kobe_u.scarab.csp</title>
+          <meta name="description" content="csp - Scarab version 1.6.9 Core API Specification 1.6.9 - jp.kobe u.scarab.csp" />
+          <meta name="keywords" content="csp Scarab version 1.6.9 Core API Specification 1.6.9 jp.kobe u.scarab.csp" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../../lib/tools.tooltip.js"></script>
+      
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../../../../index.html';
+            var hash = 'jp.kobe_u.scarab.csp.package';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="value">
+      <div id="definition">
+        <img src="../../../../lib/package_big.png" />
+        <p id="owner"><a href="../../../package.html" class="extype" name="jp">jp</a>.<a href="../../package.html" class="extype" name="jp.kobe_u">kobe_u</a>.<a href="../package.html" class="extype" name="jp.kobe_u.scarab">scarab</a></p>
+        <h1>csp</h1><span class="permalink">
+      <a href="../../../../index.html#jp.kobe_u.scarab.csp.package" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <span class="name">csp</span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>CSP package of scarab
+More explanations can be found in <a href="../package.html" class="extype" name="jp.kobe_u.scarab">jp.kobe_u.scarab</a>.</p></div><div class="toggleContainer block">
+          <span class="toggle">Linear Supertypes</span>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+        </div></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        <div id="order">
+              <span class="filtertype">Ordering</span>
+              <ol>
+                
+                <li class="alpha in"><span>Alphabetic</span></li>
+                <li class="inherit out"><span>By inheritance</span></li>
+              </ol>
+            </div>
+        <div id="ancestors">
+                <span class="filtertype">Inherited<br />
+                </span>
+                <ol id="linearization">
+                  <li class="in" name="jp.kobe_u.scarab.csp"><span>csp</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                </ol>
+              </div><div id="ancestors">
+            <span class="filtertype"></span>
+            <ol>
+              <li class="hideall out"><span>Hide All</span></li>
+              <li class="showall in"><span>Show all</span></li>
+            </ol>
+            <a href="http://docs.scala-lang.org/overviews/scaladoc/usage.html#members" target="_blank">Learn more about member selection</a>
+          </div>
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="jp.kobe_u.scarab.csp.And" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="AndextendsConstraintwithProductwithSerializable"></a>
+      <a id="And:And"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="And.html"><span class="name">And</span></a><span class="params">(<span name="cs">cs: <a href="Constraint.html" class="extype" name="jp.kobe_u.scarab.csp.Constraint">Constraint</a>*</span>)</span><span class="result"> extends <a href="Constraint.html" class="extype" name="jp.kobe_u.scarab.csp.Constraint">Constraint</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#jp.kobe_u.scarab.csp.package@AndextendsConstraintwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"><code>And</code> is a case class representing the conjunction of constraints.</p><div class="fullcomment"><div class="comment cmt"><p><code>And</code> is a case class representing the conjunction of constraints.</p><p>Infix operators defined in <code>Constraint</code> class can be used to create this object.
+The operator <code>===</code> on terms also create an <code>And</code> object.</p><pre>scala&gt; <span class="kw">val</span> x = Var(<span class="lit">"x"</span>)
+scala&gt; x(<span class="num">1</span>) &lt;= <span class="num">1</span> &amp;&amp; x(<span class="num">1</span>) &gt; x(<span class="num">2</span>)  <span class="cmt">// And(LeZero(Sum(-1+x(1))),LeZero(Sum(1-x(1)+x(2))))</span>
+scala&gt; x(<span class="num">1</span>) === <span class="num">1</span>                <span class="cmt">// And(LeZero(Sum(-1+x(1))),LeZero(Sum(1-x(1))))</span></pre></div><dl class="paramcmts block"><dt class="param">cs</dt><dd class="cmt"><p>elements of the conjunction
+</p></dd></dl></div>
+    </li><li name="jp.kobe_u.scarab.csp.Assignment" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="AssignmentextendsProductwithSerializable"></a>
+      <a id="Assignment:Assignment"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Assignment.html"><span class="name">Assignment</span></a><span class="params">(<span name="intMap">intMap: <span class="extype" name="scala.Predef.Map">Map</span>[<a href="Var.html" class="extype" name="jp.kobe_u.scarab.csp.Var">Var</a>, <span class="extype" name="scala.Int">Int</span>]</span>, <span name="boolMap">boolMap: <span class="extype" name="scala.Predef.Map">Map</span>[<a href="Bool.html" class="extype" name="jp.kobe_u.scarab.csp.Bool">Bool</a>, <span class="extype" name="scala.Boolean">Boolean</span>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#jp.kobe_u.scarab.csp.package@AssignmentextendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"><code>Assignment</code> is a case class representing the assignment for integer variables and Boolean variables.</p><div class="fullcomment"><div class="comment cmt"><p><code>Assignment</code> is a case class representing the assignment for integer variables and Boolean variables.
+The assignment is returned from the <a href="../solver/Solver.html" class="extype" name="jp.kobe_u.scarab.solver.Solver">jp.kobe_u.scarab.solver.Solver</a> as a solution.</p><pre>scala&gt; <span class="kw">val</span> x = Var(<span class="lit">"x"</span>)
+scala&gt; <span class="kw">val</span> y = Var(<span class="lit">"y"</span>)
+scala&gt; <span class="kw">val</span> assignment = Assignment(<span class="std">Map</span>(x-&gt;<span class="num">1</span>, y-&gt;<span class="num">2</span>), <span class="std">Map</span>.empty)
+scala&gt; (x + y).value(assignment)
+res0: <span class="std">Int</span> = <span class="num">3</span></pre></div><dl class="paramcmts block"><dt class="param">intMap</dt><dd class="cmt"><p>the assignment for integer variables</p></dd><dt class="param">boolMap</dt><dd class="cmt"><p>the assignment for Boolean variables</p></dd></dl><dl class="attributes block"> <dt>See also</dt><dd><span class="cmt"><p>The <code>solution</code> variable of <a href="../solver/Solver.html" class="extype" name="jp.kobe_u.scarab.solver.Solver">jp.kobe_u.scarab.solver.Solver</a>.
+</p></span><span class="cmt"><p>The <code>verify</code> method of <a href="CSP.html" class="extype" name="jp.kobe_u.scarab.csp.CSP">jp.kobe_u.scarab.csp.CSP</a>.</p></span><span class="cmt"><p>The <code>value</code> method of <a href="Constraint.html" class="extype" name="jp.kobe_u.scarab.csp.Constraint">jp.kobe_u.scarab.csp.Constraint</a>.</p></span><span class="cmt"><p>The <code>value</code> method of <a href="Term.html" class="extype" name="jp.kobe_u.scarab.csp.Term">jp.kobe_u.scarab.csp.Term</a>.</p></span></dd></dl></div>
+    </li><li name="jp.kobe_u.scarab.csp.Bool" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="BoolextendsLiteralwithProductwithSerializable"></a>
+      <a id="Bool:Bool"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Bool.html"><span class="name">Bool</span></a><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="is">is: <span class="extype" name="scala.Predef.String">String</span>*</span>)</span><span class="result"> extends <a href="Literal.html" class="extype" name="jp.kobe_u.scarab.csp.Literal">Literal</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#jp.kobe_u.scarab.csp.package@BoolextendsLiteralwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"><code>Bool</code> is a case class for Boolean variables.</p><div class="fullcomment"><div class="comment cmt"><p><code>Bool</code> is a case class for Boolean variables.</p><p>New variable is generated by applying any objects as arguments to an existing variable.</p><pre>scala&gt; <span class="kw">val</span> p = Bool(<span class="lit">"p"</span>)   <span class="cmt">// Creates a new variable</span>
+p: jp.kobe_u.scarab.csp.Bool = p
+
+scala&gt; <span class="kw">val</span> p12 = p(<span class="num">1</span>,<span class="num">2</span>)    <span class="cmt">// Creates another new variable</span>
+p12: jp.kobe_u.scarab.csp.Bool = p(<span class="num">1</span>,<span class="num">2</span>)</pre><p>Anonymous variable is generated by calling <code>Bool</code> with no arguments.
+<code>TMP_B_n</code> is used as the name of anonymous variables (<code>n</code> begins from 1).
+The value of <code>aux</code> is set to true for anonymous variables.</p><pre>scala&gt; <span class="kw">val</span> q = Bool()      <span class="cmt">// Creates an anonymous variable</span>
+q: jp.kobe_u.scarab.csp.Bool = TMP_B_1
+
+scala&gt; q.aux
+res1: <span class="std">Boolean</span> = <span class="kw">true</span></pre></div><dl class="paramcmts block"><dt class="param">name</dt><dd class="cmt"><p>header name of the variable</p></dd><dt class="param">is</dt><dd class="cmt"><p>suffixes of the variable
+</p></dd></dl></div>
+    </li><li name="jp.kobe_u.scarab.csp.CSP" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="CSPextendsProductwithSerializable"></a>
+      <a id="CSP:CSP"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="CSP.html"><span class="name">CSP</span></a><span class="params">(<span name="variables">variables: <span class="extype" name="scala.IndexedSeq">IndexedSeq</span>[<a href="Var.html" class="extype" name="jp.kobe_u.scarab.csp.Var">Var</a>] = <span class="symbol">IndexedSeq.empty</span></span>, <span name="bools">bools: <span class="extype" name="scala.IndexedSeq">IndexedSeq</span>[<a href="Bool.html" class="extype" name="jp.kobe_u.scarab.csp.Bool">Bool</a>] = <span class="symbol">IndexedSeq.empty</span></span>, <span name="dom">dom: <span class="extype" name="scala.Predef.Map">Map</span>[<a href="Var.html" class="extype" name="jp.kobe_u.scarab.csp.Var">Var</a>, <a href="Domain.html" class="extype" name="jp.kobe_u.scarab.csp.Domain">Domain</a>] = <span class="symbol">Map.empty</span></span>, <span name="constraints">constraints: <span class="extype" name="scala.IndexedSeq">IndexedSeq</span>[<a href="Constraint.html" class="extype" name="jp.kobe_u.scarab.csp.Constraint">Constraint</a>] = <span class="symbol">IndexedSeq.empty</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#jp.kobe_u.scarab.csp.package@CSPextendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"><code>CSP</code> is a case class representing the CSP (Constraint Satisfaction Problem).</p><div class="fullcomment"><div class="comment cmt"><p><code>CSP</code> is a case class representing the CSP (Constraint Satisfaction Problem).</p><p>It consists of integer variables (<code>variables</code>),
+boolean variables (<code>bools</code>),
+domain function (<code>dom</code>), and
+constraints (<code>constraints</code>).
+Variables of these members are declared by <code>var</code>.   Therefore, CSP is a mutable object.</p><pre><span class="kw">val</span> csp = CSP()                  <span class="cmt">// Create a new CSP</span>
+<span class="kw">val</span> x = csp.int(Var(<span class="lit">"x"</span>), <span class="num">1</span>, <span class="num">9</span>)  <span class="cmt">// declare a variable x in 1..9.</span>
+<span class="kw">val</span> y = csp.int(Var(<span class="lit">"y"</span>), <span class="num">1</span>, <span class="num">9</span>)  <span class="cmt">// declare a variable y in 1..9.</span>
+csp.add(x + y === <span class="num">7</span>)             <span class="cmt">// add a constraint of x === y.</span></pre><p>Implicit conversion from Scala Symbol to Var is defined in <a href="" class="extype" name="jp.kobe_u.scarab.csp">jp.kobe_u.scarab.csp</a> package object.
+Therefore, the above program can be written as follows when <code>jp.kobe_u.scarab.csp._</code> is imported.</p><pre><span class="kw">val</span> csp = CSP()
+csp.int('x, <span class="num">1</span>, <span class="num">9</span>)
+csp.int('y, <span class="num">1</span>, <span class="num">9</span>)
+csp.add(<span class="lit">'x + '</span>y === <span class="num">7</span>)</pre><p>When the CSP is encoded by <a href="../solver/Encoder.html" class="extype" name="jp.kobe_u.scarab.solver.Encoder">jp.kobe_u.scarab.solver.Encoder</a>,
+the contents of the CSP (that is, variables, bools, dom, and constraints) will be modified.
+</p></div><dl class="paramcmts block"><dt class="param">variables</dt><dd class="cmt"><p>integer variables of the CSP</p></dd><dt class="param">bools</dt><dd class="cmt"><p>Boolean variables of the CSP</p></dd><dt class="param">dom</dt><dd class="cmt"><p>domain function of integer variables of the CSP</p></dd><dt class="param">constraints</dt><dd class="cmt"><p>constraints of the CSP</p></dd></dl><dl class="attributes block"> <dt>See also</dt><dd><span class="cmt"><p><a href="../package.html" class="extype" name="jp.kobe_u.scarab">jp.kobe_u.scarab</a>.
+</p></span></dd></dl></div>
+    </li><li name="jp.kobe_u.scarab.csp.Constraint" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="ConstraintextendsExpr"></a>
+      <a id="Constraint:Constraint"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">sealed abstract </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Constraint.html"><span class="name">Constraint</span></a><span class="result"> extends <a href="Expr.html" class="extype" name="jp.kobe_u.scarab.csp.Expr">Expr</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#jp.kobe_u.scarab.csp.package@ConstraintextendsExpr" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"><code>Constraint</code> is an abstract class for constraints.</p><div class="fullcomment"><div class="comment cmt"><p><code>Constraint</code> is an abstract class for constraints.</p><pre>Constraint ::= Literal | And(Constraint*) | Or(Constraint*)
+Literal    ::= Bool(<span class="std">String</span>, <span class="std">String</span>*) | Not(Bool) | LeZero(Sum)</pre><p>The following is an example describing constraints.</p><pre>scala&gt; <span class="lit">'x + '</span>y === <span class="num">7</span>
+res0: jp.kobe_u.scarab.csp.Constraint = And(LeZero(Sum(-<span class="num">7</span>+x+y)),LeZero(Sum(<span class="num">7</span>-x-y)))
+
+scala&gt; 'x * <span class="num">2</span> + 'y * <span class="num">4</span> === <span class="num">20</span>
+res1: jp.kobe_u.scarab.csp.Constraint = And(LeZero(Sum(-<span class="num">20</span>+<span class="num">2</span>*x+<span class="num">4</span>*y)),LeZero(Sum(<span class="num">20</span>-<span class="num">2</span>*x-<span class="num">4</span>*y)))
+
+scala&gt; 'x + <span class="num">1</span> &lt;= <span class="lit">'y || '</span>y + <span class="num">2</span> &lt;= 'x
+res2: jp.kobe_u.scarab.csp.Or = Or(LeZero(Sum(<span class="num">1</span>+x-y)),LeZero(Sum(<span class="num">2</span>+y-x)))
+
+scala&gt; ! ('x + <span class="num">1</span> &lt;= <span class="lit">'y || '</span>y + <span class="num">2</span> &lt;= 'x)
+res3: jp.kobe_u.scarab.csp.Constraint = And(LeZero(Sum(-x+y)),LeZero(Sum(-<span class="num">1</span>-y+x)))</pre><p>Constraints are always represented in Negative Normal Forms (NNFs)
+since <code>Not</code> can be applied only to <code>Bool</code>s.
+</p></div></div>
+    </li><li name="jp.kobe_u.scarab.csp.Domain" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="DomainextendsProductwithSerializable"></a>
+      <a id="Domain:Domain"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Domain.html"><span class="name">Domain</span></a><span class="params">(<span name="domain">domain: <span class="extype" name="scala.Seq">Seq</span>[<span class="extype" name="scala.Int">Int</span>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#jp.kobe_u.scarab.csp.package@DomainextendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"><code>Domain</code> is a case class representing the domain of variables.</p><div class="fullcomment"><div class="comment cmt"><p><code>Domain</code> is a case class representing the domain of variables.
+It is required to be <code>lb &lt;= ub</code>.
+</p></div></div>
+    </li><li name="jp.kobe_u.scarab.csp.EqZero" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="EqZeroextendsLiteralwithProductwithSerializable"></a>
+      <a id="EqZero:EqZero"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="EqZero.html"><span class="name">EqZero</span></a><span class="params">(<span name="sum">sum: <a href="Sum.html" class="extype" name="jp.kobe_u.scarab.csp.Sum">Sum</a></span>)</span><span class="result"> extends <a href="Literal.html" class="extype" name="jp.kobe_u.scarab.csp.Literal">Literal</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#jp.kobe_u.scarab.csp.package@EqZeroextendsLiteralwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"><code>EqZero</code> is a case class representing the constraint meaning the given linear summation is equal to zero, that is, <code>sum == 0</code>.</p><div class="fullcomment"><div class="comment cmt"><p><code>EqZero</code> is a case class representing the constraint meaning the given linear summation is equal to zero, that is, <code>sum == 0</code>.</p><p>Infix operators defined in <code>Term</code> class can be used to create this object.</p><pre>scala&gt; <span class="kw">val</span> x = Var(<span class="lit">"x"</span>)
+scala&gt; x(<span class="num">1</span>) === <span class="num">1</span>               <span class="cmt">// EqZero(Sum(-1+x(1)))</span></pre></div><dl class="paramcmts block"><dt class="param">sum</dt><dd class="cmt"><p>linear summation
+</p></dd></dl></div>
+    </li><li name="jp.kobe_u.scarab.csp.Expr" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="ExprextendsAnyRef"></a>
+      <a id="Expr:Expr"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Expr.html"><span class="name">Expr</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#jp.kobe_u.scarab.csp.package@ExprextendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Abstract class for <code>Term</code>s and <code>Constraint</code>s.</p><div class="fullcomment"><div class="comment cmt"><p>Abstract class for <code>Term</code>s and <code>Constraint</code>s.</p><pre>Expr ::= Term | Constraint</pre></div></div>
+    </li><li name="jp.kobe_u.scarab.csp.GeZero" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="GeZeroextendsLiteralwithProductwithSerializable"></a>
+      <a id="GeZero:GeZero"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="GeZero.html"><span class="name">GeZero</span></a><span class="params">(<span name="sum">sum: <a href="Sum.html" class="extype" name="jp.kobe_u.scarab.csp.Sum">Sum</a></span>)</span><span class="result"> extends <a href="Literal.html" class="extype" name="jp.kobe_u.scarab.csp.Literal">Literal</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#jp.kobe_u.scarab.csp.package@GeZeroextendsLiteralwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"><code>GeZero</code> is a case class representing the constraint meaning the given linear summation is less than or equal to zero, that is, <code>sum &gt;= 0</code>.</p><div class="fullcomment"><div class="comment cmt"><p><code>GeZero</code> is a case class representing the constraint meaning the given linear summation is less than or equal to zero, that is, <code>sum &gt;= 0</code>.</p><p>Infix operators defined in <code>Term</code> class can be used to create this object.</p><pre>scala&gt; <span class="kw">val</span> x = Var(<span class="lit">"x"</span>)
+scala&gt; x(<span class="num">1</span>) &gt;= <span class="num">1</span>               <span class="cmt">// GeZero(Sum(-1+x(1)))</span>
+scala&gt; x(<span class="num">1</span>) &gt; x(<span class="num">2</span>)             <span class="cmt">// GeZero(Sum(1+x(1)-x(2)))</span></pre></div><dl class="paramcmts block"><dt class="param">sum</dt><dd class="cmt"><p>linear summation
+</p></dd></dl></div>
+    </li><li name="jp.kobe_u.scarab.csp.LeZero" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="LeZeroextendsLiteralwithProductwithSerializable"></a>
+      <a id="LeZero:LeZero"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="LeZero.html"><span class="name">LeZero</span></a><span class="params">(<span name="sum">sum: <a href="Sum.html" class="extype" name="jp.kobe_u.scarab.csp.Sum">Sum</a></span>)</span><span class="result"> extends <a href="Literal.html" class="extype" name="jp.kobe_u.scarab.csp.Literal">Literal</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#jp.kobe_u.scarab.csp.package@LeZeroextendsLiteralwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"><code>LeZero</code> is a case class representing the constraint meaning the given linear summation is less than or equal to zero, that is, <code>sum &lt;= 0</code>.</p><div class="fullcomment"><div class="comment cmt"><p><code>LeZero</code> is a case class representing the constraint meaning the given linear summation is less than or equal to zero, that is, <code>sum &lt;= 0</code>.</p><p>Infix operators defined in <code>Term</code> class can be used to create this object.</p><pre>scala&gt; <span class="kw">val</span> x = Var(<span class="lit">"x"</span>)
+scala&gt; x(<span class="num">1</span>) &lt;= <span class="num">1</span>               <span class="cmt">// LeZero(Sum(-1+x(1)))</span>
+scala&gt; x(<span class="num">1</span>) &gt; x(<span class="num">2</span>)             <span class="cmt">// LeZero(Sum(1-x(1)+x(2)))</span></pre></div><dl class="paramcmts block"><dt class="param">sum</dt><dd class="cmt"><p>linear summation
+</p></dd></dl></div>
+    </li><li name="jp.kobe_u.scarab.csp.Literal" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="LiteralextendsConstraint"></a>
+      <a id="Literal:Literal"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">sealed abstract </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Literal.html"><span class="name">Literal</span></a><span class="result"> extends <a href="Constraint.html" class="extype" name="jp.kobe_u.scarab.csp.Constraint">Constraint</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#jp.kobe_u.scarab.csp.package@LiteralextendsConstraint" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"><code>Literal</code> is an abstract class for literals.</p><div class="fullcomment"><div class="comment cmt"><p><code>Literal</code> is an abstract class for literals.</p><pre>Literal    ::= Bool(<span class="std">String</span>, <span class="std">String</span>*) | Not(Bool) | LeZero(Sum)</pre></div></div>
+    </li><li name="jp.kobe_u.scarab.csp.NeZero" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="NeZeroextendsLiteralwithProductwithSerializable"></a>
+      <a id="NeZero:NeZero"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="NeZero.html"><span class="name">NeZero</span></a><span class="params">(<span name="sum">sum: <a href="Sum.html" class="extype" name="jp.kobe_u.scarab.csp.Sum">Sum</a></span>)</span><span class="result"> extends <a href="Literal.html" class="extype" name="jp.kobe_u.scarab.csp.Literal">Literal</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#jp.kobe_u.scarab.csp.package@NeZeroextendsLiteralwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"><code>NeZero</code> is a case class representing the constraint meaning the given linear summation is not equal to zero, that is, <code>sum != 0</code>.</p><div class="fullcomment"><div class="comment cmt"><p><code>NeZero</code> is a case class representing the constraint meaning the given linear summation is not equal to zero, that is, <code>sum != 0</code>.</p><p>Infix operators defined in <code>Term</code> class can be used to create this object.</p><pre>scala&gt; <span class="kw">val</span> x = Var(<span class="lit">"x"</span>)
+scala&gt; x(<span class="num">1</span>) !== <span class="num">1</span>               <span class="cmt">// NeZero(Sum(-1+x(1)))</span></pre></div><dl class="paramcmts block"><dt class="param">sum</dt><dd class="cmt"><p>linear summation
+</p></dd></dl></div>
+    </li><li name="jp.kobe_u.scarab.csp.Not" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="NotextendsLiteralwithProductwithSerializable"></a>
+      <a id="Not:Not"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Not.html"><span class="name">Not</span></a><span class="params">(<span name="p">p: <a href="Bool.html" class="extype" name="jp.kobe_u.scarab.csp.Bool">Bool</a></span>)</span><span class="result"> extends <a href="Literal.html" class="extype" name="jp.kobe_u.scarab.csp.Literal">Literal</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#jp.kobe_u.scarab.csp.package@NotextendsLiteralwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"><code>Not</code> is a case class for negations of Boolean variables.</p><div class="fullcomment"><div class="comment cmt"><p><code>Not</code> is a case class for negations of Boolean variables.</p><p>Prefix operator <code>!</code> defined in <code>Term</code> class can be used to create this object.</p><pre>scala&gt; <span class="kw">val</span> p = Bool(<span class="lit">"p"</span>)
+scala&gt; Not(p)               <span class="cmt">// Not(p)</span>
+scala&gt; ! p                  <span class="cmt">// Not(p)</span></pre></div><dl class="paramcmts block"><dt class="param">p</dt><dd class="cmt"><p>Boolean variable
+</p></dd></dl></div>
+    </li><li name="jp.kobe_u.scarab.csp.Or" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="OrextendsConstraintwithProductwithSerializable"></a>
+      <a id="Or:Or"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Or.html"><span class="name">Or</span></a><span class="params">(<span name="cs">cs: <a href="Constraint.html" class="extype" name="jp.kobe_u.scarab.csp.Constraint">Constraint</a>*</span>)</span><span class="result"> extends <a href="Constraint.html" class="extype" name="jp.kobe_u.scarab.csp.Constraint">Constraint</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#jp.kobe_u.scarab.csp.package@OrextendsConstraintwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"><code>Or</code> is a case class representing the disjunction of constraints.</p><div class="fullcomment"><div class="comment cmt"><p><code>Or</code> is a case class representing the disjunction of constraints.</p><p>Infix operators defined in <code>Constraint</code> class can be used to create this object.
+The operator <code>!==</code> on terms also create an <code>Or</code> object.</p><pre>scala&gt; <span class="kw">val</span> x = Var(<span class="lit">"x"</span>)
+scala&gt; x(<span class="num">1</span>) &lt;= <span class="num">1</span> || x(<span class="num">1</span>) &gt; x(<span class="num">2</span>)  <span class="cmt">// Or(LeZero(Sum(-1+x(1))),LeZero(Sum(1-x(1)+x(2))))</span>
+scala&gt; x(<span class="num">1</span>) !== <span class="num">1</span>                <span class="cmt">// Or(LeZero(Sum(+x(1))),LeZero(Sum(2-x(1))))</span></pre></div><dl class="paramcmts block"><dt class="param">cs</dt><dd class="cmt"><p>elements of the disjunction
+</p></dd></dl></div>
+    </li><li name="jp.kobe_u.scarab.csp.Sum" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="SumextendsTermwithProductwithSerializable"></a>
+      <a id="Sum:Sum"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Sum.html"><span class="name">Sum</span></a><span class="params">(<span name="b">b: <span class="extype" name="scala.Int">Int</span></span>, <span name="coef">coef: <span class="extype" name="scala.Predef.Map">Map</span>[<a href="Var.html" class="extype" name="jp.kobe_u.scarab.csp.Var">Var</a>, <span class="extype" name="scala.Int">Int</span>]</span>)</span><span class="result"> extends <a href="Term.html" class="extype" name="jp.kobe_u.scarab.csp.Term">Term</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#jp.kobe_u.scarab.csp.package@SumextendsTermwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"><code>Sum</code> is a case class for linear expressions.</p><div class="fullcomment"><div class="comment cmt"><p><code>Sum</code> is a case class for linear expressions.
+<code>Sum</code> object consists of an integer constant <code>b</code> and a mapping <code>coef</code> representing the coefficients of integer variables.
+It reprensents the linear summmation b + a1*x1 + a2*x2 + ... + an*xn when
+<code>coef</code> is a map Map(x1 -&gt; a1, x2 -&gt; a2, ..., xn -&gt; an).</p><pre>scala&gt; <span class="kw">val</span> x = Var(<span class="lit">"x"</span>)
+scala&gt; <span class="kw">val</span> sum = Sum(<span class="num">1</span>, <span class="std">Map</span>(x(<span class="num">1</span>)-&gt;<span class="num">1</span>, x(<span class="num">2</span>)-&gt;<span class="num">2</span>))
+sum: jp.kobe_u.scarab.csp.Sum = Sum(<span class="num">1</span>+x(<span class="num">1</span>)+<span class="num">2</span>*x(<span class="num">2</span>))</pre><p>When <code>Sum</code> object is constructed directly, the values of <code>coef</code> must not be zero.</p><pre>scala&gt; Sum(<span class="num">1</span>, <span class="std">Map</span>(x(<span class="num">1</span>)-&gt;<span class="num">1</span>, x(<span class="num">2</span>)-&gt;<span class="num">0</span>))
+java.lang.IllegalArgumentException: requirement failed: Coefficients of Sum should not be zero.
+
+scala&gt; Sum(<span class="num">1</span>, <span class="std">Map</span>(x(<span class="num">1</span>)-&gt;<span class="num">1</span>, x(<span class="num">2</span>)-&gt;<span class="num">0</span>).filter(_._2 != <span class="num">0</span>))
+res0: jp.kobe_u.scarab.csp.Sum = Sum(<span class="num">1</span>+x(<span class="num">1</span>))</pre><p>Companion object <code>Sum</code> provides several easy-to-use construction methods for <code>Sum</code>.</p><pre>scala&gt; Sum(<span class="num">1</span>)            <span class="cmt">// Sum(1)</span>
+scala&gt; Sum(x(<span class="num">1</span>), x(<span class="num">2</span>))   <span class="cmt">// Sum(+x(1)+x(2))</span>
+scala&gt; Sum(x(<span class="num">1</span>), x(<span class="num">1</span>))   <span class="cmt">// Sum(+2*x(1))</span></pre><p>Operations of addition, subtraction, negation, and constant multiplication are defined on <code>Sum</code> objects.
+When coefficients become zero, they are removed from the result.</p><pre>scala&gt; Sum(x).add(<span class="num">1</span>)         <span class="cmt">// Sum(1+x)</span>
+scala&gt; Sum(x).add(<span class="num">1</span>).sub(x)  <span class="cmt">// Sum(1)</span>
+scala&gt; Sum(x).mul(<span class="num">3</span>)         <span class="cmt">// Sum(+3*x)</span></pre><p>Infix and prefix operators defined in <code>Term</code> class can be used.</p><pre>scala&gt; x + <span class="num">1</span>                 <span class="cmt">// Sum(1+1*x)</span>
+scala&gt; x + <span class="num">1</span> - x             <span class="cmt">// Sum(1)</span>
+scala&gt; x * <span class="num">3</span>                 <span class="cmt">// Sum(0+3*x)</span></pre></div><dl class="paramcmts block"><dt class="param">b</dt><dd class="cmt"><p>constant part of the summation</p></dd><dt class="param">coef</dt><dd class="cmt"><p>map consisting of variables and their coefficients
+</p></dd></dl></div>
+    </li><li name="jp.kobe_u.scarab.csp.Term" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="TermextendsExpr"></a>
+      <a id="Term:Term"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">sealed abstract </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Term.html"><span class="name">Term</span></a><span class="result"> extends <a href="Expr.html" class="extype" name="jp.kobe_u.scarab.csp.Expr">Expr</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#jp.kobe_u.scarab.csp.package@TermextendsExpr" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"><code>Term</code> is an abstract class for linear arithmetic expressions.</p><div class="fullcomment"><div class="comment cmt"><p><code>Term</code> is an abstract class for linear arithmetic expressions.</p><pre>Term ::= Var(<span class="std">String</span>, <span class="std">String</span>*) | Sum(<span class="std">Int</span>, <span class="std">Map</span>[Var,<span class="std">Int</span>])</pre><p>See examples described in <a href="Sum.html" class="extype" name="jp.kobe_u.scarab.csp.Sum">jp.kobe_u.scarab.csp.Sum</a> section.
+</p></div></div>
+    </li><li name="jp.kobe_u.scarab.csp.Var" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="VarextendsTermwithProductwithSerializable"></a>
+      <a id="Var:Var"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Var.html"><span class="name">Var</span></a><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="is">is: <span class="extype" name="scala.Predef.String">String</span>*</span>)</span><span class="result"> extends <a href="Term.html" class="extype" name="jp.kobe_u.scarab.csp.Term">Term</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#jp.kobe_u.scarab.csp.package@VarextendsTermwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"><code>Var</code> is a case class for integer variables.</p><div class="fullcomment"><div class="comment cmt"><p><code>Var</code> is a case class for integer variables.</p><p>New variable is generated by applying any objects as arguments to an existing variable.</p><pre>scala&gt; <span class="kw">val</span> x = Var(<span class="lit">"x"</span>)    <span class="cmt">// Creates a new variable</span>
+x: jp.kobe_u.scarab.csp.Var = x
+
+scala&gt; <span class="kw">val</span> x12 = x(<span class="num">1</span>,<span class="num">2</span>)    <span class="cmt">// Creates another new variable</span>
+x12: jp.kobe_u.scarab.csp.Var = x(<span class="num">1</span>,<span class="num">2</span>)</pre><p>Implicit conversion from Scala Symbol to Var is defined in csp package object.
+Therefore, the following convention can be used when <code>jp.kobe_u.scarab.csp._</code> is imported.</p><pre>scala&gt; <span class="kw">val</span> x12 = 'x(<span class="num">1</span>,<span class="num">2</span>)
+x12: jp.kobe_u.scarab.csp.Var = x(<span class="num">1</span>,<span class="num">2</span>)</pre><p>Anonymous variable is generated by calling <code>Var</code> with no arguments.
+<code>TMP_I_n</code> is used as the name of anonymous variables (<code>n</code> begins from 1).
+The value of <code>aux</code> is set to true for anonymous variables.</p><pre>scala&gt; <span class="kw">val</span> y = Var()       <span class="cmt">// Creates an anonymous variable</span>
+y: jp.kobe_u.scarab.csp.Var = TMP_I_1
+
+scala&gt; y.aux
+res1: <span class="std">Boolean</span> = <span class="kw">true</span></pre></div><dl class="paramcmts block"><dt class="param">name</dt><dd class="cmt"><p>header name of the variable</p></dd><dt class="param">is</dt><dd class="cmt"><p>suffixes of the variable
+</p></dd></dl></div>
+    </li><li name="jp.kobe_u.scarab.csp.commitPoint" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="commitPointextendsProductwithSerializable"></a>
+      <a id="commitPoint:commitPoint"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="commitPoint.html"><span class="name">commitPoint</span></a><span class="params">(<span name="b">b: <span class="extype" name="scala.Int">Int</span></span>, <span name="v">v: <span class="extype" name="scala.Int">Int</span></span>, <span name="c">c: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#jp.kobe_u.scarab.csp.package@commitPointextendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li></ol>
+            </div>
+
+        
+
+        <div id="values" class="values members">
+              <h3>Value Members</h3>
+              <ol><li name="jp.kobe_u.scarab.csp.And" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="And"></a>
+      <a id="And:And"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="And$.html"><span class="name">And</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#jp.kobe_u.scarab.csp.package@And" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Companion object of <code>And</code>.</p>
+    </li><li name="jp.kobe_u.scarab.csp.Bool" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Bool"></a>
+      <a id="Bool:Bool"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Bool$.html"><span class="name">Bool</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#jp.kobe_u.scarab.csp.package@Bool" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Companion object of <code>Bool</code>.</p>
+    </li><li name="jp.kobe_u.scarab.csp.CSP" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="CSP"></a>
+      <a id="CSP:CSP"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="CSP$.html"><span class="name">CSP</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#jp.kobe_u.scarab.csp.package@CSP" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="jp.kobe_u.scarab.csp.Or" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Or"></a>
+      <a id="Or:Or"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Or$.html"><span class="name">Or</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#jp.kobe_u.scarab.csp.package@Or" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Companion object of <code>Or</code>.</p>
+    </li><li name="jp.kobe_u.scarab.csp.Sum" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Sum"></a>
+      <a id="Sum:Sum"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Sum$.html"><span class="name">Sum</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#jp.kobe_u.scarab.csp.package@Sum" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Companion object of <code>Sum</code>.</p>
+    </li><li name="jp.kobe_u.scarab.csp.Var" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Var"></a>
+      <a id="Var:Var"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Var$.html"><span class="name">Var</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#jp.kobe_u.scarab.csp.package@Var" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Companion object of <code>Var</code>.</p>
+    </li><li name="jp.kobe_u.scarab.csp#symbol2var" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="symbol2var(s:Symbol):jp.kobe_u.scarab.csp.Var"></a>
+      <a id="symbol2var(Symbol):Var"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">symbol2var</span><span class="params">(<span name="s">s: <span class="extype" name="scala.Symbol">Symbol</span></span>)</span><span class="result">: <a href="Var.html" class="extype" name="jp.kobe_u.scarab.csp.Var">Var</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#jp.kobe_u.scarab.csp.package@symbol2var(s:Symbol):jp.kobe_u.scarab.csp.Var" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Implicit conversion of Scala Symbol to Var</p>
+    </li></ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        <div class="parent" name="scala.AnyRef">
+              <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
+            </div><div class="parent" name="scala.Any">
+              <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
+            </div>
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>

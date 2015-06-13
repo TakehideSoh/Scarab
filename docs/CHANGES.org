@@ -1,0 +1,20 @@
+#+TITLE: CHANGES of Scarab
+#+AUTHOR: @<a href='http://bach.istc.kobe-u.ac.jp/tamura.html'>Naoyuki Tamura@</a>
+#+AUTHOR: @<a href='http://kix.istc.kobe-u.ac.jp/~soh/'>Takehide Soh@</a>
+#+EMAIL: 
+#+STARTUP: overview hidestars nologdone
+#+LANGUAGE: en
+#+OPTIONS: toc:t H:3 num:nil author:t creator:t todo:nil pri:nil tags:nil LaTeX:t ^:t @:t
+#+STYLE: <link rel="stylesheet" type="text/css" href="/include/org-common.css">
+#+STYLE: <link rel="stylesheet" type="text/css" href="/include/org-toc-right.css">
+#+INFOJS_OPT: view:showall toc:t tdepth:2 ltoc:nil mouse:#ffffcc path:/include/org-info.js
+#+MATHJAX: align:"left" mathml:nil path:"/include/mathjax/MathJax.js"
+# #+INCLUDE: menu.txt
+* Overview
+  This document describes the major changes of [[../../index.html][Scarab]].
+* Version 1.0.0 [2013-01-04 Fri]
+  - Release of the first version.
+* COMMENT 
+# Local Variables:
+# system-time-locale: "C"
+# End:
