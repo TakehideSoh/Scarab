@@ -59,10 +59,16 @@ class Solver(
   val satSolver: SatSolver = new Sat4j(),
   val encoder: Encoder) {
   /**
-   * Remembers the solution (assignment) found by `find` method.
-   * It is set to `None` at the beginning and when no solutions are found.
+   * Returns the solution (assignment) found by `find` method.
+   * It will return `null` if no solutions are found.
+   * Use `solutionOpt` to avoid `null`.
    */
   def solution: Assignment = solutionOpt.orNull
+
+  /**
+   * Returns the solution (assignment) found by `find` method wrapped in `Option`.
+   * It will return `None` if no solutions are found.
+   */
   def solutionOpt: Option[Assignment] = _solutionOpt
   private[this] var _solutionOpt: Option[Assignment] = None
 
