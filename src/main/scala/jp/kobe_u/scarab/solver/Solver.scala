@@ -28,7 +28,7 @@ import jp.kobe_u.scarab.csp._
  *   1. The `isSatisfiable` method of [[jp.kobe_u.scarab.solver.SatSolver]] is called.
  *   1. When a solution is found, the `decode` method of [[jp.kobe_u.scarab.solver.Encoder]] is called to get the solution
  *      and the solution is set to the `solution` variable.
- *      Otherwise, the `solution` variable is set to `null`.
+ *      Otherwise, the `solution` variable is set to `None`.
  *
  * The `add` method does the following.
  *   1. The constraint is preprocessed before encoding, and the translated constraints are added to the CSP.
@@ -60,9 +60,10 @@ class Solver(
   val encoder: Encoder) {
   /**
    * Remembers the solution (assignment) found by `find` method.
-   * It is set to `null` at the beginning and when no solutions are found.
+   * It is set to `None` at the beginning and when no solutions are found.
    */
-  var solution: Assignment = null
+  def solution: Assignment = solutionOpt.orNull
+  private[this] var solutionOpt: Option[Assignment] = None
 
   /**
    * Returns satisfiability (whether CSP is SAT or UNSAT).
@@ -72,7 +73,7 @@ class Solver(
    */
   def isSatisfiable = {
     val result = satSolver.isSatisfiable
-    solution = if (result) encoder.decode else null
+    solutionOpt = if (result) Option(encoder.decode) else None
     result
   }
 
@@ -92,9 +93,9 @@ class Solver(
    */
   def addBlockConstraint {
     val cs1 = for (x <- csp.variables if !x.isAux)
-      yield (x !== x.value(solution))
+      yield (x !== x.value(solutionOpt.get))
     val cs2 = for (p <- csp.bools if !p.isAux)
-      yield if (solution(p)) Not(p) else p
+      yield if (solutionOpt.get(p)) Not(p) else p
     csp.add(Or(Or(cs1), Or(cs2)))
   }
 
@@ -125,14 +126,14 @@ class Solver(
     val result = satSolver.isSatisfiable
     // Sat4j("iterate") needs calling model() for enumeration
     if (result) satSolver.model
-    solution = if (result) encoder.decode else null
+    solutionOpt = if (result) Option(encoder.decode) else None
     result
   }
 
   /** Return whether CSP with assumption is SAT or not. If SAT then solution is constructed. */
   def isSatisfiable(cons: Seq[Constraint]) = {
     val result = satSolver.isSatisfiable(encoder.extractAssumpLits(cons))
-    solution = if (result) encoder.decode else null
+    solutionOpt = if (result) Option(encoder.decode) else None
     result
   }
 
@@ -156,7 +157,7 @@ class Solver(
     val ps = bs.map(b => encoder.code(b)) ++ is.flatMap(i => gen(i).map(-_))
     
     val result = satSolver.findMinimalModel(ps)
-    solution = if (result != None) encoder.decode else null
+    solutionOpt = if (result != None) Option(encoder.decode) else None
     result != None
   }
 
