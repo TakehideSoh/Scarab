@@ -63,7 +63,8 @@ class Solver(
    * It is set to `None` at the beginning and when no solutions are found.
    */
   def solution: Assignment = solutionOpt.orNull
-  private[this] var solutionOpt: Option[Assignment] = None
+  def solutionOpt: Option[Assignment] = _solutionOpt
+  private[this] var _solutionOpt: Option[Assignment] = None
 
   /**
    * Returns satisfiability (whether CSP is SAT or UNSAT).
@@ -73,7 +74,7 @@ class Solver(
    */
   def isSatisfiable = {
     val result = satSolver.isSatisfiable
-    solutionOpt = if (result) Option(encoder.decode) else None
+    _solutionOpt = if (result) Option(encoder.decode) else None
     result
   }
 
@@ -93,9 +94,9 @@ class Solver(
    */
   def addBlockConstraint {
     val cs1 = for (x <- csp.variables if !x.isAux)
-      yield (x !== x.value(solutionOpt.get))
+      yield (x !== x.value(_solutionOpt.get))
     val cs2 = for (p <- csp.bools if !p.isAux)
-      yield if (solutionOpt.get(p)) Not(p) else p
+      yield if (_solutionOpt.get(p)) Not(p) else p
     csp.add(Or(Or(cs1), Or(cs2)))
   }
 
@@ -126,14 +127,14 @@ class Solver(
     val result = satSolver.isSatisfiable
     // Sat4j("iterate") needs calling model() for enumeration
     if (result) satSolver.model
-    solutionOpt = if (result) Option(encoder.decode) else None
+    _solutionOpt = if (result) Option(encoder.decode) else None
     result
   }
 
   /** Return whether CSP with assumption is SAT or not. If SAT then solution is constructed. */
   def isSatisfiable(cons: Seq[Constraint]) = {
     val result = satSolver.isSatisfiable(encoder.extractAssumpLits(cons))
-    solutionOpt = if (result) Option(encoder.decode) else None
+    _solutionOpt = if (result) Option(encoder.decode) else None
     result
   }
 
@@ -157,7 +158,7 @@ class Solver(
     val ps = bs.map(b => encoder.code(b)) ++ is.flatMap(i => gen(i).map(-_))
     
     val result = satSolver.findMinimalModel(ps)
-    solutionOpt = if (result != None) Option(encoder.decode) else None
+    _solutionOpt = if (result != None) Option(encoder.decode) else None
     result != None
   }
 
