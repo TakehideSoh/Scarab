@@ -131,8 +131,9 @@ class ExtSatSolver(cmd: String, var fileName: String = "", keep: Boolean = false
     modelArray
   def model(v: Int): Boolean =
     modelArray(v - 1) > 0
-  def findModel: Array[Int] =
-    if (isSatisfiable) model else null
+  def findModel: Option[Array[Int]] =
+    if (isSatisfiable) Option(model)
+    else None
   def nVars: Int =
     nofVariables
   def nConstraints: Int =
@@ -278,8 +279,8 @@ class FileProblem(cnfFile: java.io.File) {
   var nofClausesCommitted = 0
   var fileSizeCommitted: Long = 0
 
-  var satFileChannel: FileChannel = null
-  var satByteBuffer: ByteBuffer = null
+  var satFileChannel: Option[FileChannel] = None
+  var satByteBuffer: Option[ByteBuffer] = None
 
   init
 
@@ -297,28 +298,28 @@ class FileProblem(cnfFile: java.io.File) {
     cnfFile.getAbsolutePath
   /* */
   def open {
-    if (satFileChannel != null)
+    if (satFileChannel.nonEmpty)
       throw new java.lang.Exception("Internal error: re-opening file " + cnfFile.getAbsolutePath)
     try {
       if (fileSize == 0) {
-        satFileChannel = (new FileOutputStream(cnfFile.getAbsolutePath)).getChannel
+        satFileChannel = Option((new FileOutputStream(cnfFile.getAbsolutePath)).getChannel)
       } else {
-        satFileChannel = (new RandomAccessFile(cnfFile.getAbsolutePath, "rw")).getChannel
-        satFileChannel.position(fileSize)
+        satFileChannel = Option((new RandomAccessFile(cnfFile.getAbsolutePath, "rw")).getChannel)
+        satFileChannel.get.position(fileSize)
       }
-      satByteBuffer = ByteBuffer.allocateDirect(SAT_BUFFER_SIZE)
+      satByteBuffer = Option(ByteBuffer.allocateDirect(SAT_BUFFER_SIZE))
     } catch {
       case e: IOException => throw new IOException
     }
   }
   /* */
   def write(b: Seq[Byte]): Unit = {
-    if (satFileChannel == null)
+    if (satFileChannel.isEmpty)
       open
     val len = b.size
-    if (satByteBuffer.position + len > SAT_BUFFER_SIZE)
+    if (satByteBuffer.get.position + len > SAT_BUFFER_SIZE)
       flush
-    satByteBuffer.put(b.toArray)
+    satByteBuffer.get.put(b.toArray)
     fileSize = fileSize + len
     if (fileSize >= MAX_SAT_SIZE)
       throw new java.lang.Exception("Encoding is interrupted because file size becomes too large (" + fileSize + " bytes)")
@@ -327,32 +328,36 @@ class FileProblem(cnfFile: java.io.File) {
   def write(s: String): Unit =
     write(s.getBytes)
   /* */
-  def flush {
-    if (satFileChannel == null) return
-
-    try {
-      satByteBuffer.flip // limit = position;  position = 0
-      satFileChannel.write(satByteBuffer)
-      satByteBuffer.clear
-    } catch {
-      case e: IOException => throw new IOException("IOException is happen while flush FileProblem")
+  def flush: Unit =
+    satFileChannel match {
+      case None => ()
+      case Some(fc) =>
+        try {
+          satByteBuffer.get.flip // limit = position;  position = 0
+          fc.write(satByteBuffer.get)
+          satByteBuffer.get.clear
+        } catch {
+          case e: IOException => throw new IOException("IOException is happen while flush FileProblem")
+        }
     }
-  }
-  /* */
-  def close {
-    if (satFileChannel == null) return
 
-    try {
-      flush
-      satFileChannel.close
-      satFileChannel = null
-      satByteBuffer = null
-    } catch {
-      case e: IOException => throw new IOException("IOException is happen while close FileProblem")
-    }
-  }
   /* */
-  def update {
+  def close: Unit = 
+    satFileChannel match {
+      case None => ()
+      case Some(fc) =>
+        try {
+          flush
+          fc.close
+          satFileChannel = None
+          satByteBuffer = None
+        } catch {
+          case e: IOException => throw new IOException("IOException is happen while close FileProblem")
+        }
+    }
+
+  /* */
+  def update: Unit = {
     val n = 64
     val s: StringBuilder = new StringBuilder
     s.append("p cnf ")
@@ -364,8 +369,11 @@ class FileProblem(cnfFile: java.io.File) {
 
     s.append("\n");
     val header = s.toString
-    if (satFileChannel != null)
+    
+    if (satFileChannel.nonEmpty) {
       throw new java.lang.Exception("Internal error: updating opening file " + cnfFile.getAbsolutePath)
+    }
+    
     try {
       val satFile1: RandomAccessFile = new RandomAccessFile(cnfFile.getAbsolutePath, "rw")
       satFile1.seek(0)
