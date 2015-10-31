@@ -32,7 +32,7 @@ import org.sat4j.tools.AllMUSes
  * DefaultMS21PhaseSaving, DefaultAutoErasePhaseSaving, Glucose21, BestWL, BestHT, Best17, MiniLearningHeapEZSimpLongRestarts,
  * MinOneSolver, Backjumping, SAT, UNSAT, and GreedySolver
  *
- * @author Naoyuki Tamura and Takehide Soh
+ * @author Takehide Soh and Naoyuki Tamura
  * @see [[http://www.sat4j.org "Sat4j web site"]] for more details.
  */
 class Sat4j(option: String) extends SatSolver {
@@ -88,9 +88,6 @@ class Sat4j(option: String) extends SatSolver {
       case Some(_) => sat4j.newVar(n * 4)
       case None    => sat4j.newVar(n)
     }
-
-  //  def addAllClauses(clauses: Seq[Seq[Int]]) =
-  //    for (clause <- clauses) addClause(clause)
 
   def addClause(lits: Seq[Int]) {
     sat4j.addClause(new VecInt(lits.toArray))
