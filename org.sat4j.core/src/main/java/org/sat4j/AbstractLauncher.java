@@ -87,6 +87,10 @@ public abstract class AbstractLauncher implements Serializable, ILogAble {
     protected transient Thread shutdownHook = new Thread() {
         @Override
         public void run() {
+            // stop the solver before displaying solutions
+            if (solver != null) {
+                solver.expireTimeout();
+            }
             displayResult();
         }
     };

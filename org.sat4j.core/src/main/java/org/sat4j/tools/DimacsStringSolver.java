@@ -235,7 +235,6 @@ public class DimacsStringSolver extends AbstractOutputSolver implements
      * @since 2.3.3
      */
     public void printStat(PrintWriter out) {
-        throw new UnsupportedOperationException();
 
     }
 
@@ -243,7 +242,6 @@ public class DimacsStringSolver extends AbstractOutputSolver implements
      * @since 2.3.3
      */
     public void printInfos(PrintWriter out) {
-        throw new UnsupportedOperationException();
 
     }
 

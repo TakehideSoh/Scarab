@@ -45,6 +45,104 @@ package org.sat4j.specs;
  */
 public interface Constr extends IConstr {
 
+    Constr TAUTOLOGY = new Constr() {
+
+        public boolean learnt() {
+            return false;
+        }
+
+        public int size() {
+            return 0;
+        }
+
+        public int get(int i) {
+            throw new UnsupportedOperationException(
+                    "No elements in a tautology");
+        }
+
+        public double getActivity() {
+            return 0.0;
+        }
+
+        public boolean canBePropagatedMultipleTimes() {
+            return false;
+        }
+
+        public String toString(VarMapper mapper) {
+            return "TAUT";
+        }
+
+        public void remove(UnitPropagationListener upl) {
+            // do nothing
+        }
+
+        public boolean simplify() {
+            return false;
+        }
+
+        public void calcReason(int p, IVecInt outReason) {
+            throw new UnsupportedOperationException(
+                    "A tautology cannot be a reason");
+        }
+
+        public void calcReasonOnTheFly(int p, IVecInt trail, IVecInt outReason) {
+            throw new UnsupportedOperationException(
+                    "A tautology cannot be a reason");
+        }
+
+        public void incActivity(double claInc) {
+            // do nothing
+        }
+
+        public void forwardActivity(double claInc) {
+            // do nothing
+        }
+
+        public boolean locked() {
+            return false;
+        }
+
+        public void setLearnt() {
+            // do nothing
+        }
+
+        public void register() {
+            // do nothing
+        }
+
+        public void rescaleBy(double d) {
+            // do nothing
+        }
+
+        public void setActivity(double d) {
+            // do nothing
+        }
+
+        public void assertConstraint(UnitPropagationListener s) {
+            // do nothing
+        }
+
+        public void assertConstraintIfNeeded(UnitPropagationListener s) {
+            // do nothing
+        }
+
+        public boolean canBeSatisfiedByCountingLiterals() {
+            return false;
+        }
+
+        public int requiredNumberOfSatisfiedLiterals() {
+            return 0;
+        }
+
+        public boolean isSatisfied() {
+            return true;
+        }
+
+        public int getAssertionLevel(IVecInt trail, int decisionLevel) {
+            return 0;
+        }
+    };
+
     /**
      * Remove a constraint from the solver.
      * 

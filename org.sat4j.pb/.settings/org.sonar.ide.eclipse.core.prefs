@@ -1,0 +1,7 @@
+analyseLocally=false
+eclipse.preferences.version=1
+projectArtifactId=org.sat4j.pb
+projectBranch=
+projectGroupId=org.sat4j
+serverUrl=http\://localhost\:9000
+version=1

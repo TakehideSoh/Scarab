@@ -1280,6 +1280,7 @@ public class Solver<D extends DataStructureFactory> implements ISolverService,
                         }
                     } else {
                         confl = this.sharedConflict;
+                        this.sharedConflict = null;
                     }
                 }
             }

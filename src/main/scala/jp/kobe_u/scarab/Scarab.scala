@@ -1,8 +1,5 @@
 package jp.kobe_u.scarab
 
-import csp._
-import solver._
-
 /**
  * Trait for Scarab DSL which provides methods for CSP and CSP solver.
  */

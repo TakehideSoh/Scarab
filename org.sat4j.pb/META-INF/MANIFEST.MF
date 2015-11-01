@@ -1,0 +1,25 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %bundleName
+Bundle-SymbolicName: org.sat4j.pb
+Bundle-Version: 9.9.9.token
+Export-Package: org.sat4j.pb;version="9.9.9.token",
+ org.sat4j.pb.constraints;version="9.9.9.token",
+ org.sat4j.pb.constraints.pb;version="9.9.9.token",
+ org.sat4j.pb.core;version="9.9.9.token",
+ org.sat4j.pb.orders;version="9.9.9.token",
+ org.sat4j.pb.reader;version="9.9.9.token",
+ org.sat4j.pb.tools;version="9.9.9.token"
+Bundle-Vendor: %providerName
+Bundle-Localization: plugin
+Require-Bundle: org.sat4j.core
+Built-By: Daniel Le Berre
+Main-Class: org.sat4j.pb.LanceurPseudo2007
+Specification-Title: SAT4J
+Specification-Version: NA
+Specification-Vendor: Daniel Le Berre
+Implementation-Title: SAT4J
+Implementation-Version: 9.9.9.token 
+Implementation-Vendor: CRIL CNRS UMR 8188 - Universite d'Artois
+Class-Path: org.sat4j.core.jar
+Bundle-RequiredExecutionEnvironment: J2SE-1.5

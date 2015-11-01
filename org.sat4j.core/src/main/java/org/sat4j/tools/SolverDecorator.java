@@ -182,7 +182,7 @@ public abstract class SolverDecorator<T extends ISolver> implements ISolver {
 
     @Override
     public String toString() {
-        return toString("");
+        return this.solver.toString();
     }
 
     /*
