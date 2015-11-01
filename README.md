@@ -47,9 +47,8 @@ Features of Scarab are follows:
 
 <br style="clear:both;" />
 
-    import jp.kobe_u.scarab.csp._
-    import jp.kobe_u.scarab.solver._
-    import jp.kobe_u.scarab.sapp._
+    import jp.kobe_u.scarab._
+    import dsl._
     
     var n: Int = 5
     for (i <- 1 to n; j <- 1 to n)  int('x(i,j),1,n) 
