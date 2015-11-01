@@ -80,7 +80,7 @@ Features of Scarab are follows:
 
 # Release Note
 
-
+-   [2015.11.01] Sat4j and Sat4j-PB (Rev2428) are included.
 
 -   [2015.06.14] [ZIP of Scarab Package](./scarab-v1-6-9.zip) &#x2013; Version 1.6.9 is released.
 
