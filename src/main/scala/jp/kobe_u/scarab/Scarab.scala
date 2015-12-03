@@ -66,6 +66,8 @@ trait ScarabTrait {
   def optimize(v: Var, lb: Int, ub: Int, how: String = "default"): Int = solver.optimize(v, lb, ub, how)
   /* */
   def timeLimit(sec: Int) = satSolver.setTimeout(sec)
+  /* */
+  def alldiff(xs: Seq[Term]) = op.alldiff(xs, csp)
 }
 
 class Scarab (val csp: CSP, 
