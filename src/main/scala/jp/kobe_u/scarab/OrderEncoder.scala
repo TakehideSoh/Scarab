@@ -133,7 +133,7 @@ class OrderEncoder(csp: CSP, satSolver: SatSolver) extends Encoder(csp, satSolve
             }
             case e => throw new java.lang.Exception(s"Unexpected type is detected in extractAssumpLits: ${e}")
           }
-          ls += i
+          if (i != TrueLit) ls += i
         } else {
           p = p orElse Option(newBool)
           csp.add(Or(lits :+ Not(p.get)))

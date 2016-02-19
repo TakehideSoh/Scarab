@@ -97,11 +97,16 @@ class Solver(
    *  Add Constraints that blocks the latest solution.
    */
   def addBlockConstraint {
-    val cs1 = for (x <- csp.variables if !x.isAux)
-      yield (x !== x.value(_solutionOpt.get))
-    val cs2 = for (p <- csp.bools if !p.isAux)
-      yield if (_solutionOpt.get(p)) Not(p) else p
-    csp.add(Or(Or(cs1), Or(cs2)))
+    _solutionOpt match {
+      case Some(n) => {
+        val cs1 = for (x <- csp.variables if !x.isAux)
+          yield (x !== x.value(_solutionOpt.get))
+        val cs2 = for (p <- csp.bools if !p.isAux)
+          yield if (_solutionOpt.get(p)) Not(p) else p
+        csp.add(Or(Or(cs1), Or(cs2)))
+      }
+      case None =>
+    }
   }
 
   /**
@@ -155,12 +160,27 @@ class Solver(
    *  Return minimal model according to a given set of Boolean variables
    */
   def findMinimal(bs: Seq[Bool] = Seq.empty, is: Seq[Var] = Seq.empty): Boolean = {
-    
-   def gen(x: Var) = Seq.range(encoder.code(x), encoder.code(x) + encoder.satVariablesSize(x))     
-  
-    encoder.encodeCSP    
+
+    def gen(x: Var) = Seq.range(encoder.code(x), encoder.code(x) + encoder.satVariablesSize(x))
+
+    encoder.encodeCSP
     val ps = bs.map(b => encoder.code(b)) ++ is.flatMap(i => gen(i).map(-_))
-    
+
+    val result = satSolver.findMinimalModel(ps)
+    _solutionOpt = if (result != None) Option(encoder.decode) else None
+    result != None
+  }
+
+  /**
+   *  Return maximal model according to a given set of Boolean variables
+   */
+  def findMaximal(bs: Seq[Bool] = Seq.empty, is: Seq[Var] = Seq.empty): Boolean = {
+
+    def gen(x: Var) = Seq.range(encoder.code(x), encoder.code(x) + encoder.satVariablesSize(x))
+
+    encoder.encodeCSP
+    val ps = bs.map(b => encoder.code(b)) ++ is.flatMap(i => gen(i))
+
     val result = satSolver.findMinimalModel(ps)
     _solutionOpt = if (result != None) Option(encoder.decode) else None
     result != None
@@ -176,8 +196,8 @@ class Solver(
     for (b <- bs) {
       res.find(i => math.abs(i) == encoder.code(b)) match {
         case Some(n) => if (n < 0) out += Not(b) else out += b
-        case None => 
-      }  
+        case None    =>
+      }
     }
     out
   }
@@ -204,7 +224,8 @@ class Solver(
   def reset {
     encoder.reset
     satSolver.reset
-    csp.rollback
+    csp.reset
+    _solutionOpt = None
   }
 
   /**

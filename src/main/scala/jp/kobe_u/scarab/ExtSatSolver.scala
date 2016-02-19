@@ -46,30 +46,30 @@ class ExtSatSolver(cmd: String, var fileName: String = "", keep: Boolean = false
         true
       }
       case "UNSAT" => false
-      case _ => throw new java.lang.Exception("Illegal output file: 1st line should be SAT or UNSAT")
+      case _       => throw new java.lang.Exception("Illegal output file: 1st line should be SAT or UNSAT")
     }
   }
 
   protected def run(execCMD: String) {
     var exitValue = 1
     println(s"$execCMD")
-//    val logger = new scala.sys.process.FileProcessLogger(logFile)
-    val logger = scala.sys.process.ProcessLogger(line => println(line), line => println(line))    
+    //    val logger = new scala.sys.process.FileProcessLogger(logFile)
+    val logger = scala.sys.process.ProcessLogger(line => println(line), line => println(line))
     val process = Process(execCMD).run(logger)
     val SATsolving = Future { exitValue = process.exitValue }
 
     try {
       Await.result(SATsolving, if (tout < 0) Duration.Inf else Duration(tout, SECONDS))
-//      logger.flush	
-//      logger.close
-//      Process(s"cat ${logFile}").run
+      //      logger.flush	
+      //      logger.close
+      //      Process(s"cat ${logFile}").run
       // check whether SAT solving process is successfully done or not.
       if (exitValue == 1)
         throw new java.lang.InternalError(s"Unexpected Error is happen while executing the command: ${execCMD}")
     } catch {
       case e: java.util.concurrent.TimeoutException => {
-//        logger.flush
-//        logger.close
+        //        logger.flush
+        //        logger.close
         Process(s"cat ${logFile}").run
         println(s"TIMEOUT. Scarab is killing process of: ${cmd}")
         process.destroy
@@ -78,7 +78,6 @@ class ExtSatSolver(cmd: String, var fileName: String = "", keep: Boolean = false
     }
   }
 
-  
   protected def runExtSolver = {
     val execCMD = s"${cmd} ${satFileProblem.getAbsolutePath} ${outFile.getAbsolutePath}"
 
@@ -111,8 +110,7 @@ class ExtSatSolver(cmd: String, var fileName: String = "", keep: Boolean = false
     satFileProblem.done
     runExtSolver
   }
-  
-   
+
   def model: Array[Int] =
     modelArray
   def model(v: Int): Boolean =
@@ -134,11 +132,12 @@ class ExtSatSolver(cmd: String, var fileName: String = "", keep: Boolean = false
   def dumpCNF = {
     Process(s"cat ${satFileProblem.getAbsolutePath}").run
   }
+  
 
   /*
    * (not-Supported Methods in External SATSolvers) 
    */
-  def clearLearntClauses = 
+  def clearLearntClauses =
     throw new java.lang.UnsupportedOperationException("clearLearntClauses is not supported in External SAT Solvers")
   def printInfos(out: java.io.PrintWriter) =
     throw new java.lang.UnsupportedOperationException("printInfos is not supported in External SAT Solvers")
@@ -151,7 +150,9 @@ class ExtSatSolver(cmd: String, var fileName: String = "", keep: Boolean = false
   def addExactly(lits: Seq[Int], degree: Int): Unit =
     throw new java.lang.UnsupportedOperationException("addExactly is not supported in External SAT Solvers")
   def addPB(lits: Seq[Int], coef: Seq[Int], degree: Int): Unit =
-    throw new java.lang.UnsupportedOperationException("addPB is not supported in External SAT Solvers")    
+    throw new java.lang.UnsupportedOperationException("addPB is not supported in External SAT Solvers")
+  def addBBC(block: Int, lits: Seq[Int], degree: Int): Unit =
+    throw new java.lang.UnsupportedOperationException("addBBC is not supported in External SAT Solvers")
   def addConstr(c: org.sat4j.specs.Constr): Unit =
     throw new java.lang.UnsupportedOperationException("addConstr is not supported in External SAT Solvers")
   def isSatisfiable(assumps: Seq[Int]): Boolean =
@@ -162,10 +163,12 @@ class ExtSatSolver(cmd: String, var fileName: String = "", keep: Boolean = false
     throw new java.lang.UnsupportedOperationException("minimalExp is not supported in External SAT Solvers")
   def minAllExplain =
     throw new java.lang.UnsupportedOperationException("minimalAllExp is not supported in External SAT Solvers")
-  def findMinimalModel(ps: Seq[Int]): Option[Seq[Boolean]] =   
-    throw new java.lang.UnsupportedOperationException("findMinimalModel is not supported in External SAT Solvers")  
+  def findMinimalModel(ps: Seq[Int]): Option[Seq[Boolean]] =
+    throw new java.lang.UnsupportedOperationException("findMinimalModel is not supported in External SAT Solvers")
   def findBackbone(ps: Seq[Int]): Set[Int] =
-    throw new java.lang.UnsupportedOperationException("findBackbone is not supported in External SAT Solvers")      
+    throw new java.lang.UnsupportedOperationException("findBackbone is not supported in External SAT Solvers")
+  def nextFreeVarID: Int =
+    throw new java.lang.UnsupportedOperationException("nextFreeVarId is not supported in External SAT Solvers")
 }
 
 /*
@@ -197,14 +200,14 @@ class ExtSolverNoOutFile(cmd: String, fileName: String = "", options: String = "
           stringModel = ""
         }
         case sol(s) => { stringModel = stringModel + s + " " }
-        case _ =>
+        case _      =>
       }
     }
     if (result)
       modelArray = stringModel.split(" +").map(_.toInt).toArray.dropRight(1)
 
     result
-  }	
+  }
 
   override protected def runExtSolver = {
     run(s"${cmd} ${options} ${satFileProblem.getAbsolutePath}")
@@ -230,10 +233,10 @@ class ExtSat4j(jarPath: String, fileName: String = "", javaOption: String = "", 
     val sol = """v ([0-9 -]+) 0""".r
     for (line <- source.getLines.map(_.trim)) {
       line match {
-        case "s SATISFIABLE" => result = true
+        case "s SATISFIABLE"   => result = true
         case "s UNSATISFIABLE" => result = false
-        case sol(s) => modelArray = s.split(" ").map(_.toInt).toArray
-        case _ =>
+        case sol(s)            => modelArray = s.split(" ").map(_.toInt).toArray
+        case _                 =>
       }
     }
     result
@@ -328,7 +331,7 @@ class FileProblem(cnfFile: java.io.File) {
     }
 
   /* */
-  def close: Unit = 
+  def close: Unit =
     satFileChannel match {
       case None => ()
       case Some(fc) =>
@@ -355,11 +358,11 @@ class FileProblem(cnfFile: java.io.File) {
 
     s.append("\n");
     val header = s.toString
-    
+
     if (satFileChannel.nonEmpty) {
       throw new java.lang.Exception("Internal error: updating opening file " + cnfFile.getAbsolutePath)
     }
-    
+
     try {
       val satFile1: RandomAccessFile = new RandomAccessFile(cnfFile.getAbsolutePath, "rw")
       satFile1.seek(0)

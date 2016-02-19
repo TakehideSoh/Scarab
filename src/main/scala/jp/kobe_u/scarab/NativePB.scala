@@ -32,6 +32,7 @@ case class NativePB(sat: ISolver, ps: IVecInt, var coef: Seq[Int], var degree: I
   var lits = new Array[Int](ps.size)
   val maxCoef = coef.max
   ps.moveTo(this.lits)
+  
 // println(s"${coef.mkString(" ")} >= ${degree}")  
   register
 //   println(s"registerd. ${coef.mkString(" ")} >= ${degree}")  
@@ -66,7 +67,7 @@ case class NativePB(sat: ISolver, ps: IVecInt, var coef: Seq[Int], var degree: I
     // for all lits
     for (i <- 0 until lits.size) {
 
-      // (a) watch each literal 
+      // (a) watch each literal --- リテラルが偽になることを監視する
       voc.watch(lits(i) ^ 1, this)
 
       // (b) construct map: literals -> coefficients 
@@ -96,8 +97,8 @@ case class NativePB(sat: ISolver, ps: IVecInt, var coef: Seq[Int], var degree: I
    * (counter + value + l > maxUnsatisfied) <--------- Condition3: propagation
    */
   def propagate(s: UnitPropagationListener, p: Int): Boolean = {
-    voc.watch(p, this)
-    val value = coefMap(p >> 1)
+    voc.watch(p, this) 
+    val value = coefMap(p >> 1) // p は符号が反対になっているので >> 1 して PB 中のリテラルを示すようにする
 
     if (counter + value > maxUnsatisfied) return false
 

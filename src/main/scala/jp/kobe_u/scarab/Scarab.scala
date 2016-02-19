@@ -37,7 +37,7 @@ trait ScarabTrait {
   /* */
   def find = solver.find
   /* */
-  def isSatisfiable = solver.isSatisfiable  
+  def isSatisfiable = solver.isSatisfiable
   /* */
   def findNext = solver.findNext
   /* */
@@ -67,7 +67,9 @@ trait ScarabTrait {
   /* */
   def timeLimit(sec: Int) = satSolver.setTimeout(sec)
   /* */
-  def alldiff(xs: Seq[Term]) = op.alldiff(xs, csp)
+  def alldiff(xs: Term*) = op.alldiff(xs, csp)
+  /* */
+  def alldiff(xs: Iterable[Var]) = op.alldiff(xs.toSeq, csp)
 }
 
 class Scarab (val csp: CSP, 

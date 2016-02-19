@@ -53,6 +53,8 @@ class Sat4jPB extends SatSolver {
     val coef = Seq.fill[Int](lits.size)(1).toArray
     sat4jpb.addExactly(new VecInt(lits.toArray), new VecInt(coef), degree)
   }
+  
+  def addBBC(block: Int, lits: Seq[Int], degree: Int) = ???
 
   def addPB(lits: Seq[Int], coef: Seq[Int], degree: Int) {
     sat4jpb.addAtLeast(new VecInt(lits.toArray), new VecInt(coef.toArray), degree)
@@ -65,6 +67,9 @@ class Sat4jPB extends SatSolver {
 
   /* Supplemental Interface */
   def nVars: Int = sat4jpb.nVars
+  def nextFreeVarID = sat4jpb.nextFreeVarId(true)
+  
+  
   def nConstraints: Int = sat4jpb.nConstraints
   def setTimeout(time: Int) = { throw new Exception("this method is not implemented in Sat4jPB") }
 

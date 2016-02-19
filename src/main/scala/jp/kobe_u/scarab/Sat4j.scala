@@ -76,28 +76,40 @@ class Sat4j(option: String) extends SatSolver {
     }
     case name => SolverFactory.instance.createSolverByName(name)
   }
+
   private def minisat: MinisatSolver[_] = sat4j match {
     case x: MinisatSolver[_] => x
-    case _ => sys.error("org.sat4j.minisat.core.Solver was expected")
+    case _                   => sys.error("org.sat4j.minisat.core.Solver was expected")
   }
 
-  def reset = sat4j.reset
+  def reset = {
+    sat4j.reset
+    clearlyUNSAT = false
+  }
 
   def newVar(n: Int): Unit =
     xplain match {
-      case Some(_) => sat4j.newVar(n * 4)
-      case None    => sat4j.newVar(n)
+      case Some(_) => {
+        println(s"newvar $n")
+        sat4j.newVar(n * 4)
+      }
+      case None => sat4j.newVar(n)
     }
 
   def addClause(lits: Seq[Int]) {
     sat4j.addClause(new VecInt(lits.toArray))
   }
 
+  def nextFreeVarID = sat4j.nextFreeVarId(true)
+
   def addClause(lits: Seq[Int], cIndex: Int): Int = {
     try {
       xplain match {
-        case Some(xp) => xp.addClause(new VecInt(lits.toArray), cIndex)
-        case None     => sat4j.addClause(new VecInt(lits.toArray))
+        case Some(xp) => {
+          println(s"${lits.mkString(" v ")} ::: with index " + cIndex)
+          xp.addClause(new VecInt(lits.toArray), cIndex)
+        }
+        case None => sat4j.addClause(new VecInt(lits.toArray))
       }
     } catch {
       case e: ContradictionException         => clearlyUNSAT = true
@@ -118,10 +130,12 @@ class Sat4j(option: String) extends SatSolver {
   //  def addConstr(c: org.sat4j.specs.Constr) =
   //    sat4j.addConstr(c)
 
-  def addPB(lits: Seq[Int], coef: Seq[Int], degree: Int) = {
+  def addBBC(block: Int, lits: Seq[Int], degree: Int) =
+    sat4j.addConstr(new BlockedBC(minisat, minisat.dimacs2internal(new VecInt((block +: lits).toArray)), degree))
+
+  def addPB(lits: Seq[Int], coef: Seq[Int], degree: Int) =
     sat4j.addConstr(new NativePB(minisat, minisat.dimacs2internal(new VecInt(lits.toArray)), coef, degree))
 
-  }
   def addConstr(c: org.sat4j.specs.Constr) = {
     sat4j.addConstr(c)
   }
@@ -134,8 +148,9 @@ class Sat4j(option: String) extends SatSolver {
 
   def isSatisfiable =
     !clearlyUNSAT && sat4j.isSatisfiable
-  def isSatisfiable(assumps: Seq[Int]) =
+  def isSatisfiable(assumps: Seq[Int]) = {
     !clearlyUNSAT && sat4j.isSatisfiable(new VecInt(assumps.toArray))
+  }
   def model: Array[Int] =
     sat4j.model
 
@@ -157,10 +172,10 @@ class Sat4j(option: String) extends SatSolver {
     var ts = ps.filter(i => if (i < 0) !sat4j.model(math.abs(i)) else sat4j.model(i)).map(-_)
     var fs = ps.filter(i => if (i < 0) sat4j.model(math.abs(i)) else !sat4j.model(i)).map(-_)
 
-//    println(s"ps $ps")
-//    println(s"ts $ts")
-//    println(s"fs $fs")    
-    
+    //    println(s"ps $ps")
+    //    println(s"ts $ts")
+    //    println(s"fs $fs")    
+
     modelstock = Option((1 to nof_vars).map(sat4j.model(_)))
 
     sat4j.addClause(new VecInt(ts.toArray))
@@ -218,7 +233,7 @@ class Sat4j(option: String) extends SatSolver {
   def dumpCNF = sat4j match {
     case sol: org.sat4j.tools.DimacsStringSolver => {
       print(Seq("p", "cnf", sat4j.nVars, nConstraints).mkString(" "))
-      (sol.getOut)
+      println(sol.getOut)
     }
     case _ => {
       throw new UnsupportedOperationException("This SAT Solver does not support printFile method")
@@ -243,11 +258,18 @@ class Sat4j(option: String) extends SatSolver {
   def minExplain: Array[Int] = {
     xplain match {
       case Some(xp) =>
-        sat4j.unsatExplanation
-        xp.minimalExplanation
+        //        sat4j.unsatExplanation
+
+        val tmp = xp.minimalExplanation
+
+        for (i <- tmp)
+          println(i)
+
+        tmp
+
       case None =>
         throw new UnsupportedOperationException("This SAT Solver does not support minimal explanation.")
-    }      
+    }
   }
 
   def minAllExplain {
@@ -257,10 +279,10 @@ class Sat4j(option: String) extends SatSolver {
       case Some(ml) =>
         allMuses.computeAllMSS(ml)
         allMuses.computeAllMUSesOrdered(ml)
-        //    allMuses.computeAllMUSesOrdered(musListener)
+      //    allMuses.computeAllMUSesOrdered(musListener)
       case None =>
         throw new UnsupportedOperationException("This SAT Solver does not support minimal all explanation.")
-    }    
+    }
   }
 
 }

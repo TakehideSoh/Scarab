@@ -270,14 +270,14 @@ object Sum {
 sealed abstract class Constraint extends Expr {
   /** Returns the negation of this constraint. */
   def unary_! : Constraint = this match {
-    case p: Bool => Not(p)
-    case Not(p) => p
-    case LeZero(sum) => GeZero(sum.sub(1))
-    case GeZero(sum) => LeZero(sum.add(1))
-    case EqZero(sum) => NeZero(sum)
-    case NeZero(sum) => EqZero(sum)
+    case p: Bool      => Not(p)
+    case Not(p)       => p
+    case LeZero(sum)  => GeZero(sum.sub(1))
+    case GeZero(sum)  => LeZero(sum.add(1))
+    case EqZero(sum)  => NeZero(sum)
+    case NeZero(sum)  => EqZero(sum)
     case And(cs @ _*) => Or(cs.map(!_))
-    case Or(cs @ _*) => And(cs.map(!_))
+    case Or(cs @ _*)  => And(cs.map(!_))
   }
   /** Returns the conjunction of this and `c`. */
   def &&(c: Constraint) = And(this, c)
@@ -479,25 +479,41 @@ object Or {
 /**
  * `Domain` is a case class representing the domain of variables.
  * It is required to be `lb <= ub`.
+ * 
+ * (case of contiguous {5, 6, 7, 8})
+ * value 5 6 7 8
+ *   pos 0 1 2 3
+ * 
+ * (case of non-contiguous {3, 5, 7, 9})
+ * value 3 5 7 9
+ *   pos 0 1 2 3
+ *    ar 3 4 5 6 7 8 9
+ *       0 1 2 3 4 5 6 // ar のインデックス
+ *  ar値 0 0 1 1 2 2 3 // ar の値
+ * ar2値 0 1 1 2 2 3 3 // ar の値
+ *  
  */
 case class Domain private (lb: Int, ub: Int, size: Int, private val domainOpt: Option[Seq[Int]]) {
   require(lb <= ub)
   private var ar: Array[Int] = Array.fill[Int](ub - lb + 1)(0)
-  val binary = lb == 0 && ub == 1  
+  private var ar2: Array[Int] = Array.fill[Int](ub - lb + 1)(0)  
+  val binary = lb == 0 && ub == 1
   private var hs = HashSet.empty[Int]
 
   val offset = lb
   domainOpt match {
     case None => ()
-    case Some(domain) =>    
+    case Some(domain) =>
       domain.foreach(i => hs += i)
       var cnt = -1
       for (i <- lb to ub) {
         if (hs.contains(i)) {
-          cnt = cnt + 1
+          ar2(i - offset) = cnt+1          
+          cnt += 1
           ar(i - offset) = cnt
         } else {
           ar(i - offset) = cnt
+          ar2(i - offset) = cnt+1         
         }
       }
   }
@@ -505,10 +521,18 @@ case class Domain private (lb: Int, ub: Int, size: Int, private val domainOpt: O
   def isContiguous = domainOpt.isEmpty
   def domain: Seq[Int] = domainOpt.get
   def pos(value: Int): Int = if (isContiguous) value - lb else ar(value - offset)
+  def pos2(value: Int): Int = if (isContiguous) value - lb - 1 else ar2(value - offset) - 1
+
+  def show {
+    val s1 = for (a <- ar) yield a
+    val s2 = for (a <- ar2) yield a
+    println(s1.mkString(" "))
+    println(s2.mkString(" "))
+  }
   
-  override def toString = 
+  override def toString =
     domainOpt match {
-      case None => s"Domain($lb to $ub)"
+      case None                              => s"Domain($lb to $ub)"
       case Some(domain) if domain.size <= 10 => s"Domain(${domain.mkString(",")})"
       case Some(domain) =>
         s"Domain(${domain(0)}, ${domain(1)}, ..., ${domain(domain.size - 2)}, ${domain(domain.size - 1)})"
@@ -598,10 +622,10 @@ case class Assignment(intMap: Map[Var, Int], boolMap: Map[Bool, Boolean]) {
  * @see [[jp.kobe_u.scarab]].
  */
 case class CSP(var variables: IndexedSeq[Var] = IndexedSeq.empty,
-  var bools: IndexedSeq[Bool] = IndexedSeq.empty,
-  var dom: Map[Var, Domain] = Map.empty,
-  var constraints: IndexedSeq[Constraint] = IndexedSeq.empty) {
-  
+               var bools: IndexedSeq[Bool] = IndexedSeq.empty,
+               var dom: Map[Var, Domain] = Map.empty,
+               var constraints: IndexedSeq[Constraint] = IndexedSeq.empty) {
+
   var boolHash = HashSet.empty[Bool]
   var varHash = HashSet.empty[Var]
 
@@ -670,7 +694,7 @@ case class CSP(var variables: IndexedSeq[Var] = IndexedSeq.empty,
   def bool(p: Bool): Bool = {
     if (boolHash.contains(p))
       throw new IllegalArgumentException("duplicate bool " + p)
-    boolHash += p ; bools = bools :+ p; p
+    boolHash += p; bools = bools :+ p; p
   }
 
   /**
@@ -714,6 +738,16 @@ case class CSP(var variables: IndexedSeq[Var] = IndexedSeq.empty,
   var cStack = Seq.empty[commitPoint]
   var rollbackHappen = false
 
+  def reset {
+    rollback
+    while(!cStack.isEmpty) 
+      rollback
+    boolHash = HashSet.empty[Bool]
+    varHash = HashSet.empty[Var]
+    
+    rollbackHappen = true    
+  }
+  
   /**
    * for commit/rollback model
    */
@@ -723,7 +757,8 @@ case class CSP(var variables: IndexedSeq[Var] = IndexedSeq.empty,
 
   def rollback {
     if (cStack.isEmpty)
-      throw new java.lang.Exception("No Commit Point is Made.")
+      cStack = commitPoint(0, 0, 0) +: cStack
+    //      throw new java.lang.Exception("No Commit Point is Made.")
 
     val lastCommit = cStack.head
     cStack = cStack.tail

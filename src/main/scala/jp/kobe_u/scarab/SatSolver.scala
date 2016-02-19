@@ -18,8 +18,9 @@ trait SatSolver {
   def isSatisfiable(assumps: Seq[Int]): Boolean  
   def addAtLeast(lits: Seq[Int], degree: Int): Unit
   def addAtMost(lits: Seq[Int], degree: Int): Unit
-  def addExactly(lits: Seq[Int], degree: Int): Unit
+  def addExactly(lits: Seq[Int], degree: Int): Unit  
   def addPB(lits: Seq[Int], coef: Seq[Int], degree: Int): Unit
+  def addBBC(block: Int, lits: Seq[Int], degree: Int): Unit  
   def minExplain: Array[Int]
   def minAllExplain: Unit
   def clearLearntClauses: Unit
@@ -28,6 +29,7 @@ trait SatSolver {
 
   /* Supplemental Interface */
   def nVars: Int
+  def nextFreeVarID: Int
   def nConstraints: Int
   def setTimeout(time: Int)
   
