@@ -26,6 +26,7 @@ val commonSettings: Seq[Setting[_]] = Seq(
 
 lazy val root = (project in file(".")).
   dependsOn(sat4jCore).
+  dependsOn(sat4jPB).
   settings(
     buildSettings,
     commonSettings,
@@ -37,6 +38,18 @@ lazy val sat4jCore = (project in file("org.sat4j.core")).
   settings(
     commonSettings,
     name := "org.sat4j.core",
+    version := "2.3.6-R2404",
+    autoScalaLibrary := false,
+    crossPaths := false,
+    licenses := List("EPL-1.0" -> url("https://www.eclipse.org/legal/epl-v10.html"))
+  )
+
+// sat4j 2.3.6-R2404
+lazy val sat4jPB = (project in file("org.sat4j.pb")).
+  dependsOn(sat4jCore).
+  settings(
+    commonSettings,
+    name := "org.sat4j.pb",
     version := "2.3.6-R2404",
     autoScalaLibrary := false,
     crossPaths := false,
