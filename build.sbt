@@ -55,3 +55,8 @@ lazy val sat4jPB = (project in file("org.sat4j.pb")).
     crossPaths := false,
     licenses := List("EPL-1.0" -> url("https://www.eclipse.org/legal/epl-v10.html"))
   )
+
+mergeStrategy in assembly := {
+case PathList("META-INF", "MANIFEST.MF") => MergeStrategy.discard
+case _ => MergeStrategy.first
+}
