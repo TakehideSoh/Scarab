@@ -2,7 +2,7 @@ package jp.kobe_u.scarab
 
 /**
  * Classes for CSP solvers.
- * @author Naoyuki Tamura and Takehide Soh
+ * @author Takehide Soh and Naoyuki Tamura
  */
 
 /**
@@ -156,13 +156,12 @@ class Solver(
     isSatisfiable(cons)
   }
 
+  private def gen(x: Var) = Seq.range(encoder.code(x), encoder.code(x) + encoder.satVariablesSize(x))
+  
   /**
    *  Return minimal model according to a given set of Boolean variables
    */
   def findMinimal(bs: Seq[Bool] = Seq.empty, is: Seq[Var] = Seq.empty): Boolean = {
-
-    def gen(x: Var) = Seq.range(encoder.code(x), encoder.code(x) + encoder.satVariablesSize(x))
-
     encoder.encodeCSP
     val ps = bs.map(b => encoder.code(b)) ++ is.flatMap(i => gen(i).map(-_))
 
@@ -171,13 +170,11 @@ class Solver(
     result != None
   }
 
+
   /**
    *  Return maximal model according to a given set of Boolean variables
    */
   def findMaximal(bs: Seq[Bool] = Seq.empty, is: Seq[Var] = Seq.empty): Boolean = {
-
-    def gen(x: Var) = Seq.range(encoder.code(x), encoder.code(x) + encoder.satVariablesSize(x))
-
     encoder.encodeCSP
     val ps = bs.map(b => encoder.code(b)) ++ is.flatMap(i => gen(i))
 
@@ -189,10 +186,12 @@ class Solver(
   /**
    *  Return minimal model according to a given set of Boolean variables
    */
-  def findBackbone(bs: Seq[Bool]): Set[Literal] = {
+  def findBackbone(bs: Seq[Bool] = Seq.empty, is: Seq[Var] = Seq.empty): Set[Literal] = {
+    val ps = bs.map(b => encoder.code(b)) ++ is.flatMap(i => gen(i))
+    
     var out = Set.empty[Literal]
     encoder.encodeCSP
-    val res = satSolver.findBackbone(bs.map(b => encoder.code(b)))
+    val res = satSolver.findBackbone(ps)
     for (b <- bs) {
       res.find(i => math.abs(i) == encoder.code(b)) match {
         case Some(n) => if (n < 0) out += Not(b) else out += b

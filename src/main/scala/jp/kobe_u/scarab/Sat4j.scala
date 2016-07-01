@@ -90,7 +90,7 @@ class Sat4j(option: String) extends SatSolver {
   def newVar(n: Int): Unit =
     xplain match {
       case Some(_) => {
-        println(s"newvar $n")
+//        println(s"newvar $n")
         sat4j.newVar(n * 4)
       }
       case None => sat4j.newVar(n)
@@ -106,7 +106,7 @@ class Sat4j(option: String) extends SatSolver {
     try {
       xplain match {
         case Some(xp) => {
-          println(s"${lits.mkString(" v ")} ::: with index " + cIndex)
+//          println(s"${lits.mkString(" v ")} ::: with index " + cIndex)
           xp.addClause(new VecInt(lits.toArray), cIndex)
         }
         case None => sat4j.addClause(new VecInt(lits.toArray))
@@ -178,15 +178,28 @@ class Sat4j(option: String) extends SatSolver {
 
     modelstock = Option((1 to nof_vars).map(sat4j.model(_)))
 
+//    println("ts " + ts)
+//    println("fs " + fs)
+//    println()
+    
     sat4j.addClause(new VecInt(ts.toArray))
     while (isSatisfiable(fs)) {
+
       modelstock = Option((1 to nof_vars).map(sat4j.model(_)))
       ts = ps.filter(i => if (i < 0) !sat4j.model(math.abs(i)) else sat4j.model(i)).map(-_)
       fs = ps.filter(i => if (i < 0) sat4j.model(math.abs(i)) else !sat4j.model(i)).map(-_)
       //      ts = ps.filter(i => sat4j.model(i)).map(-_)
       //      fs = ps.filter(i => !sat4j.model(i)).map(-_)
+
+//      println(s"${ts.mkString(" v ")} ++++ ${fs.mkString(" & ")}")
+
+//      println("ts2 " + ts)
+//      println("fs2 " + fs)
+      
       sat4j.addClause(new VecInt(ts.toArray))
     }
+
+//    println("model found")
 
     modelstock
   }

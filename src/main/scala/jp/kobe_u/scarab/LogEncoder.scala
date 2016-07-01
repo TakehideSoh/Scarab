@@ -102,6 +102,7 @@ class LogEncoder(csp: CSP, satSolver: SatSolver) extends Encoder(csp, satSolver)
 
   /** Adds the constraint to CSP after preprocessing and encodes it. */
   def add(c: Constraint): Unit = {
+//    println(c)
     constIndex += 1
     constIndexMap += constIndex -> c
     for (lits <- simplifier.simplify(toLeZero(c)) if lits.size > 0) {
