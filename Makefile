@@ -37,12 +37,12 @@ scaladoc:
 zip:
 	rm -f ../$(ZIP)
 	rm -rf $(APP)
-	mkdir $(APP)
+	mkdir ../$(APP)
 	find ./* -name '.save.log' -exec rm '{}' \;	
-	cp -pr * $(APP)
-	find $(APP) \( -name .svn -o -name CVS -o -name .cvsignore -o -name '*~' \) -exec rm -r '{}' '+'
-	zip -q -r ../$(ZIP) $(APP)
-	rm -rf $(APP)
+	cp -pr * ../$(APP)
+	find ../$(APP) \( -name .svn -o -name CVS -o -name .cvsignore -o -name '*~' \) -exec rm -r '{}' '+'
+	zip -q -r ../$(ZIP) ../$(APP)
+	rm -rf ../$(APP)
 
 web:
 	cp ../$(ZIP) ~/06_web/www/scarab/
