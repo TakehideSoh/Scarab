@@ -18,7 +18,7 @@ SCALADOC  = scaladoc \
 	-classpath classes \
 	-sourcepath src
 
-all: scalac jar scaladoc zip
+all: scalac jar zip
 
 scalac:
 	rm -rf bin/jp
