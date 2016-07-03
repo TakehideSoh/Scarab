@@ -1,10 +1,10 @@
-val scala210 = "2.10.5"
+  val scala210 = "2.10.5"
 val scala211 = "2.11.6"
 
 val buildSettings: Seq[Setting[_]] = inThisBuild(Seq(
   organization := "jp.kobe_u.scarab",
   scalaVersion := scala211,
-  version := "1.6.9-SNAPSHOT",
+  version := "1.8.9-SNAPSHOT",
   homepage := Some(url("http://kix.istc.kobe-u.ac.jp/~soh/scarab/")),
   crossScalaVersions := Seq(scala210, scala211),
   description := "A prototyping tool for developing SAT-based CP systems",

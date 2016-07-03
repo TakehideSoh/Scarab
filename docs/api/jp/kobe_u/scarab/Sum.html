@@ -1,0 +1,1048 @@
+<!DOCTYPE html >
+<html>
+        <head>
+          <title>Sum - Scarab version 1.8.9 Core API Specification 1.8.9 - jp.kobe_u.scarab.Sum</title>
+          <meta name="description" content="Sum - Scarab version 1.8.9 Core API Specification 1.8.9 - jp.kobe u.scarab.Sum" />
+          <meta name="keywords" content="Sum Scarab version 1.8.9 Core API Specification 1.8.9 jp.kobe u.scarab.Sum" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../lib/tools.tooltip.js"></script>
+      
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../../../index.html';
+            var hash = 'jp.kobe_u.scarab.Sum';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="type">
+      <div id="definition">
+        <a href="Sum$.html" title="See companion object"><img src="../../../lib/class_to_object_big.png" /></a>
+        <p id="owner"><a href="../../package.html" class="extype" name="jp">jp</a>.<a href="../package.html" class="extype" name="jp.kobe_u">kobe_u</a>.<a href="package.html" class="extype" name="jp.kobe_u.scarab">scarab</a></p>
+        <h1><a href="Sum$.html" title="See companion object">Sum</a></h1><h3><span class="morelinks"><div>
+            Related Docs:
+            <a href="Sum$.html" title="See companion object">object Sum</a>
+            | <a href="package.html" class="extype" name="jp.kobe_u.scarab">package scarab</a>
+          </div></span></h3><span class="permalink">
+      <a href="../../../index.html#jp.kobe_u.scarab.Sum" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <span class="name">Sum</span><span class="params">(<span name="b">b: <span class="extype" name="scala.Int">Int</span></span>, <span name="coef">coef: <span class="extype" name="scala.Predef.Map">Map</span>[<a href="Var.html" class="extype" name="jp.kobe_u.scarab.Var">Var</a>, <span class="extype" name="scala.Int">Int</span>]</span>)</span><span class="result"> extends <a href="Term.html" class="extype" name="jp.kobe_u.scarab.Term">Term</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p><code>Sum</code> is a case class for linear expressions.
+<code>Sum</code> object consists of an integer constant <code>b</code> and a mapping <code>coef</code> representing the coefficients of integer variables.
+It reprensents the linear summmation b + a1*x1 + a2*x2 + ... + an*xn when
+<code>coef</code> is a map Map(x1 -&gt; a1, x2 -&gt; a2, ..., xn -&gt; an).</p><pre>scala&gt; <span class="kw">val</span> x = Var(<span class="lit">"x"</span>)
+scala&gt; <span class="kw">val</span> sum = Sum(<span class="num">1</span>, <span class="std">Map</span>(x(<span class="num">1</span>)-&gt;<span class="num">1</span>, x(<span class="num">2</span>)-&gt;<span class="num">2</span>))
+sum: jp.kobe_u.scarab.csp.Sum = Sum(<span class="num">1</span>+x(<span class="num">1</span>)+<span class="num">2</span>*x(<span class="num">2</span>))</pre><p>When <code>Sum</code> object is constructed directly, the values of <code>coef</code> must not be zero.</p><pre>scala&gt; Sum(<span class="num">1</span>, <span class="std">Map</span>(x(<span class="num">1</span>)-&gt;<span class="num">1</span>, x(<span class="num">2</span>)-&gt;<span class="num">0</span>))
+java.lang.IllegalArgumentException: requirement failed: Coefficients of Sum should not be zero.
+
+scala&gt; Sum(<span class="num">1</span>, <span class="std">Map</span>(x(<span class="num">1</span>)-&gt;<span class="num">1</span>, x(<span class="num">2</span>)-&gt;<span class="num">0</span>).filter(_._2 != <span class="num">0</span>))
+res0: jp.kobe_u.scarab.csp.Sum = Sum(<span class="num">1</span>+x(<span class="num">1</span>))</pre><p>Companion object <code>Sum</code> provides several easy-to-use construction methods for <code>Sum</code>.</p><pre>scala&gt; Sum(<span class="num">1</span>)            <span class="cmt">// Sum(1)</span>
+scala&gt; Sum(x(<span class="num">1</span>), x(<span class="num">2</span>))   <span class="cmt">// Sum(+x(1)+x(2))</span>
+scala&gt; Sum(x(<span class="num">1</span>), x(<span class="num">1</span>))   <span class="cmt">// Sum(+2*x(1))</span></pre><p>Operations of addition, subtraction, negation, and constant multiplication are defined on <code>Sum</code> objects.
+When coefficients become zero, they are removed from the result.</p><pre>scala&gt; Sum(x).add(<span class="num">1</span>)         <span class="cmt">// Sum(1+x)</span>
+scala&gt; Sum(x).add(<span class="num">1</span>).sub(x)  <span class="cmt">// Sum(1)</span>
+scala&gt; Sum(x).mul(<span class="num">3</span>)         <span class="cmt">// Sum(+3*x)</span></pre><p>Infix and prefix operators defined in <code>Term</code> class can be used.</p><pre>scala&gt; x + <span class="num">1</span>                 <span class="cmt">// Sum(1+1*x)</span>
+scala&gt; x + <span class="num">1</span> - x             <span class="cmt">// Sum(1)</span>
+scala&gt; x * <span class="num">3</span>                 <span class="cmt">// Sum(0+3*x)</span></pre></div><dl class="paramcmts block"><dt class="param">b</dt><dd class="cmt"><p>constant part of the summation</p></dd><dt class="param">coef</dt><dd class="cmt"><p>map consisting of variables and their coefficients
+</p></dd></dl><div class="toggleContainer block">
+          <span class="toggle">Linear Supertypes</span>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="Term.html" class="extype" name="jp.kobe_u.scarab.Term">Term</a>, <a href="Expr.html" class="extype" name="jp.kobe_u.scarab.Expr">Expr</a>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+        </div></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        <div id="order">
+              <span class="filtertype">Ordering</span>
+              <ol>
+                
+                <li class="alpha in"><span>Alphabetic</span></li>
+                <li class="inherit out"><span>By inheritance</span></li>
+              </ol>
+            </div>
+        <div id="ancestors">
+                <span class="filtertype">Inherited<br />
+                </span>
+                <ol id="linearization">
+                  <li class="in" name="jp.kobe_u.scarab.Sum"><span>Sum</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="jp.kobe_u.scarab.Term"><span>Term</span></li><li class="in" name="jp.kobe_u.scarab.Expr"><span>Expr</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                </ol>
+              </div><div id="ancestors">
+            <span class="filtertype"></span>
+            <ol>
+              <li class="hideall out"><span>Hide All</span></li>
+              <li class="showall in"><span>Show all</span></li>
+            </ol>
+            <a href="http://docs.scala-lang.org/overviews/scaladoc/usage.html#members" target="_blank">Learn more about member selection</a>
+          </div>
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        <div id="constructors" class="members">
+              <h3>Instance Constructors</h3>
+              <ol><li name="jp.kobe_u.scarab.Sum#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="&lt;init&gt;(b:Int,coef:Map[jp.kobe_u.scarab.Var,Int]):jp.kobe_u.scarab.Sum"></a>
+      <a id="&lt;init&gt;:Sum"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">new</span>
+      </span>
+      <span class="symbol">
+        <span class="name">Sum</span><span class="params">(<span name="b">b: <span class="extype" name="scala.Int">Int</span></span>, <span name="coef">coef: <span class="extype" name="scala.Predef.Map">Map</span>[<a href="Var.html" class="extype" name="jp.kobe_u.scarab.Var">Var</a>, <span class="extype" name="scala.Int">Int</span>]</span>)</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#jp.kobe_u.scarab.Sum@&lt;init&gt;(b:Int,coef:Map[jp.kobe_u.scarab.Var,Int]):jp.kobe_u.scarab.Sum" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Creates a new <code>Sum</code> of the given constant and variables with specified coefficients.</p><div class="fullcomment"><div class="comment cmt"><p>Creates a new <code>Sum</code> of the given constant and variables with specified coefficients.</p></div><dl class="paramcmts block"><dt class="param">b</dt><dd class="cmt"><p>constant part of the summation</p></dd><dt class="param">coef</dt><dd class="cmt"><p>map consisting of variables and their coefficients
+</p></dd></dl></div>
+    </li></ol>
+            </div>
+
+        
+
+        
+
+        <div id="values" class="values members">
+              <h3>Value Members</h3>
+              <ol><li name="jp.kobe_u.scarab.Term#!" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="!:jp.kobe_u.scarab.LeZero"></a>
+      <a id="!:LeZero"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $bang" class="name">!</span><span class="result">: <a href="LeZero.html" class="extype" name="jp.kobe_u.scarab.LeZero">LeZero</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#jp.kobe_u.scarab.Sum@!:jp.kobe_u.scarab.LeZero" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Returns this &lt;= 0</p><div class="fullcomment"><div class="comment cmt"><p>Returns this &lt;= 0</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Term.html" class="extype" name="jp.kobe_u.scarab.Term">Term</a></dd></dl></div>
+    </li><li name="scala.AnyRef#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="!=(x$1:Any):Boolean"></a>
+      <a id="!=(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#jp.kobe_u.scarab.Sum@!=(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="jp.kobe_u.scarab.Term#!==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="!==(x:jp.kobe_u.scarab.Term):jp.kobe_u.scarab.Constraint"></a>
+      <a id="!==(Term):Constraint"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $bang$eq$eq" class="name">!==</span><span class="params">(<span name="x">x: <a href="Term.html" class="extype" name="jp.kobe_u.scarab.Term">Term</a></span>)</span><span class="result">: <a href="Constraint.html" class="extype" name="jp.kobe_u.scarab.Constraint">Constraint</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#jp.kobe_u.scarab.Sum@!==(x:jp.kobe_u.scarab.Term):jp.kobe_u.scarab.Constraint" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Returns the constraint representing <code>this !== x</code>, that is, <code>Or(this &lt; x, this &gt; x)</code>.</p><div class="fullcomment"><div class="comment cmt"><p>Returns the constraint representing <code>this !== x</code>, that is, <code>Or(this &lt; x, this &gt; x)</code>.</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Term.html" class="extype" name="jp.kobe_u.scarab.Term">Term</a></dd></dl></div>
+    </li><li name="jp.kobe_u.scarab.Term#!==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="!==(b:Int):jp.kobe_u.scarab.Constraint"></a>
+      <a id="!==(Int):Constraint"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $bang$eq$eq" class="name">!==</span><span class="params">(<span name="b">b: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <a href="Constraint.html" class="extype" name="jp.kobe_u.scarab.Constraint">Constraint</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#jp.kobe_u.scarab.Sum@!==(b:Int):jp.kobe_u.scarab.Constraint" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Returns the constraint representing <code>this !== b</code>, that is, <code>Or(this &lt; b, this &gt; b)</code>.</p><div class="fullcomment"><div class="comment cmt"><p>Returns the constraint representing <code>this !== b</code>, that is, <code>Or(this &lt; b, this &gt; b)</code>.</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Term.html" class="extype" name="jp.kobe_u.scarab.Term">Term</a></dd></dl></div>
+    </li><li name="scala.AnyRef###" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="##():Int"></a>
+      <a id="##():Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#jp.kobe_u.scarab.Sum@##():Int" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="jp.kobe_u.scarab.Term#*" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="*(a:Int):jp.kobe_u.scarab.Sum"></a>
+      <a id="*(Int):Sum"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $times" class="name">*</span><span class="params">(<span name="a">a: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <a href="" class="extype" name="jp.kobe_u.scarab.Sum">Sum</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#jp.kobe_u.scarab.Sum@*(a:Int):jp.kobe_u.scarab.Sum" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Returns the multiplication of the term and <code>a</code>.</p><div class="fullcomment"><div class="comment cmt"><p>Returns the multiplication of the term and <code>a</code>.</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Term.html" class="extype" name="jp.kobe_u.scarab.Term">Term</a></dd></dl></div>
+    </li><li name="jp.kobe_u.scarab.Term#+" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="+(x:jp.kobe_u.scarab.Term):jp.kobe_u.scarab.Sum"></a>
+      <a id="+(Term):Sum"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $plus" class="name">+</span><span class="params">(<span name="x">x: <a href="Term.html" class="extype" name="jp.kobe_u.scarab.Term">Term</a></span>)</span><span class="result">: <a href="" class="extype" name="jp.kobe_u.scarab.Sum">Sum</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#jp.kobe_u.scarab.Sum@+(x:jp.kobe_u.scarab.Term):jp.kobe_u.scarab.Sum" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Returns the addition of the term and <code>x</code>.</p><div class="fullcomment"><div class="comment cmt"><p>Returns the addition of the term and <code>x</code>.</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Term.html" class="extype" name="jp.kobe_u.scarab.Term">Term</a></dd></dl></div>
+    </li><li name="jp.kobe_u.scarab.Term#+" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="+(b:Int):jp.kobe_u.scarab.Sum"></a>
+      <a id="+(Int):Sum"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $plus" class="name">+</span><span class="params">(<span name="b">b: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <a href="" class="extype" name="jp.kobe_u.scarab.Sum">Sum</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#jp.kobe_u.scarab.Sum@+(b:Int):jp.kobe_u.scarab.Sum" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Returns the addition of the term and <code>b</code>.</p><div class="fullcomment"><div class="comment cmt"><p>Returns the addition of the term and <code>b</code>.</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Term.html" class="extype" name="jp.kobe_u.scarab.Term">Term</a></dd></dl></div>
+    </li><li name="jp.kobe_u.scarab.Term#-" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="-(x:jp.kobe_u.scarab.Term):jp.kobe_u.scarab.Sum"></a>
+      <a id="-(Term):Sum"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $minus" class="name">-</span><span class="params">(<span name="x">x: <a href="Term.html" class="extype" name="jp.kobe_u.scarab.Term">Term</a></span>)</span><span class="result">: <a href="" class="extype" name="jp.kobe_u.scarab.Sum">Sum</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#jp.kobe_u.scarab.Sum@-(x:jp.kobe_u.scarab.Term):jp.kobe_u.scarab.Sum" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Returns the subtraction of <code>x</code> from the term.</p><div class="fullcomment"><div class="comment cmt"><p>Returns the subtraction of <code>x</code> from the term.</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Term.html" class="extype" name="jp.kobe_u.scarab.Term">Term</a></dd></dl></div>
+    </li><li name="jp.kobe_u.scarab.Term#-" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="-(b:Int):jp.kobe_u.scarab.Sum"></a>
+      <a id="-(Int):Sum"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $minus" class="name">-</span><span class="params">(<span name="b">b: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <a href="" class="extype" name="jp.kobe_u.scarab.Sum">Sum</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#jp.kobe_u.scarab.Sum@-(b:Int):jp.kobe_u.scarab.Sum" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Returns the subtraction of <code>b</code> from the term.</p><div class="fullcomment"><div class="comment cmt"><p>Returns the subtraction of <code>b</code> from the term.</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Term.html" class="extype" name="jp.kobe_u.scarab.Term">Term</a></dd></dl></div>
+    </li><li name="jp.kobe_u.scarab.Term#&lt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="&lt;(x:jp.kobe_u.scarab.Term):jp.kobe_u.scarab.Constraint"></a>
+      <a id="&lt;(Term):Constraint"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $less" class="name">&lt;</span><span class="params">(<span name="x">x: <a href="Term.html" class="extype" name="jp.kobe_u.scarab.Term">Term</a></span>)</span><span class="result">: <a href="Constraint.html" class="extype" name="jp.kobe_u.scarab.Constraint">Constraint</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#jp.kobe_u.scarab.Sum@&lt;(x:jp.kobe_u.scarab.Term):jp.kobe_u.scarab.Constraint" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Returns the constraint representing <code>this &lt; x</code>.</p><div class="fullcomment"><div class="comment cmt"><p>Returns the constraint representing <code>this &lt; x</code>.</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Term.html" class="extype" name="jp.kobe_u.scarab.Term">Term</a></dd></dl></div>
+    </li><li name="jp.kobe_u.scarab.Term#&lt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="&lt;(b:Int):jp.kobe_u.scarab.Constraint"></a>
+      <a id="&lt;(Int):Constraint"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $less" class="name">&lt;</span><span class="params">(<span name="b">b: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <a href="Constraint.html" class="extype" name="jp.kobe_u.scarab.Constraint">Constraint</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#jp.kobe_u.scarab.Sum@&lt;(b:Int):jp.kobe_u.scarab.Constraint" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Returns the constraint representing <code>this &lt; b</code>.</p><div class="fullcomment"><div class="comment cmt"><p>Returns the constraint representing <code>this &lt; b</code>.</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Term.html" class="extype" name="jp.kobe_u.scarab.Term">Term</a></dd></dl></div>
+    </li><li name="jp.kobe_u.scarab.Term#&lt;=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="&lt;=(x:jp.kobe_u.scarab.Term):jp.kobe_u.scarab.Constraint"></a>
+      <a id="&lt;=(Term):Constraint"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $less$eq" class="name">&lt;=</span><span class="params">(<span name="x">x: <a href="Term.html" class="extype" name="jp.kobe_u.scarab.Term">Term</a></span>)</span><span class="result">: <a href="Constraint.html" class="extype" name="jp.kobe_u.scarab.Constraint">Constraint</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#jp.kobe_u.scarab.Sum@&lt;=(x:jp.kobe_u.scarab.Term):jp.kobe_u.scarab.Constraint" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Returns the constraint representing <code>this &lt;= x</code>, that is, <code>LeZero(this - x)</code>.</p><div class="fullcomment"><div class="comment cmt"><p>Returns the constraint representing <code>this &lt;= x</code>, that is, <code>LeZero(this - x)</code>.</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Term.html" class="extype" name="jp.kobe_u.scarab.Term">Term</a></dd></dl></div>
+    </li><li name="jp.kobe_u.scarab.Term#&lt;=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="&lt;=(b:Int):jp.kobe_u.scarab.Constraint"></a>
+      <a id="&lt;=(Int):Constraint"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $less$eq" class="name">&lt;=</span><span class="params">(<span name="b">b: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <a href="Constraint.html" class="extype" name="jp.kobe_u.scarab.Constraint">Constraint</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#jp.kobe_u.scarab.Sum@&lt;=(b:Int):jp.kobe_u.scarab.Constraint" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Returns the constraint representing <code>this &lt;= b</code>, that is, <code>LeZero(this - b)</code>.</p><div class="fullcomment"><div class="comment cmt"><p>Returns the constraint representing <code>this &lt;= b</code>, that is, <code>LeZero(this - b)</code>.</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Term.html" class="extype" name="jp.kobe_u.scarab.Term">Term</a></dd></dl></div>
+    </li><li name="scala.AnyRef#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="==(x$1:Any):Boolean"></a>
+      <a id="==(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#jp.kobe_u.scarab.Sum@==(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="jp.kobe_u.scarab.Term#===" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="===(x:jp.kobe_u.scarab.Term):jp.kobe_u.scarab.Constraint"></a>
+      <a id="===(Term):Constraint"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $eq$eq$eq" class="name">===</span><span class="params">(<span name="x">x: <a href="Term.html" class="extype" name="jp.kobe_u.scarab.Term">Term</a></span>)</span><span class="result">: <a href="Constraint.html" class="extype" name="jp.kobe_u.scarab.Constraint">Constraint</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#jp.kobe_u.scarab.Sum@===(x:jp.kobe_u.scarab.Term):jp.kobe_u.scarab.Constraint" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Returns the constraint representing <code>this === x</code>, that is, <code>And(this &lt;= x, this &gt;= x)</code>.</p><div class="fullcomment"><div class="comment cmt"><p>Returns the constraint representing <code>this === x</code>, that is, <code>And(this &lt;= x, this &gt;= x)</code>.</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Term.html" class="extype" name="jp.kobe_u.scarab.Term">Term</a></dd></dl></div>
+    </li><li name="jp.kobe_u.scarab.Term#===" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="===(b:Int):jp.kobe_u.scarab.Constraint"></a>
+      <a id="===(Int):Constraint"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $eq$eq$eq" class="name">===</span><span class="params">(<span name="b">b: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <a href="Constraint.html" class="extype" name="jp.kobe_u.scarab.Constraint">Constraint</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#jp.kobe_u.scarab.Sum@===(b:Int):jp.kobe_u.scarab.Constraint" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Returns the constraint representing <code>this === b</code>, that is, <code>And(this &lt;= b, this &gt;= b)</code>.</p><div class="fullcomment"><div class="comment cmt"><p>Returns the constraint representing <code>this === b</code>, that is, <code>And(this &lt;= b, this &gt;= b)</code>.</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Term.html" class="extype" name="jp.kobe_u.scarab.Term">Term</a></dd></dl></div>
+    </li><li name="jp.kobe_u.scarab.Term#&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="&gt;(x:jp.kobe_u.scarab.Term):jp.kobe_u.scarab.Constraint"></a>
+      <a id="&gt;(Term):Constraint"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $greater" class="name">&gt;</span><span class="params">(<span name="x">x: <a href="Term.html" class="extype" name="jp.kobe_u.scarab.Term">Term</a></span>)</span><span class="result">: <a href="Constraint.html" class="extype" name="jp.kobe_u.scarab.Constraint">Constraint</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#jp.kobe_u.scarab.Sum@&gt;(x:jp.kobe_u.scarab.Term):jp.kobe_u.scarab.Constraint" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Returns the constraint representing <code>this &gt; x</code>.</p><div class="fullcomment"><div class="comment cmt"><p>Returns the constraint representing <code>this &gt; x</code>.</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Term.html" class="extype" name="jp.kobe_u.scarab.Term">Term</a></dd></dl></div>
+    </li><li name="jp.kobe_u.scarab.Term#&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="&gt;(b:Int):jp.kobe_u.scarab.Constraint"></a>
+      <a id="&gt;(Int):Constraint"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $greater" class="name">&gt;</span><span class="params">(<span name="b">b: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <a href="Constraint.html" class="extype" name="jp.kobe_u.scarab.Constraint">Constraint</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#jp.kobe_u.scarab.Sum@&gt;(b:Int):jp.kobe_u.scarab.Constraint" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Returns the constraint representing <code>this &gt; b</code>.</p><div class="fullcomment"><div class="comment cmt"><p>Returns the constraint representing <code>this &gt; b</code>.</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Term.html" class="extype" name="jp.kobe_u.scarab.Term">Term</a></dd></dl></div>
+    </li><li name="jp.kobe_u.scarab.Term#&gt;=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="&gt;=(x:jp.kobe_u.scarab.Term):jp.kobe_u.scarab.Constraint"></a>
+      <a id="&gt;=(Term):Constraint"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $greater$eq" class="name">&gt;=</span><span class="params">(<span name="x">x: <a href="Term.html" class="extype" name="jp.kobe_u.scarab.Term">Term</a></span>)</span><span class="result">: <a href="Constraint.html" class="extype" name="jp.kobe_u.scarab.Constraint">Constraint</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#jp.kobe_u.scarab.Sum@&gt;=(x:jp.kobe_u.scarab.Term):jp.kobe_u.scarab.Constraint" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Returns the constraint representing <code>this &gt;= x</code>.</p><div class="fullcomment"><div class="comment cmt"><p>Returns the constraint representing <code>this &gt;= x</code>.</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Term.html" class="extype" name="jp.kobe_u.scarab.Term">Term</a></dd></dl></div>
+    </li><li name="jp.kobe_u.scarab.Term#&gt;=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="&gt;=(b:Int):jp.kobe_u.scarab.Constraint"></a>
+      <a id="&gt;=(Int):Constraint"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $greater$eq" class="name">&gt;=</span><span class="params">(<span name="b">b: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <a href="Constraint.html" class="extype" name="jp.kobe_u.scarab.Constraint">Constraint</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#jp.kobe_u.scarab.Sum@&gt;=(b:Int):jp.kobe_u.scarab.Constraint" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Returns the constraint representing <code>this &gt;= b</code>.</p><div class="fullcomment"><div class="comment cmt"><p>Returns the constraint representing <code>this &gt;= b</code>.</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Term.html" class="extype" name="jp.kobe_u.scarab.Term">Term</a></dd></dl></div>
+    </li><li name="jp.kobe_u.scarab.Term#?" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="?:jp.kobe_u.scarab.GeZero"></a>
+      <a id="?:GeZero"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $qmark" class="name">?</span><span class="result">: <a href="GeZero.html" class="extype" name="jp.kobe_u.scarab.GeZero">GeZero</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#jp.kobe_u.scarab.Sum@?:jp.kobe_u.scarab.GeZero" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Returns this &gt;= 1</p><div class="fullcomment"><div class="comment cmt"><p>Returns this &gt;= 1</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Term.html" class="extype" name="jp.kobe_u.scarab.Term">Term</a></dd></dl></div>
+    </li><li name="jp.kobe_u.scarab.Sum#add" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="add(that:jp.kobe_u.scarab.Sum):jp.kobe_u.scarab.Sum"></a>
+      <a id="add(Sum):Sum"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">add</span><span class="params">(<span name="that">that: <a href="" class="extype" name="jp.kobe_u.scarab.Sum">Sum</a></span>)</span><span class="result">: <a href="" class="extype" name="jp.kobe_u.scarab.Sum">Sum</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#jp.kobe_u.scarab.Sum@add(that:jp.kobe_u.scarab.Sum):jp.kobe_u.scarab.Sum" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Returns the addition of this and <code>that</code>.</p>
+    </li><li name="jp.kobe_u.scarab.Sum#add" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="add(x:jp.kobe_u.scarab.Var,a:Int):jp.kobe_u.scarab.Sum"></a>
+      <a id="add(Var,Int):Sum"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">add</span><span class="params">(<span name="x">x: <a href="Var.html" class="extype" name="jp.kobe_u.scarab.Var">Var</a></span>, <span name="a">a: <span class="extype" name="scala.Int">Int</span> = <span class="symbol">1</span></span>)</span><span class="result">: <a href="" class="extype" name="jp.kobe_u.scarab.Sum">Sum</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#jp.kobe_u.scarab.Sum@add(x:jp.kobe_u.scarab.Var,a:Int):jp.kobe_u.scarab.Sum" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Returns the addition of this and <code>a*x</code>.</p><div class="fullcomment"><div class="comment cmt"><p>Returns the addition of this and <code>a*x</code>.  When <code>a</code> is omitted 1 is used.</p></div></div>
+    </li><li name="jp.kobe_u.scarab.Sum#add" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="add(b1:Int):jp.kobe_u.scarab.Sum"></a>
+      <a id="add(Int):Sum"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">add</span><span class="params">(<span name="b1">b1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <a href="" class="extype" name="jp.kobe_u.scarab.Sum">Sum</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#jp.kobe_u.scarab.Sum@add(b1:Int):jp.kobe_u.scarab.Sum" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Returns the addition of this and <code>b</code>.</p>
+    </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="asInstanceOf[T0]:T0"></a>
+      <a id="asInstanceOf[T0]:T0"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Any.asInstanceOf.T0">T0</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#jp.kobe_u.scarab.Sum@asInstanceOf[T0]:T0" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="jp.kobe_u.scarab.Sum#b" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="b:Int"></a>
+      <a id="b:Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">b</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#jp.kobe_u.scarab.Sum@b:Int" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">constant part of the summation</p>
+    </li><li name="scala.AnyRef#clone" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="clone():Object"></a>
+      <a id="clone():AnyRef"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#jp.kobe_u.scarab.Sum@clone():Object" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../../../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.CloneNotSupportedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="jp.kobe_u.scarab.Sum#coef" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="coef:Map[jp.kobe_u.scarab.Var,Int]"></a>
+      <a id="coef:Map[Var,Int]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">coef</span><span class="result">: <span class="extype" name="scala.Predef.Map">Map</span>[<a href="Var.html" class="extype" name="jp.kobe_u.scarab.Var">Var</a>, <span class="extype" name="scala.Int">Int</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#jp.kobe_u.scarab.Sum@coef:Map[jp.kobe_u.scarab.Var,Int]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">map consisting of variables and their coefficients
+</p>
+    </li><li name="scala.AnyRef#eq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="eq(x$1:AnyRef):Boolean"></a>
+      <a id="eq(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#jp.kobe_u.scarab.Sum@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="finalize():Unit"></a>
+      <a id="finalize():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#jp.kobe_u.scarab.Sum@finalize():Unit" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../../../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="symbol">classOf[java.lang.Throwable]</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#getClass" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="getClass():Class[_]"></a>
+      <a id="getClass():Class[_]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getClass</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.Class">Class</span>[_]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#jp.kobe_u.scarab.Sum@getClass():Class[_]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.Any#isInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="isInstanceOf[T0]:Boolean"></a>
+      <a id="isInstanceOf[T0]:Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#jp.kobe_u.scarab.Sum@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="jp.kobe_u.scarab.Sum#mul" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="mul(a:Int):jp.kobe_u.scarab.Sum"></a>
+      <a id="mul(Int):Sum"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">mul</span><span class="params">(<span name="a">a: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <a href="" class="extype" name="jp.kobe_u.scarab.Sum">Sum</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#jp.kobe_u.scarab.Sum@mul(a:Int):jp.kobe_u.scarab.Sum" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Returns the multiplication of this by <code>a</code>.</p>
+    </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ne(x$1:AnyRef):Boolean"></a>
+      <a id="ne(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#jp.kobe_u.scarab.Sum@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="jp.kobe_u.scarab.Sum#neg" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="neg:jp.kobe_u.scarab.Sum"></a>
+      <a id="neg:Sum"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">neg</span><span class="result">: <a href="" class="extype" name="jp.kobe_u.scarab.Sum">Sum</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#jp.kobe_u.scarab.Sum@neg:jp.kobe_u.scarab.Sum" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Returns the negation of this, that is, <code>-this</code>.</p>
+    </li><li name="scala.AnyRef#notify" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="notify():Unit"></a>
+      <a id="notify():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#jp.kobe_u.scarab.Sum@notify():Unit" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#notifyAll" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="notifyAll():Unit"></a>
+      <a id="notifyAll():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#jp.kobe_u.scarab.Sum@notifyAll():Unit" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="jp.kobe_u.scarab.Sum#sub" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="sub(that:jp.kobe_u.scarab.Sum):jp.kobe_u.scarab.Sum"></a>
+      <a id="sub(Sum):Sum"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">sub</span><span class="params">(<span name="that">that: <a href="" class="extype" name="jp.kobe_u.scarab.Sum">Sum</a></span>)</span><span class="result">: <a href="" class="extype" name="jp.kobe_u.scarab.Sum">Sum</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#jp.kobe_u.scarab.Sum@sub(that:jp.kobe_u.scarab.Sum):jp.kobe_u.scarab.Sum" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Returns the subtraction of <code>that</code> from this.</p>
+    </li><li name="jp.kobe_u.scarab.Sum#sub" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="sub(x:jp.kobe_u.scarab.Var,a:Int):jp.kobe_u.scarab.Sum"></a>
+      <a id="sub(Var,Int):Sum"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">sub</span><span class="params">(<span name="x">x: <a href="Var.html" class="extype" name="jp.kobe_u.scarab.Var">Var</a></span>, <span name="a">a: <span class="extype" name="scala.Int">Int</span> = <span class="symbol">1</span></span>)</span><span class="result">: <a href="" class="extype" name="jp.kobe_u.scarab.Sum">Sum</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#jp.kobe_u.scarab.Sum@sub(x:jp.kobe_u.scarab.Var,a:Int):jp.kobe_u.scarab.Sum" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Returns the subtraction of <code>a*x</code> from this.</p><div class="fullcomment"><div class="comment cmt"><p>Returns the subtraction of <code>a*x</code> from this.  When <code>a</code> is omitted 1 is used.</p></div></div>
+    </li><li name="jp.kobe_u.scarab.Sum#sub" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="sub(b1:Int):jp.kobe_u.scarab.Sum"></a>
+      <a id="sub(Int):Sum"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">sub</span><span class="params">(<span name="b1">b1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <a href="" class="extype" name="jp.kobe_u.scarab.Sum">Sum</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#jp.kobe_u.scarab.Sum@sub(b1:Int):jp.kobe_u.scarab.Sum" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Returns the subtraction of <code>b</code> from this.</p>
+    </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
+      <a id="synchronized[T0](⇒T0):T0"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>)</span><span class="result">: <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#jp.kobe_u.scarab.Sum@synchronized[T0](x$1:=&gt;T0):T0" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="jp.kobe_u.scarab.Sum#toString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="toString():String"></a>
+      <a id="toString():String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#jp.kobe_u.scarab.Sum@toString():String" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="jp.kobe_u.scarab.Sum">Sum</a> → AnyRef → Any</dd></dl></div>
+    </li><li name="jp.kobe_u.scarab.Term#toSum" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="toSum:jp.kobe_u.scarab.Sum"></a>
+      <a id="toSum:Sum"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">toSum</span><span class="result">: <a href="" class="extype" name="jp.kobe_u.scarab.Sum">Sum</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#jp.kobe_u.scarab.Sum@toSum:jp.kobe_u.scarab.Sum" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Returns the <code>Sum</code> representation of the term.</p><div class="fullcomment"><div class="comment cmt"><p>Returns the <code>Sum</code> representation of the term.
+It returns a new <code>Sum</code> object when the term is a variable, and return itself when the term is a <code>Sum</code>.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Term.html" class="extype" name="jp.kobe_u.scarab.Term">Term</a></dd></dl></div>
+    </li><li name="jp.kobe_u.scarab.Term#unary_-" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="unary_-:jp.kobe_u.scarab.Sum"></a>
+      <a id="unary_-:Sum"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: unary_$minus" class="name">unary_-</span><span class="result">: <a href="" class="extype" name="jp.kobe_u.scarab.Sum">Sum</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#jp.kobe_u.scarab.Sum@unary_-:jp.kobe_u.scarab.Sum" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Returns the negation of the term.</p><div class="fullcomment"><div class="comment cmt"><p>Returns the negation of the term.</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Term.html" class="extype" name="jp.kobe_u.scarab.Term">Term</a></dd></dl></div>
+    </li><li name="jp.kobe_u.scarab.Sum#value" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="value(assignment:jp.kobe_u.scarab.Assignment):Int"></a>
+      <a id="value(Assignment):Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">value</span><span class="params">(<span name="assignment">assignment: <a href="Assignment.html" class="extype" name="jp.kobe_u.scarab.Assignment">Assignment</a></span>)</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#jp.kobe_u.scarab.Sum@value(assignment:jp.kobe_u.scarab.Assignment):Int" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Returns the value of the term under the given assingment.</p><div class="fullcomment"><div class="comment cmt"><p>Returns the value of the term under the given assingment.</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="jp.kobe_u.scarab.Sum">Sum</a> → <a href="Term.html" class="extype" name="jp.kobe_u.scarab.Term">Term</a></dd></dl></div>
+    </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait():Unit"></a>
+      <a id="wait():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#jp.kobe_u.scarab.Sum@wait():Unit" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.InterruptedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait(x$1:Long,x$2:Int):Unit"></a>
+      <a id="wait(Long,Int):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#jp.kobe_u.scarab.Sum@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.InterruptedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait(x$1:Long):Unit"></a>
+      <a id="wait(Long):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#jp.kobe_u.scarab.Sum@wait(x$1:Long):Unit" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.InterruptedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li></ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        <div class="parent" name="scala.Serializable">
+              <h3>Inherited from <span class="extype" name="scala.Serializable">Serializable</span></h3>
+            </div><div class="parent" name="java.io.Serializable">
+              <h3>Inherited from <span class="extype" name="java.io.Serializable">Serializable</span></h3>
+            </div><div class="parent" name="scala.Product">
+              <h3>Inherited from <span class="extype" name="scala.Product">Product</span></h3>
+            </div><div class="parent" name="scala.Equals">
+              <h3>Inherited from <span class="extype" name="scala.Equals">Equals</span></h3>
+            </div><div class="parent" name="jp.kobe_u.scarab.Term">
+              <h3>Inherited from <a href="Term.html" class="extype" name="jp.kobe_u.scarab.Term">Term</a></h3>
+            </div><div class="parent" name="jp.kobe_u.scarab.Expr">
+              <h3>Inherited from <a href="Expr.html" class="extype" name="jp.kobe_u.scarab.Expr">Expr</a></h3>
+            </div><div class="parent" name="scala.AnyRef">
+              <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
+            </div><div class="parent" name="scala.Any">
+              <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
+            </div>
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>
