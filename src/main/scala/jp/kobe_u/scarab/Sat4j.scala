@@ -223,6 +223,8 @@ class Sat4j(option: String) extends SatSolver {
   private def printStatCore(file: java.io.OutputStream) = {
     import java.io.PrintWriter
     val out = new PrintWriter(new java.io.BufferedOutputStream(file))
+    val header = s"#variables: ${sat4j.nVars}, #clauses: ${nConstraints}"
+    out.println(header)
     sat4j.printInfos(out)
     sat4j.printStat(out)
     out.flush
