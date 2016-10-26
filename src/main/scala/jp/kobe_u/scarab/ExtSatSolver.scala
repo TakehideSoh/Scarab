@@ -111,37 +111,33 @@ class ExtSatSolver(cmd: String, var fileName: String = "", keep: Boolean = false
     runExtSolver
   }
 
-  def model: Array[Int] =
-    modelArray
-  def model(v: Int): Boolean =
-    modelArray(v - 1) > 0
+  def model: Array[Int] = modelArray
+    
+  def model(v: Int): Boolean = modelArray(v - 1) > 0
+    
   def findModel: Option[Array[Int]] =
     if (isSatisfiable) Option(model)
     else None
-  def nVars: Int =
-    nofVariables
-  def nConstraints: Int =
-    nofClauses
-  def getStat: Map[String, Number] =
-    stat
-  def setTimeout(time: Int) =
-    tout = time
-  def writeCNF(name: String, vars: Int) = {
-    Process(s"cp ${satFileProblem.getAbsolutePath} ${name}").run
-  }
-  def dumpCNF = {
-    Process(s"cat ${satFileProblem.getAbsolutePath}").run
-  }
-  
+    
+  def nVars: Int = nofVariables
+    
+  def nConstraints: Int = nofClauses
+    
+  def getStat: Map[String, Number] = stat
+    
+  def setTimeout(time: Int) = tout = time
+    
+  def dumpCnf(name: String) =  Process(s"cp ${satFileProblem.getAbsolutePath} ${name}").run
+  def dumpCnf = Process(s"cat ${satFileProblem.getAbsolutePath}").run
 
   /*
    * (not-Supported Methods in External SATSolvers) 
    */
   def clearLearntClauses =
     throw new java.lang.UnsupportedOperationException("clearLearntClauses is not supported in External SAT Solvers")
-  def printInfos(out: java.io.PrintWriter) =
-    throw new java.lang.UnsupportedOperationException("printInfos is not supported in External SAT Solvers")
-  def printStat(out: java.io.PrintWriter) =
+  def dumpStat(filePath: String) =
+    throw new java.lang.UnsupportedOperationException("printStat is not supported in External SAT Solvers")
+  def dumpStat =
     throw new java.lang.UnsupportedOperationException("printStat is not supported in External SAT Solvers")
   def addAtLeast(lits: Seq[Int], degree: Int): Unit =
     throw new java.lang.UnsupportedOperationException("addAtLeast is not supported in External SAT Solvers")

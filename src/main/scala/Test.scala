@@ -1,4 +1,4 @@
-package jp.kobe_u.scarab
+import jp.kobe_u.scarab._
 
 object Test {
   def main(args: Array[String]) {

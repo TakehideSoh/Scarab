@@ -1,8 +1,9 @@
 VER = v1-8-9
 VERSION = 1.8.9
+VER0 = 189
 
 APP0 = scarab
-APP = $(APP0)-$(VER)
+APP = $(APP0)$(VER0)
 JAR = $(APP).jar
 ZIP = $(APP).zip
 
@@ -46,6 +47,7 @@ zip:
 
 web:
 	cp ../$(ZIP) ~/06_web/www/scarab/
+	cp $(JAR) ~/06_web/www/scarab/
 	rm -R ~/06_web/www/scarab/docs
 	cp -r docs ~/06_web/www/scarab/
 

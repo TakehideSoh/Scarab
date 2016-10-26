@@ -20,7 +20,6 @@ trait SatSolver {
   def addAtMost(lits: Seq[Int], degree: Int): Unit
   def addExactly(lits: Seq[Int], degree: Int): Unit  
   def addPB(lits: Seq[Int], coef: Seq[Int], degree: Int): Unit
-  def addBBC(block: Int, lits: Seq[Int], degree: Int): Unit  
   def minExplain: Array[Int]
   def minAllExplain: Unit
   def clearLearntClauses: Unit
@@ -33,9 +32,9 @@ trait SatSolver {
   def nConstraints: Int
   def setTimeout(time: Int)
   
-  def printInfos(out: java.io.PrintWriter)
-  def printStat(out: java.io.PrintWriter)
-  def writeCNF(name: String, vars: Int)
-  def dumpCNF
+  def dumpStat
+  def dumpStat(filePath: String)  
+  def dumpCnf
+  def dumpCnf(filePath: String)  
   
 }

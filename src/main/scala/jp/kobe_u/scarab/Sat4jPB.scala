@@ -73,9 +73,9 @@ class Sat4jPB extends SatSolver {
   def nConstraints: Int = sat4jpb.nConstraints
   def setTimeout(time: Int) = { throw new Exception("this method is not implemented in Sat4jPB") }
 
-  def printInfos(out: java.io.PrintWriter) = { throw new Exception("this method is not implemented in Sat4jPB") }
-  def printStat(out: java.io.PrintWriter) = { throw new Exception("this method is not implemented in Sat4jPB") }
-  def writeCNF(name: String, vars: Int) = { throw new Exception("this method is not implemented in Sat4jPB") }
-  def dumpCNF = { throw new Exception("this method is not implemented in Sat4jPB") }
+  def dumpStat = { throw new Exception("this method is not implemented in Sat4jPB") }
+  def dumpStat(filePath: String) = { throw new Exception("this method is not implemented in Sat4jPB") }
+  def dumpCnf = { throw new Exception("this method is not implemented in Sat4jPB") }
+  def dumpCnf(filePath: String) = { throw new Exception("this method is not implemented in Sat4jPB") }
 
 }

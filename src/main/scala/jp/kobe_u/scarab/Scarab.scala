@@ -49,10 +49,6 @@ trait ScarabTrait {
   /* */
   def reset = solver.reset
   /* */
-  def writeCNF(name: String) = solver.writeCNF(name)
-  /* */
-  def dump = satSolver.dumpCNF
-  /* */
   def minExplain = solver.minExplain
   /* */
   def minAllExplain = solver.minAllExplain
@@ -67,9 +63,19 @@ trait ScarabTrait {
   /* */
   def timeLimit(sec: Int) = satSolver.setTimeout(sec)
   /* */
-  def alldiff(xs: Term*) = op.alldiff(xs, csp)
+  def alldiff(xs: Term*) = Tools.alldiff(xs, csp)
   /* */
-  def alldiff(xs: Iterable[Var]) = op.alldiff(xs.toSeq, csp)
+  def alldiff(xs: Iterable[Term]) = Tools.alldiff(xs.toSeq, csp)
+  /* */
+  // def alldiff(xs: Iterable[Var]) = Tools.alldiff(xs.toSeq, csp)
+  /* */
+  def dumpCnf = { encoder.encodeCSP ; satSolver.dumpCnf }
+  /* */
+  def dumpCnf(filePath: String) = { encoder.encodeCSP ; satSolver.dumpCnf(filePath) }
+  /* */
+  def dumpStat = satSolver.dumpStat
+  /* */
+  def dumpStat(filePath: String) = satSolver.dumpStat(filePath)
 }
 
 class Scarab (val csp: CSP, 

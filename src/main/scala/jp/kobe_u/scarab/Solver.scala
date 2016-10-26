@@ -207,12 +207,6 @@ class Solver(
    */
   def find(con: Constraint): Boolean = find(Seq(con))
 
-  /** Write down CNF into the file of `name` */
-  def writeCNF(name: String) {
-    encoder.encodeCSP
-    satSolver.writeCNF(name, encoder.satVariableCount)
-  }
-
   /**
    * Reset the followings:
    * - encoder

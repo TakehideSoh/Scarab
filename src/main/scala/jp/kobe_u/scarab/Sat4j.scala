@@ -46,7 +46,7 @@ class Sat4j(option: String) extends SatSolver {
 
   val sat4j = option.capitalize match {
     case "Iterator" => new ModelIterator(SolverFactory.newDefault)
-    case "Dimacs"   => new DimacsStringSolver
+    case "Dimacs" => new DimacsStringSolver
     case "Xplain" => {
       val xp = new HighLevelXplain[ISolver](SolverFactory.newDefault)
       xplain = Option(xp)
@@ -79,7 +79,7 @@ class Sat4j(option: String) extends SatSolver {
 
   private def minisat: MinisatSolver[_] = sat4j match {
     case x: MinisatSolver[_] => x
-    case _                   => sys.error("org.sat4j.minisat.core.Solver was expected")
+    case _ => sys.error("org.sat4j.minisat.core.Solver was expected")
   }
 
   def reset = {
@@ -90,8 +90,9 @@ class Sat4j(option: String) extends SatSolver {
   def newVar(n: Int): Unit =
     xplain match {
       case Some(_) => {
-//        println(s"newvar $n")
+        //        println(s"newvar $n")
         sat4j.newVar(n * 4)
+        println(n * 4)
       }
       case None => sat4j.newVar(n)
     }
@@ -106,13 +107,13 @@ class Sat4j(option: String) extends SatSolver {
     try {
       xplain match {
         case Some(xp) => {
-//          println(s"${lits.mkString(" v ")} ::: with index " + cIndex)
+          //          println(s"${lits.mkString(" v ")} ::: with index " + cIndex)
           xp.addClause(new VecInt(lits.toArray), cIndex)
         }
         case None => sat4j.addClause(new VecInt(lits.toArray))
       }
     } catch {
-      case e: ContradictionException         => clearlyUNSAT = true
+      case e: ContradictionException => clearlyUNSAT = true
       case e: java.lang.NoClassDefFoundError => println(s"$e ${lits}")
     }
     cIndex
@@ -129,9 +130,6 @@ class Sat4j(option: String) extends SatSolver {
 
   //  def addConstr(c: org.sat4j.specs.Constr) =
   //    sat4j.addConstr(c)
-
-  def addBBC(block: Int, lits: Seq[Int], degree: Int) =
-    sat4j.addConstr(new BlockedBC(minisat, minisat.dimacs2internal(new VecInt((block +: lits).toArray)), degree))
 
   def addPB(lits: Seq[Int], coef: Seq[Int], degree: Int) =
     sat4j.addConstr(new NativePB(minisat, minisat.dimacs2internal(new VecInt(lits.toArray)), coef, degree))
@@ -157,7 +155,7 @@ class Sat4j(option: String) extends SatSolver {
   def model(v: Int) = {
     modelstock match {
       case Some(ms) => ms(v - 1)
-      case None     => sat4j.model(v)
+      case None => sat4j.model(v)
     }
   }
 
@@ -172,35 +170,17 @@ class Sat4j(option: String) extends SatSolver {
     var ts = ps.filter(i => if (i < 0) !sat4j.model(math.abs(i)) else sat4j.model(i)).map(-_)
     var fs = ps.filter(i => if (i < 0) sat4j.model(math.abs(i)) else !sat4j.model(i)).map(-_)
 
-    //    println(s"ps $ps")
-    //    println(s"ts $ts")
-    //    println(s"fs $fs")    
-
     modelstock = Option((1 to nof_vars).map(sat4j.model(_)))
 
-//    println("ts " + ts)
-//    println("fs " + fs)
-//    println()
-    
     sat4j.addClause(new VecInt(ts.toArray))
     while (isSatisfiable(fs)) {
 
       modelstock = Option((1 to nof_vars).map(sat4j.model(_)))
       ts = ps.filter(i => if (i < 0) !sat4j.model(math.abs(i)) else sat4j.model(i)).map(-_)
       fs = ps.filter(i => if (i < 0) sat4j.model(math.abs(i)) else !sat4j.model(i)).map(-_)
-      //      ts = ps.filter(i => sat4j.model(i)).map(-_)
-      //      fs = ps.filter(i => !sat4j.model(i)).map(-_)
 
-//      println(s"${ts.mkString(" v ")} ++++ ${fs.mkString(" & ")}")
-
-//      println("ts2 " + ts)
-//      println("fs2 " + fs)
-      
       sat4j.addClause(new VecInt(ts.toArray))
     }
-
-//    println("model found")
-
     modelstock
   }
 
@@ -219,52 +199,70 @@ class Sat4j(option: String) extends SatSolver {
           bb += -p
           addClause(Seq(-p))
         }
-        case (true, true)   =>
+        case (true, true) =>
         case (false, false) =>
       }
     }
     bb
   }
 
-  def nVars =
-    sat4j.nVars
-  def nConstraints =
-    sat4j.nConstraints
-  def getStat =
-    JavaConversions.mapAsScalaMap(sat4j.getStat).toMap
+  def nVars = sat4j.nVars
+
+  def nConstraints = sat4j.nConstraints
+
+  def getStat = JavaConversions.mapAsScalaMap(sat4j.getStat).toMap
+
   def setTimeout(time: Int) = {
     if (time > 0)
       sat4j.setTimeout(time)
   }
-  def clearLearntClauses =
-    sat4j.clearLearntClauses
-  def printInfos(out: java.io.PrintWriter) =
+
+  def clearLearntClauses = sat4j.clearLearntClauses
+
+  /* dump Statistics */
+  private def printStatCore(file: java.io.OutputStream) = {
+    import java.io.PrintWriter
+    val out = new PrintWriter(new java.io.BufferedOutputStream(file))
     sat4j.printInfos(out)
-  def printStat(out: java.io.PrintWriter) =
     sat4j.printStat(out)
-
-  def dumpCNF = sat4j match {
-    case sol: org.sat4j.tools.DimacsStringSolver => {
-      print(Seq("p", "cnf", sat4j.nVars, nConstraints).mkString(" "))
-      println(sol.getOut)
-    }
-    case _ => {
-      throw new UnsupportedOperationException("This SAT Solver does not support printFile method")
-    }
+    out.flush
+  }
+  def dumpStat = printStatCore(System.out)
+  def dumpStat(filePath: String) = {
+    val fos = new java.io.FileOutputStream(new java.io.File(filePath))
+    printStatCore(fos)
+    fos.close
+  }
+  def dumpStat(pw: java.io.PrintWriter) = {
+    sat4j.printInfos(pw)
+    sat4j.printStat(pw)
   }
 
-  def writeCNF(name: String, vars: Int) = sat4j match {
+  /* dump CNF */
+  private def dumpCnfCore(file: java.io.OutputStream) = sat4j match {
     case sol: org.sat4j.tools.DimacsStringSolver => {
-      sol.getOut.insert(0, Seq("p", "cnf", sat4j.nVars, nConstraints).mkString(" "))
+      var header = Seq("p", "cnf", sat4j.nVars, nConstraints).mkString(" ")
+      val n = 64
+      while (header.length() < n) header += " "
+      
+      if (sol.getOut.charAt(0) == 'p') sol.getOut.delete(0, n)
+      sol.getOut.insert(0, header)
       import java.io.PrintWriter
-      val out = new PrintWriter(name)
+      val out = new PrintWriter(new java.io.BufferedOutputStream(file))
       out.println(sol.getOut)
-      out.close
+      out.flush
     }
     case _ => {
       throw new UnsupportedOperationException("This SAT Solver does not support printFile method")
     }
   }
+  def dumpCnf = dumpCnfCore(System.out)
+  def dumpCnf(filePath: String) = {
+    val fos = new java.io.FileOutputStream(new java.io.File(filePath))
+    dumpCnfCore(fos)
+    fos.close
+  }
+  def dumpCnf(pw: java.io.PrintWriter) = dumpCnfCore(pw.asInstanceOf[java.io.OutputStream])
 
   def setNumberOfVariables(n: Int): Unit = { nof_vars = n }
 
@@ -275,8 +273,8 @@ class Sat4j(option: String) extends SatSolver {
 
         val tmp = xp.minimalExplanation
 
-        for (i <- tmp)
-          println(i)
+        //        for (i <- tmp)
+        //          println(i)
 
         tmp
 
@@ -286,7 +284,6 @@ class Sat4j(option: String) extends SatSolver {
   }
 
   def minAllExplain {
-    println("ok")
     val allMuses = new AllMUSes(true, SolverFactory.instance)
     musListener match {
       case Some(ml) =>
