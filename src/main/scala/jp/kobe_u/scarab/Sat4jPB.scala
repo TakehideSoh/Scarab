@@ -6,7 +6,8 @@ import org.sat4j.core.VecInt
 
 class Sat4jPB extends SatSolver {
 
-  val sat4jpb: IPBSolver = SolverFactory.instance.createSolverByName("Default")
+//  val sat4jpb: IPBSolver = SolverFactory.instance.createSolverByName("Default")
+  val sat4jpb: IPBSolver = SolverFactory.instance.createSolverByName("CuttingPlanes")    
   var nof_vars = 0
 
   /* Basic Interface */
@@ -67,7 +68,7 @@ class Sat4jPB extends SatSolver {
 
   /* Supplemental Interface */
   def nVars: Int = sat4jpb.nVars
-  def nextFreeVarID = sat4jpb.nextFreeVarId(true)
+  def nextFreeVarID(reserve:Boolean) = sat4jpb.nextFreeVarId(reserve)
   
   
   def nConstraints: Int = sat4jpb.nConstraints

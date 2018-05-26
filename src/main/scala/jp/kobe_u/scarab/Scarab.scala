@@ -45,6 +45,10 @@ trait ScarabTrait {
   /* */
   def find(cons: Seq[Constraint]) = solver.find(cons)
   /* */
+  def findMinimal(bs: Seq[Bool] = Seq.empty, is: Seq[Var] = Seq.empty): Boolean = solver.findMinimal(bs,is)
+  /* */
+  def findMaximal(bs: Seq[Bool] = Seq.empty, is: Seq[Var] = Seq.empty): Boolean = solver.findMaximal(bs,is)
+  /* */
   def solution = solver.solution
   /* */
   def reset = solver.reset

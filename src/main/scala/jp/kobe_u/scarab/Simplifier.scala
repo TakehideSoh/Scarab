@@ -5,23 +5,23 @@ package jp.kobe_u.scarab
  */
 class Simplifier(val encoder: Encoder) {
   def flattenOr(c: Constraint): Seq[Constraint] = c match {
-    case _: Literal  => Seq(c)
-    case _: And      => Seq(c)
+    case _: Literal => Seq(c)
+    case _: And => Seq(c)
     case Or(cs @ _*) => cs.flatMap(flattenOr(_))
   }
 
   def isSimpleLiteral(lit: Literal): Boolean = lit match {
     case _: Bool | _: Not => true
-    case LeZero(sum)      => sum.coef.size <= 1
-    case GeZero(sum)      => sum.coef.size <= 1
-    case EqZero(sum)      => sum.coef.size <= 1
-    case NeZero(sum)      => sum.coef.size <= 1
+    case LeZero(sum) => sum.coef.size <= 1
+    case GeZero(sum) => sum.coef.size <= 1
+    case EqZero(sum) => sum.coef.size <= 1
+    case NeZero(sum) => sum.coef.size <= 1
   }
 
   def isSimpleClause(lits: Seq[Literal]): Boolean =
     lits.count(!isSimpleLiteral(_)) <= 1
 
-  def tseitin(c: Constraint): (Literal, Seq[Constraint]) = c match {
+  def tseitin(c: Constraint): (Literal, Seq[Or]) = c match {
     case lit: Literal => (lit, Seq.empty)
     case And(cs @ _*) => {
       val p = encoder.newBool
@@ -53,6 +53,7 @@ class Simplifier(val encoder: Encoder) {
           if (isSimpleLiteral(lit))
             (lit, None)
           else {
+            encoder.satSolver.nextFreeVarID(true)
             val p = encoder.newBool
             (p, Some(Seq(Not(p), lit)))
           }

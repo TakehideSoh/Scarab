@@ -120,7 +120,7 @@ class LogEncoder(csp: CSP, satSolver: SatSolver) extends Encoder(csp, satSolver)
    * Returns the sequence of literals that will be used as assumptions.
    */
   def extractAssumpLits(cs: Seq[Constraint]): Seq[Int] = {
-    Seq.empty
+    throw new Exception(s"Not yet implemented")
   }
 
   /** Returns the value of `x` from the satisfiable assignment found by the SAT solver. */

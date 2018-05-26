@@ -490,13 +490,11 @@ object Or {
  *    ar 3 4 5 6 7 8 9
  *       0 1 2 3 4 5 6 // ar のインデックス
  *  ar値 0 0 1 1 2 2 3 // ar の値
- * ar2値 0 1 1 2 2 3 3 // ar の値
  *  
  */
 case class Domain private (lb: Int, ub: Int, size: Int, private val domainOpt: Option[Seq[Int]]) {
   require(lb <= ub)
   private var ar: Array[Int] = Array.fill[Int](ub - lb + 1)(0)
-  private var ar2: Array[Int] = Array.fill[Int](ub - lb + 1)(0)  
   val binary = lb == 0 && ub == 1
   private var hs = HashSet.empty[Int]
 
@@ -508,26 +506,23 @@ case class Domain private (lb: Int, ub: Int, size: Int, private val domainOpt: O
       var cnt = -1
       for (i <- lb to ub) {
         if (hs.contains(i)) {
-          ar2(i - offset) = cnt+1          
           cnt += 1
           ar(i - offset) = cnt
         } else {
           ar(i - offset) = cnt
-          ar2(i - offset) = cnt+1         
         }
       }
   }
+  val isContiguous = domainOpt.isEmpty
+  val domain: Seq[Int] = if (isContiguous) Seq.empty else domainOpt.get 
 
-  def isContiguous = domainOpt.isEmpty
-  def domain: Seq[Int] = domainOpt.get
+//  def isContiguous = iscontiguous 
+//  def domain: Seq[Int] = domainOpt.get 
   def pos(value: Int): Int = if (isContiguous) value - lb else ar(value - offset)
-  def pos2(value: Int): Int = if (isContiguous) value - lb - 1 else ar2(value - offset) - 1
 
   def show {
     val s1 = for (a <- ar) yield a
-    val s2 = for (a <- ar2) yield a
     println(s1.mkString(" "))
-    println(s2.mkString(" "))
   }
   
   override def toString =

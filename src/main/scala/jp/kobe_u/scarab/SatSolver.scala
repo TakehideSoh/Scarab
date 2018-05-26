@@ -28,7 +28,7 @@ trait SatSolver {
 
   /* Supplemental Interface */
   def nVars: Int
-  def nextFreeVarID: Int
+  def nextFreeVarID(reserve: Boolean): Int
   def nConstraints: Int
   def setTimeout(time: Int)
   

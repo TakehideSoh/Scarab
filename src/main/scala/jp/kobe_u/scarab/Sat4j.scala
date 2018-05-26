@@ -10,6 +10,7 @@ import org.sat4j.core.VecInt
 import org.sat4j.tools.xplain.Xplain
 import org.sat4j.tools.xplain.Explainer
 import org.sat4j.tools.ModelIterator
+import org.sat4j.tools.Minimal4InclusionModel
 import org.sat4j.tools.DimacsStringSolver
 import org.sat4j.tools.xplain.HighLevelXplain
 import org.sat4j.tools.SolutionFoundListener
@@ -89,11 +90,7 @@ class Sat4j(option: String) extends SatSolver {
 
   def newVar(n: Int): Unit =
     xplain match {
-      case Some(_) => {
-        //        println(s"newvar $n")
-        sat4j.newVar(n * 4)
-        println(n * 4)
-      }
+      case Some(_) => sat4j.newVar(n)
       case None => sat4j.newVar(n)
     }
 
@@ -101,7 +98,7 @@ class Sat4j(option: String) extends SatSolver {
     sat4j.addClause(new VecInt(lits.toArray))
   }
 
-  def nextFreeVarID = sat4j.nextFreeVarId(true)
+  def nextFreeVarID(reserve: Boolean) = sat4j.nextFreeVarId(reserve)
 
   def addClause(lits: Seq[Int], cIndex: Int): Int = {
     try {
@@ -153,13 +150,14 @@ class Sat4j(option: String) extends SatSolver {
     sat4j.model
 
   def model(v: Int) = {
+    //    println(v)
     modelstock match {
       case Some(ms) => ms(v - 1)
       case None => sat4j.model(v)
     }
   }
 
-  //  def findModel: Array[Int] =
+  // def findModel: Array[Int] =
   //    sat4j.findModel
   //  def findModel(assumps: Seq[Int]): Array[Int] =
   //    sat4j.findModel(new VecInt(assumps.toArray))
@@ -170,16 +168,18 @@ class Sat4j(option: String) extends SatSolver {
     var ts = ps.filter(i => if (i < 0) !sat4j.model(math.abs(i)) else sat4j.model(i)).map(-_)
     var fs = ps.filter(i => if (i < 0) sat4j.model(math.abs(i)) else !sat4j.model(i)).map(-_)
 
-    modelstock = Option((1 to nof_vars).map(sat4j.model(_)))
-
+    val nofVars = sat4j.nextFreeVarId(false) - 1
+    modelstock = Option((1 to nofVars).map(sat4j.model(_)))
     sat4j.addClause(new VecInt(ts.toArray))
-    while (isSatisfiable(fs)) {
 
-      modelstock = Option((1 to nof_vars).map(sat4j.model(_)))
+    while (isSatisfiable(fs)) {
+      modelstock = Option((1 to nofVars).map(sat4j.model(_)))
       ts = ps.filter(i => if (i < 0) !sat4j.model(math.abs(i)) else sat4j.model(i)).map(-_)
       fs = ps.filter(i => if (i < 0) sat4j.model(math.abs(i)) else !sat4j.model(i)).map(-_)
-
-      sat4j.addClause(new VecInt(ts.toArray))
+      if (ts.isEmpty)
+        return modelstock
+      else
+        sat4j.addClause(new VecInt(ts.toArray))
     }
     modelstock
   }
@@ -219,6 +219,7 @@ class Sat4j(option: String) extends SatSolver {
 
   def clearLearntClauses = sat4j.clearLearntClauses
 
+  def dumpStat = printStatCore(System.out)
   /* dump Statistics */
   private def printStatCore(file: java.io.OutputStream) = {
     import java.io.PrintWriter
@@ -229,7 +230,7 @@ class Sat4j(option: String) extends SatSolver {
     sat4j.printStat(out)
     out.flush
   }
-  def dumpStat = printStatCore(System.out)
+
   def dumpStat(filePath: String) = {
     val fos = new java.io.FileOutputStream(new java.io.File(filePath))
     printStatCore(fos)
@@ -246,7 +247,7 @@ class Sat4j(option: String) extends SatSolver {
       var header = Seq("p", "cnf", sat4j.nVars, nConstraints).mkString(" ")
       val n = 64
       while (header.length() < n) header += " "
-      
+
       if (sol.getOut.charAt(0) == 'p') sol.getOut.delete(0, n)
       sol.getOut.insert(0, header)
       import java.io.PrintWriter

@@ -163,7 +163,7 @@ class ExtSatSolver(cmd: String, var fileName: String = "", keep: Boolean = false
     throw new java.lang.UnsupportedOperationException("findMinimalModel is not supported in External SAT Solvers")
   def findBackbone(ps: Seq[Int]): Set[Int] =
     throw new java.lang.UnsupportedOperationException("findBackbone is not supported in External SAT Solvers")
-  def nextFreeVarID: Int =
+  def nextFreeVarID(reserve: Boolean): Int =
     throw new java.lang.UnsupportedOperationException("nextFreeVarId is not supported in External SAT Solvers")
 }
 

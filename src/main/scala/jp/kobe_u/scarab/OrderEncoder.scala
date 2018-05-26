@@ -45,44 +45,87 @@ class OrderEncoder(csp: CSP, satSolver: SatSolver) extends Encoder(csp, satSolve
    * core part of order encoding
    */
   def encodeLe(axs: Seq[(Int, Var)], c: Int, clause0: Seq[Int]): Seq[Seq[Int]] = axs match {
-    case Seq() => if (c >= 0) Seq.empty else Seq(clause0)
-    case Seq((a, x)) => Seq(clause0 :+ le(a, x, c))
+    case Seq((a, x)) => {
+      Seq(clause0 :+ le(a, x, c))
+    }
     case Seq((a, x), axs1 @ _*) => {
       if (a > 0) {
-        val ub0 = floorDiv(c - lb(axs1), a)
-        val LB = lb(x)
-        val UB = math.min(ub(x), ub0)
-
-        if (LB > UB) return Seq(clause0)
+        val lb0 = Math.max((floorDiv(c - ub(axs1), a) + 1), csp.dom(x).lb)
+        val ub0 = Math.min(floorDiv(c - lb(axs1), a), csp.dom(x).ub)
 
         val cs = for {
-          b <- range(x, LB, UB)
+          b <- range(x, lb0, ub0)
           lit = le(x, b - 1)
           if lit != TrueLit
           clause <- encodeLe(axs1, c - a * b, lit +: clause0)
         } yield clause
 
-        if (ub(x) > ub0) cs ++ Seq(clause0 :+ le(x, ub0))
-        else cs
-
+        val ll = floorDiv(c - lb(axs1), a) + 1
+        if (ub(x) >= ll) {
+          if (csp.dom(x).isContiguous) cs ++ Seq(clause0 :+ le(x, ll - 1))
+          else cs ++ Seq(clause0 :+ le(x, csp.dom(x).domain(csp.dom(x).pos(ll - 1))))
+        } else
+          cs
       } else {
-        val lb0 = floorDiv(c - lb(axs1), a)
-        val LB = math.max(lb(x), lb0)
-        val UB = ub(x)
+        val lb0 = Math.max(ceilDiv(c - lb(axs1), a), csp.dom(x).lb)
+        val ub0 = Math.min((ceilDiv(c - ub(axs1), a) - 1), csp.dom(x).ub)
 
-        if (LB > UB) return Seq(clause0)
         val cs = for {
-          b <- range(x, LB, UB)
+          b <- range(x, lb0, ub0)
           lit = -le(x, b)
           if lit != TrueLit
           clause <- encodeLe(axs1, c - a * b, lit +: clause0)
         } yield clause
 
-        if (lb(x) < lb0) cs ++ Seq(clause0 :+ -le(x, lb0 - 1))
-        else cs
+        val uu = ceilDiv(c - lb(axs1), a) - 1
+        if (lb(x) <= uu)
+          if (csp.dom(x).isContiguous) cs ++ Seq(clause0 :+ -le(x, uu))
+          else cs ++ Seq(clause0 :+ -le(x, csp.dom(x).domain(csp.dom(x).pos(uu))))
+        else
+          cs
       }
     }
+
   }
+  //  def encodeLe(axs: Seq[(Int, Var)], c: Int, clause0: Seq[Int]): Seq[Seq[Int]] = axs match {
+  //    case Seq() => if (c >= 0) Seq.empty else Seq(clause0)
+  //    case Seq((a, x)) => Seq(clause0 :+ le(a, x, c))
+  //    case Seq((a, x), axs1 @ _*) => {
+  //      if (a > 0) {
+  //        val ub0 = floorDiv(c - lb(axs1), a)
+  //        val LB = lb(x)
+  //        val UB = math.min(ub(x), ub0)
+  //
+  //        if (LB > UB) return Seq(clause0)
+  //
+  //        val cs = for {
+  //          b <- range(x, LB, UB)
+  //          lit = le(x, b - 1)
+  //          if lit != TrueLit
+  //          clause <- encodeLe(axs1, c - a * b, lit +: clause0)
+  //        } yield clause
+  //
+  //        if (ub(x) > ub0) cs ++ Seq(clause0 :+ le(x, ub0))
+  //        else cs
+  //
+  //      } else {
+  //        val lb0 = floorDiv(c - lb(axs1), a)
+  //        val LB = math.max(lb(x), lb0)
+  //        val UB = ub(x)
+  //
+  //        if (LB > UB) return Seq(clause0)
+  //        val cs = for {
+  //          b <- range(x, LB, UB)
+  //          lit = -le(x, b)
+  //          if lit != TrueLit
+  //          clause <- encodeLe(axs1, c - a * b, lit +: clause0)
+  //        } yield clause
+  //
+  //        if (lb(x) < lb0) cs ++ Seq(clause0 :+ -le(x, lb0 - 1))
+  //        else cs
+  //      }
+  //    }
+  //  }
 
   def encode(lit: Literal, clause0: Seq[Int]): Seq[Seq[Int]] = lit match {
     case p: Bool => Seq(code(p) +: clause0)
@@ -141,7 +184,7 @@ class OrderEncoder(csp: CSP, satSolver: SatSolver) extends Encoder(csp, satSolve
       }
     super.encodeCSP
     p match {
-      case None    => ls.toSeq
+      case None => ls.toSeq
       case Some(b) => (ls + code(b)).toSeq
     }
   }
