@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="ivy-report.xsl"?>
+<ivy-report version="1.0">
+	<info
+		organisation="jp.kobe_u.scarab"
+		module="org-sat4j-pb"
+		revision="2.3.6-R2404"
+		conf="test"
+		confs="compile, runtime, test, provided, optional, compile-internal, runtime-internal, test-internal, plugin, pom, scala-tool"
+		date="20180525141303"/>
+	<dependencies>
+		<module organisation="jp.kobe_u.scarab" name="org-sat4j-core">
+			<revision name="2.3.6-R2404" status="integration" pubdate="20180525141303" resolver="inter-project" artresolver="inter-project" homepage="http://kix.istc.kobe-u.ac.jp/~soh/scarab/" downloaded="false" searched="false" default="false" conf="compile, default(compile)" position="0">
+				<license name="EPL-1.0" url="https://www.eclipse.org/legal/epl-v10.html"/>
+				<metadata-artifact status="failed" details="" size="0" time="0" searched="false"/>
+				<caller organisation="jp.kobe_u.scarab" name="org-sat4j-pb" conf="test, compile, runtime" rev="2.3.6-R2404" rev-constraint-default="2.3.6-R2404" rev-constraint-dynamic="2.3.6-R2404" callerrev="2.3.6-R2404"/>
+				<artifacts>
+				</artifacts>
+			</revision>
+		</module>
+	</dependencies>
+</ivy-report>

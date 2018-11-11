@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ivy-module version="2.0" xmlns:e="http://ant.apache.org/ivy/extra">
+	<info organisation="jp.kobe_u.scarab"
+		module="org-sat4j-pb"
+		revision="2.3.6-R2404"
+		status="integration"
+		publication="20180525141303"
+	>
+		<license name="EPL-1.0" url="https://www.eclipse.org/legal/epl-v10.html" />
+		<description homepage="http://kix.istc.kobe-u.ac.jp/~soh/scarab/">
+		A prototyping tool for developing SAT-based CP systems
+		</description>
+	</info>
+	<configurations>
+		<conf name="compile" visibility="public" description=""/>
+		<conf name="runtime" visibility="public" description="" extends="compile"/>
+		<conf name="test" visibility="public" description="" extends="runtime"/>
+		<conf name="provided" visibility="public" description=""/>
+		<conf name="optional" visibility="public" description=""/>
+		<conf name="compile-internal" visibility="private" description="" extends="compile,optional,provided"/>
+		<conf name="runtime-internal" visibility="private" description="" extends="runtime,optional"/>
+		<conf name="test-internal" visibility="private" description="" extends="test,optional,provided"/>
+		<conf name="plugin" visibility="private" description=""/>
+		<conf name="pom" visibility="public" description=""/>
+		<conf name="scala-tool" visibility="private" description=""/>
+	</configurations>
+	<publications>
+		<artifact name="org-sat4j-pb" type="pom" ext="pom" conf="pom"/>
+		<artifact name="org-sat4j-pb" type="jar" ext="jar" conf="compile"/>
+		<artifact name="org-sat4j-pb" type="src" ext="jar" conf="compile" e:classifier="sources"/>
+		<artifact name="org-sat4j-pb" type="doc" ext="jar" conf="compile" e:classifier="javadoc"/>
+	</publications>
+	<dependencies>
+		<dependency org="org.scala-lang" name="scala-compiler" rev="2.12.4" conf="scala-tool->default,optional(default)"/>
+		<dependency org="org.scala-lang" name="scala-library" rev="2.12.4" conf="scala-tool->default,optional(default)"/>
+		<dependency org="jp.kobe_u.scarab" name="org-sat4j-core" rev="2.3.6-R2404" conf="compile->default(compile)"/>
+	</dependencies>
+</ivy-module>
