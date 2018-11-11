@@ -39,7 +39,7 @@ Features of Scarab are follows:
 
 -   Download [the latest version](http://kix.istc.kobe-u.ac.jp/~soh/scarab/scarab-v1-6-9.zip).
 
-![img](./figs/latin5-diagonal.gif)
+![img](latin5-diagonal.gif)
 -   Write your own Scarab program. For instance, let&rsquo;s write a program solving Pandiagonal Latin Square **PLS(n)**.  
     -   a problem of placing different \(n\) numbers into \(n \times n\) matrix
     -   such that each number is occurring exactly once
