@@ -1,18 +1,3 @@
-<script type="text/javascript">
-
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-6313627-2']);
-  _gaq.push(['_trackPageview']);
-
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-
-</script>
-</div>
-
 <table class="menu" border="0" cellspacing="0" cellpadding="20" width="900px">
 <tr>
 <td class="menu" bgcolor="#3B5998"><a href="http://tsoh.org/scarab/">Home</a></td>
