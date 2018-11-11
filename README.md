@@ -15,7 +15,7 @@
 
 <table class="menu" border="0" cellspacing="0" cellpadding="20" width="900px">
 <tr>
-<td class="menu" bgcolor="#3B5998"><a href="http://kix.istc.kobe-u.ac.jp/~soh/scarab/">Home</a></td>
+<td class="menu" bgcolor="#3B5998"><a href="http://tsoh.org/scarab/">Home</a></td>
 <td class="menu" bgcolor="#3B5998"><a href="http://kix.istc.kobe-u.ac.jp/~soh/scarab/examples.html">Examples</a></td>
 <td class="menu" bgcolor="#3B5998"><a href="http://kix.istc.kobe-u.ac.jp/~soh/scarab/doc.html">Documents</a></td>
 <td class="menu" bgcolor="#3B5998"><a href="http://kix.istc.kobe-u.ac.jp/~soh/scarab/advanced.html">Advanced Usage</a></td>
