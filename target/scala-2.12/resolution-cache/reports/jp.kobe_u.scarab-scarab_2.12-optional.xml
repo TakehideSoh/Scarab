@@ -4,10 +4,10 @@
 	<info
 		organisation="jp.kobe_u.scarab"
 		module="scarab_2.12"
-		revision="1.9.1-SNAPSHOT"
+		revision="1.9.6-SNAPSHOT"
 		conf="optional"
 		confs="compile, runtime, test, provided, optional, compile-internal, runtime-internal, test-internal, plugin, pom, scala-tool"
-		date="20180525142010"/>
+		date="20190210103512"/>
 	<dependencies>
 	</dependencies>
 </ivy-report>

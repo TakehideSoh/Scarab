@@ -4,10 +4,10 @@
 	<info
 		organisation="jp.kobe_u.scarab"
 		module="org-sat4j-core"
-		revision="2.3.6-R2404"
+		revision="2.3.6-SNAPSHOT"
 		conf="runtime"
 		confs="compile, runtime, test, provided, optional, compile-internal, runtime-internal, test-internal, plugin, pom, scala-tool"
-		date="20180525141303"/>
+		date="20190210103512"/>
 	<dependencies>
 	</dependencies>
 </ivy-report>

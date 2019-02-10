@@ -4,7 +4,7 @@
 		module="scarab-build"
 		revision="0.1-SNAPSHOT"
 		status="integration"
-		publication="20180525140630"
+		publication="20190210103505"
 		e:sbtVersion="1.0" e:scalaVersion="2.12"
 	>
 		<description>
@@ -40,5 +40,6 @@
 			<artifact name="global-plugins" type="src" ext="jar" conf="compile" e:classifier="sources"/>
 			<artifact name="global-plugins" type="doc" ext="jar" conf="compile" e:classifier="javadoc"/>
 		</dependency>
+		<dependency org="com.eed3si9n" name="sbt-assembly" rev="0.14.8" conf="compile->default(compile)" e:sbtVersion="1.0" e:scalaVersion="2.12"/>
 	</dependencies>
 </ivy-module>

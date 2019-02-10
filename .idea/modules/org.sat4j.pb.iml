@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module external.linked.project.id="sat4jPB [file:/Users/soh/02_prog/scarab/]" external.linked.project.path="$MODULE_DIR$/../../org.sat4j.pb" external.root.project.path="$MODULE_DIR$/../.." external.system.id="SBT" type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
+    <output url="file://$MODULE_DIR$/../../org.sat4j.pb/target/classes" />
+    <output-test url="file://$MODULE_DIR$/../../org.sat4j.pb/target/test-classes" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/../../org.sat4j.pb">
+      <sourceFolder url="file://$MODULE_DIR$/../../org.sat4j.pb/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../org.sat4j.pb/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../org.sat4j.pb/target/src_managed/main" isTestSource="false" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../org.sat4j.pb/target/src_managed/test" isTestSource="true" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../org.sat4j.pb/src/main/resources" type="java-resource" />
+      <excludeFolder url="file://$MODULE_DIR$/../../org.sat4j.pb/target" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="org.sat4j.core" exported="" />
+  </component>
+</module>

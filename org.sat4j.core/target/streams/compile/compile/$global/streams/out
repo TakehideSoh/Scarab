@@ -1,4 +1,4 @@
-[0m[[0m[0minfo[0m] [0m[0m/Users/soh/02_prog/git/Scarab/org.sat4j.core/src/main/java/org/sat4j/tools/SolverDecorator.java: 一部の入力ファイルは非推奨のAPIを使用またはオーバーライドしています。[0m
-[0m[[0m[0minfo[0m] [0m[0m/Users/soh/02_prog/git/Scarab/org.sat4j.core/src/main/java/org/sat4j/tools/SolverDecorator.java: 詳細は、-Xlint:deprecationオプションを指定して再コンパイルしてください。[0m
-[0m[[0m[0minfo[0m] [0m[0m/Users/soh/02_prog/git/Scarab/org.sat4j.core/src/main/java/org/sat4j/AbstractLauncher.java: 入力ファイルの操作のうち、未チェックまたは安全ではないものがあります。[0m
-[0m[[0m[0minfo[0m] [0m[0m/Users/soh/02_prog/git/Scarab/org.sat4j.core/src/main/java/org/sat4j/AbstractLauncher.java: 詳細は、-Xlint:uncheckedオプションを指定して再コンパイルしてください。[0m
+[0m[[0m[0minfo[0m] [0m[0m/Users/soh/02_prog/scarab/org.sat4j.core/src/main/java/org/sat4j/tools/SolverDecorator.java: 一部の入力ファイルは非推奨のAPIを使用またはオーバーライドしています。[0m
+[0m[[0m[0minfo[0m] [0m[0m/Users/soh/02_prog/scarab/org.sat4j.core/src/main/java/org/sat4j/tools/SolverDecorator.java: 詳細は、-Xlint:deprecationオプションを指定して再コンパイルしてください。[0m
+[0m[[0m[0minfo[0m] [0m[0m/Users/soh/02_prog/scarab/org.sat4j.core/src/main/java/org/sat4j/AbstractLauncher.java: 入力ファイルの操作のうち、未チェックまたは安全ではないものがあります。[0m
+[0m[[0m[0minfo[0m] [0m[0m/Users/soh/02_prog/scarab/org.sat4j.core/src/main/java/org/sat4j/AbstractLauncher.java: 詳細は、-Xlint:uncheckedオプションを指定して再コンパイルしてください。[0m
