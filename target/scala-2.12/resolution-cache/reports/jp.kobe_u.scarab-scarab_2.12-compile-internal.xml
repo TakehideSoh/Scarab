@@ -4,38 +4,38 @@
 	<info
 		organisation="jp.kobe_u.scarab"
 		module="scarab_2.12"
-		revision="1.9.6-SNAPSHOT"
+		revision="1.9.7-SNAPSHOT"
 		conf="compile-internal"
 		confs="compile, runtime, test, provided, optional, compile-internal, runtime-internal, test-internal, plugin, pom, scala-tool"
-		date="20190210103512"/>
+		date="20190211112526"/>
 	<dependencies>
 		<module organisation="jp.kobe_u.scarab" name="org-sat4j-pb">
-			<revision name="2.3.6-SNAPSHOT" status="integration" pubdate="20190210103512" resolver="inter-project" artresolver="inter-project" homepage="http://tsoh.org/scarab/" downloaded="false" searched="false" default="false" conf="compile, default(compile)" position="2">
+			<revision name="2.3.6-SNAPSHOT" status="integration" pubdate="20190211112526" resolver="inter-project" artresolver="inter-project" homepage="http://tsoh.org/scarab/" downloaded="false" searched="false" default="false" conf="compile, default(compile)" position="2">
 				<license name="EPL-1.0" url="https://www.eclipse.org/legal/epl-v10.html"/>
 				<metadata-artifact status="failed" details="" size="0" time="0" searched="false"/>
-				<caller organisation="jp.kobe_u.scarab" name="scarab_2.12" conf="compile-internal, compile, provided, optional" rev="2.3.6-SNAPSHOT" rev-constraint-default="2.3.6-SNAPSHOT" rev-constraint-dynamic="2.3.6-SNAPSHOT" callerrev="1.9.6-SNAPSHOT"/>
+				<caller organisation="jp.kobe_u.scarab" name="scarab_2.12" conf="compile-internal, compile, provided, optional" rev="2.3.6-SNAPSHOT" rev-constraint-default="2.3.6-SNAPSHOT" rev-constraint-dynamic="2.3.6-SNAPSHOT" callerrev="1.9.7-SNAPSHOT"/>
 				<artifacts>
 				</artifacts>
 			</revision>
 		</module>
 		<module organisation="jp.kobe_u.scarab" name="org-sat4j-core">
-			<revision name="2.3.6-SNAPSHOT" status="integration" pubdate="20190210103512" resolver="inter-project" artresolver="inter-project" homepage="http://tsoh.org/scarab/" downloaded="false" searched="false" default="false" conf="compile, default(compile)" position="1">
+			<revision name="2.3.6-SNAPSHOT" status="integration" pubdate="20190211112526" resolver="inter-project" artresolver="inter-project" homepage="http://tsoh.org/scarab/" downloaded="false" searched="false" default="false" conf="compile, default(compile)" position="1">
 				<license name="EPL-1.0" url="https://www.eclipse.org/legal/epl-v10.html"/>
 				<metadata-artifact status="failed" details="" size="0" time="0" searched="false"/>
 				<caller organisation="jp.kobe_u.scarab" name="org-sat4j-pb" conf="compile" rev="2.3.6-SNAPSHOT" rev-constraint-default="2.3.6-SNAPSHOT" rev-constraint-dynamic="2.3.6-SNAPSHOT" callerrev="2.3.6-SNAPSHOT"/>
-				<caller organisation="jp.kobe_u.scarab" name="scarab_2.12" conf="compile-internal, compile, provided, optional" rev="2.3.6-SNAPSHOT" rev-constraint-default="2.3.6-SNAPSHOT" rev-constraint-dynamic="2.3.6-SNAPSHOT" callerrev="1.9.6-SNAPSHOT"/>
+				<caller organisation="jp.kobe_u.scarab" name="scarab_2.12" conf="compile-internal, compile, provided, optional" rev="2.3.6-SNAPSHOT" rev-constraint-default="2.3.6-SNAPSHOT" rev-constraint-dynamic="2.3.6-SNAPSHOT" callerrev="1.9.7-SNAPSHOT"/>
 				<artifacts>
 				</artifacts>
 			</revision>
 		</module>
 		<module organisation="org.scala-lang" name="scala-library">
-			<revision name="2.12.4" status="release" pubdate="20171011030456" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.scala-lang.org/" extra-info.apiURL="http://www.scala-lang.org/api/2.12.4/" downloaded="false" searched="false" default="false" conf="default, compile, runtime, default(compile), master" position="0">
-				<license name="BSD 3-Clause" url="http://www.scala-lang.org/license.html"/>
-				<metadata-artifact status="no" details="" size="2640" time="0" location="/Users/soh/.ivy2/cache/org.scala-lang/scala-library/ivy-2.12.4.xml" searched="false" origin-is-local="false" origin-location="file:////Users/soh/.sbt/preloaded/org.scala-lang/scala-library/2.12.4/ivys/ivy.xml"/>
-				<caller organisation="jp.kobe_u.scarab" name="scarab_2.12" conf="compile-internal, compile, provided, optional" rev="2.12.4" rev-constraint-default="2.12.4" rev-constraint-dynamic="2.12.4" callerrev="1.9.6-SNAPSHOT"/>
+			<revision name="2.12.8" status="release" pubdate="20181204191556" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.scala-lang.org/" extra-info.apiURL="http://www.scala-lang.org/api/2.12.8/" downloaded="false" searched="false" default="false" conf="default, compile, runtime, default(compile), master" position="0">
+				<license name="Apache-2.0" url="https://www.apache.org/licenses/LICENSE-2.0"/>
+				<metadata-artifact status="no" details="" size="2656" time="0" location="/Users/soh/.ivy2/cache/org.scala-lang/scala-library/ivy-2.12.8.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.8/scala-library-2.12.8.pom"/>
+				<caller organisation="jp.kobe_u.scarab" name="scarab_2.12" conf="compile-internal, compile, provided, optional" rev="2.12.8" rev-constraint-default="2.12.8" rev-constraint-dynamic="2.12.8" callerrev="1.9.7-SNAPSHOT"/>
 				<artifacts>
-					<artifact name="scala-library" type="jar" ext="jar" status="no" details="" size="5247152" time="0" location="/Users/soh/.ivy2/cache/org.scala-lang/scala-library/jars/scala-library-2.12.4.jar">
-						<origin-location is-local="false" location="file:////Users/soh/.sbt/preloaded/org.scala-lang/scala-library/2.12.4/jars/scala-library.jar"/>
+					<artifact name="scala-library" type="jar" ext="jar" status="no" details="" size="5272591" time="0" location="/Users/soh/.ivy2/cache/org.scala-lang/scala-library/jars/scala-library-2.12.8.jar">
+						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.8/scala-library-2.12.8.jar"/>
 					</artifact>
 				</artifacts>
 			</revision>

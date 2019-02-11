@@ -9,8 +9,8 @@ package jp.kobe_u.scarab
  * `Solver` is a class for CSP solvers.
  * It encodes the given CSP to a SAT instance by using the specified encoder,
  * and solves the encoded SAT instance by using the specified SAT solver.
- * [[jp.kobe_u.scarab.solver.OrderEncoder]] is used as the default encoder, and
- * [[jp.kobe_u.scarab.solver.Sat4j]] is used as the default SAT solver.
+ * [[jp.kobe_u.scarab.OrderEncoder]] is used as the default encoder, and
+ * [[jp.kobe_u.scarab.Sat4j]] is used as the default SAT solver.
  *
  * Typical usage of the solver is as follows.
  * {{{
@@ -21,18 +21,18 @@ package jp.kobe_u.scarab
  * }}}
  *
  * The `find` method does the following.
- *   1. When it is called at the first time, the whole CSP is encoded by the `encodeCSP` method of [[jp.kobe_u.scarab.solver.Encoder]],
- *      and generated clauses are added to the SAT solver by the `addClause` method of [[jp.kobe_u.scarab.solver.SatSolver]].
- *   1. The `isSatisfiable` method of [[jp.kobe_u.scarab.solver.SatSolver]] is called.
- *   1. When a solution is found, the `decode` method of [[jp.kobe_u.scarab.solver.Encoder]] is called to get the solution
+ *   1. When it is called at the first time, the whole CSP is encoded by the `encodeCSP` method of [[jp.kobe_u.scarab.Encoder]],
+ *      and generated clauses are added to the SAT solver by the `addClause` method of [[jp.kobe_u.scarab.SatSolver]].
+ *   1. The `isSatisfiable` method of [[jp.kobe_u.scarab.SatSolver]] is called.
+ *   1. When a solution is found, the `decode` method of [[jp.kobe_u.scarab.Encoder]] is called to get the solution
  *      and the solution is set to the `solution` variable.
  *      Otherwise, the `solution` variable is set to `None`.
  *
  * The `add` method does the following.
  *   1. The constraint is preprocessed before encoding, and the translated constraints are added to the CSP.
- *      [[jp.kobe_u.scarab.solver.Simplifier]] is the preprocessor of [[jp.kobe_u.scarab.solver.OrderEncoder]].
- *   1. The translated constraints are encoded by [[jp.kobe_u.scarab.solver.Encoder]],
- *      and generated clauses are added to the SAT solver by the `addClause` method of [[jp.kobe_u.scarab.solver.SatSolver]].
+ *      [[jp.kobe_u.scarab.Simplifier]] is the preprocessor of [[jp.kobe_u.scarab.OrderEncoder]].
+ *   1. The translated constraints are encoded by [[jp.kobe_u.scarab.Encoder]],
+ *      and generated clauses are added to the SAT solver by the `addClause` method of [[jp.kobe_u.scarab.SatSolver]].
  *
  * {{{
  *     val solver = new Solver(csp)
@@ -135,7 +135,7 @@ class Solver(
     encoder.encodeCSP
     val result = satSolver.isSatisfiable
     // Sat4j("iterate") needs calling model() for enumeration
-    if (result) satSolver.model
+    if (result) satSolver.getModelArray
     _solutionOpt = if (result) Option(encoder.decode) else None
     result
   }
@@ -328,8 +328,8 @@ class Solver(
  *      println(solver.solution)
  *    }
  * }}}
- * [[jp.kobe_u.scarab.solver]] is returned as the default solver.
- * @see [[jp.kobe_u.scarab.solver]]
+ * [[jp.kobe_u.scarab.Solver]] is returned as the default solver.
+ * @see [[jp.kobe_u.scarab.Solver]]
  */
 object Solver {
   def apply(csp: CSP): Solver = {

@@ -1,10 +1,10 @@
-val scala212 = "2.12.4"
+val scala212 = "2.12.8"
 val scala211 = "2.11.8"
 
 val buildSettings: Seq[Setting[_]] = inThisBuild(Seq(
   organization := "jp.kobe_u.scarab",
   scalaVersion := scala212, 
-  version := "1.9.6-SNAPSHOT",  
+  version := "1.9.7-SNAPSHOT",  
   homepage := Some(url("http://tsoh.org/scarab/")),  
   crossScalaVersions := Seq(scala211, scala212),
   description := "A prototyping tool for developing SAT-based CP systems",
@@ -39,6 +39,7 @@ lazy val root = (project in file(".")).
   dependsOn(sat4jPB).  
   settings(
     assemblyJarName in assembly := "scarab.jar",
+    assemblyOption in assembly := (assemblyOption in assembly).value.copy(includeScala = false),
     buildSettings,
     name := "Scarab",
 //    autoScalaLibrary := true

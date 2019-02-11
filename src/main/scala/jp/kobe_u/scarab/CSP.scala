@@ -25,7 +25,7 @@ abstract class Expr
  * {{{
  *     Term ::= Var(String, String*) | Sum(Int, Map[Var,Int])
  * }}}
- * See examples described in [[jp.kobe_u.scarab.csp.Sum]] section.
+ * See examples described in [[jp.kobe_u.scarab.Sum]] section.
  */
 sealed abstract class Term extends Expr {
   /**
@@ -556,7 +556,7 @@ object Domain {
 
 /**
  * `Assignment` is a case class representing the assignment for integer variables and Boolean variables.
- * The assignment is returned from the [[jp.kobe_u.scarab.solver.Solver]] as a solution.
+ * The assignment is returned from the [[jp.kobe_u.scarab.Solver]] as a solution.
  *
  * {{{
  *     scala> val x = Var("x")
@@ -568,10 +568,10 @@ object Domain {
  * @constructor Creates a new assignment consisting of `intMap` and `boolMap`.
  * @param intMap the assignment for integer variables
  * @param boolMap the assignment for Boolean variables
- * @see The `value` method of [[jp.kobe_u.scarab.csp.Term]].
- * @see The `value` method of [[jp.kobe_u.scarab.csp.Constraint]].
- * @see The `verify` method of [[jp.kobe_u.scarab.csp.CSP]].
- * @see The `solution` variable of [[jp.kobe_u.scarab.solver.Solver]].
+ * @see The `value` method of [[jp.kobe_u.scarab.Term]].
+ * @see The `value` method of [[jp.kobe_u.scarab.Constraint]].
+ * @see The `verify` method of [[jp.kobe_u.scarab.CSP]].
+ * @see The `solution` variable of [[jp.kobe_u.scarab.Solver]].
  */
 case class Assignment(intMap: Map[Var, Int], boolMap: Map[Bool, Boolean]) {
   /** Returns the value of the given term under this assignment. */
@@ -596,7 +596,7 @@ case class Assignment(intMap: Map[Var, Int], boolMap: Map[Bool, Boolean]) {
  *     csp.add(x + y === 7)             // add a constraint of x === y.
  * }}}
  *
- * Implicit conversion from Scala Symbol to Var is defined in [[jp.kobe_u.scarab.csp]] package object.
+ * Implicit conversion from Scala Symbol to Var is defined in [[jp.kobe_u.scarab]] package object.
  * Therefore, the above program can be written as follows when `jp.kobe_u.scarab.csp._` is imported.
  *
  * {{{
@@ -606,7 +606,7 @@ case class Assignment(intMap: Map[Var, Int], boolMap: Map[Bool, Boolean]) {
  *     csp.add('x + 'y === 7)
  * }}}
  *
- * When the CSP is encoded by [[jp.kobe_u.scarab.solver.Encoder]],
+ * When the CSP is encoded by [[jp.kobe_u.scarab.Encoder]],
  * the contents of the CSP (that is, variables, bools, dom, and constraints) will be modified.
  *
  * @constructor Creates a new `CSP` consisting of specified variables, bools, domain, and constraints.
@@ -709,7 +709,7 @@ case class CSP(var variables: IndexedSeq[Var] = IndexedSeq.empty,
   /**
    * Verifies the CSP is satisfied by the given assignment.
    * It throws java.lang.AssertionError when the CSP is not satisfied by the assignment.
-   * Note that the CSP will be modified by [[jp.kobe_u.scarab.solver.Simplifier]] when the CSP is encoded,
+   * Note that the CSP will be modified by [[jp.kobe_u.scarab.Simplifier]] when the CSP is encoded,
    * and the verification is performed on the modified CSP.
    * @param the assignment
    * @throws java.lang.AssertionError when the CSP is not satisfied by the assignment.

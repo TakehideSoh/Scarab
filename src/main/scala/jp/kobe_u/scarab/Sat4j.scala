@@ -1,16 +1,12 @@
 package jp.kobe_u.scarab
 
-import scala.collection.JavaConversions
+import scala.collection.JavaConverters
 import org.sat4j.minisat.SolverFactory
 import org.sat4j.minisat.core.{ Solver => MinisatSolver }
 import org.sat4j.specs.ISolver
 import org.sat4j.specs.ContradictionException
-import org.sat4j.specs.TimeoutException
 import org.sat4j.core.VecInt
-import org.sat4j.tools.xplain.Xplain
-import org.sat4j.tools.xplain.Explainer
 import org.sat4j.tools.ModelIterator
-import org.sat4j.tools.Minimal4InclusionModel
 import org.sat4j.tools.DimacsStringSolver
 import org.sat4j.tools.xplain.HighLevelXplain
 import org.sat4j.tools.SolutionFoundListener
@@ -146,10 +142,11 @@ class Sat4j(option: String) extends SatSolver {
   def isSatisfiable(assumps: Seq[Int]) = {
     !clearlyUNSAT && sat4j.isSatisfiable(new VecInt(assumps.toArray))
   }
-  def model: Array[Int] =
+
+  def getModelArray: Array[Int] = // return model array starting with 0, i.e., here 0 means variable numbered 1 in DIMACS
     sat4j.model
 
-  def model(v: Int) = {
+  def model(v: Int) = { // return truth value assigned to variable numbered n in DIMACS
     //    println(v)
     modelstock match {
       case Some(ms) => ms(v - 1)
@@ -210,7 +207,7 @@ class Sat4j(option: String) extends SatSolver {
 
   def nConstraints = sat4j.nConstraints
 
-  def getStat = JavaConversions.mapAsScalaMap(sat4j.getStat).toMap
+  def getStat = JavaConverters.mapAsScalaMap(sat4j.getStat).toMap
 
   def setTimeout(time: Int) = {
     if (time > 0)

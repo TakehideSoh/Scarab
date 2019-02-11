@@ -32,7 +32,7 @@ class Sat4jPB extends SatSolver {
 
   def isSatisfiable: Boolean = sat4jpb.isSatisfiable
 
-  def model: Array[Int] = sat4jpb.model()
+  def getModelArray: Array[Int] = sat4jpb.model()
 
   def model(v: Int): Boolean = sat4jpb.model(v)
 

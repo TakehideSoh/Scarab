@@ -42,7 +42,7 @@ class ExtSatSolver(cmd: String, var fileName: String = "", keep: Boolean = false
     val source = Source.fromFile(outFile.getAbsolutePath())
     source.getLines.map(_.trim).next match {
       case "SAT" => {
-        modelArray = source.getLines.map(_.trim).next.split(" ").dropRight(1).map(_.toInt).toArray
+        modelArray = source.getLines.map(_.trim).next.split(" ").dropRight(1).map(_.toInt)
         true
       }
       case "UNSAT" => false
@@ -111,12 +111,12 @@ class ExtSatSolver(cmd: String, var fileName: String = "", keep: Boolean = false
     runExtSolver
   }
 
-  def model: Array[Int] = modelArray
+  def getModelArray: Array[Int] = modelArray
     
   def model(v: Int): Boolean = modelArray(v - 1) > 0
     
   def findModel: Option[Array[Int]] =
-    if (isSatisfiable) Option(model)
+    if (isSatisfiable) Option(getModelArray)
     else None
     
   def nVars: Int = nofVariables
@@ -125,10 +125,10 @@ class ExtSatSolver(cmd: String, var fileName: String = "", keep: Boolean = false
     
   def getStat: Map[String, Number] = stat
     
-  def setTimeout(time: Int) = tout = time
+  def setTimeout(time: Int): Unit = tout = time
     
-  def dumpCnf(name: String) =  Process(s"cp ${satFileProblem.getAbsolutePath} ${name}").run
-  def dumpCnf = Process(s"cat ${satFileProblem.getAbsolutePath}").run
+  def dumpCnf(name: String): Unit =  Process(s"cp ${satFileProblem.getAbsolutePath} ${name}").run
+  def dumpCnf: Unit = Process(s"cat ${satFileProblem.getAbsolutePath}").run
 
   /*
    * (not-Supported Methods in External SATSolvers) 

@@ -2,13 +2,13 @@ package jp.kobe_u.scarab
 
 /**
  * `Encoder` is an abstract class for encoding CSP to SAT.
- * Currently, only the [[jp.kobe_u.scarab.solver.OrderEncoder]] is its implementation.
+ * Currently, only the [[jp.kobe_u.scarab.OrderEncoder]] is its implementation.
  *
  * The `encodeCSP` method encodes the whole CSP when it is called at the first time
  * (or whenever there is some change (addition or rollback of
  * constraints) in CSP).
  * Generated clauses are added to the SAT solver by the `addClause` method of this class
- * which calls the `addClause` method of [[jp.kobe_u.scarab.solver.SatSolver]].
+ * which calls the `addClause` method of [[jp.kobe_u.scarab.SatSolver]].
  *
  * ==Implementation Issues==
  * ===Encoding integer variables===
@@ -28,7 +28,7 @@ package jp.kobe_u.scarab
  *
  * ===Encoding constraints===
  * It might be necessary to perform preprocessing to the given CSP before encoding.
- * [[jp.kobe_u.scarab.solver.Simplifier]] does such a transformation to clausal form, that is,
+ * [[jp.kobe_u.scarab.Simplifier]] does such a transformation to clausal form, that is,
  * constraints are transformed to `Seq[Seq[Literal]]` data.
  *
  * The following methods should be implemented in the subclass.
@@ -126,7 +126,7 @@ abstract class Encoder(csp: CSP, val satSolver: SatSolver) {
   }
 
   /**
-   * Adds SAT clause by using `addClause` method of [[jp.kobe_u.scarab.solver.SatSolver]] after removing `TrueLit` and `FalseLit`.
+   * Adds SAT clause by using `addClause` method of [[jp.kobe_u.scarab.SatSolver]] after removing `TrueLit` and `FalseLit`.
    * When the clause contains `TrueLit`, the clause is not added.
    * When the clause only contains `FalseLit`, two clauses 1 and -1
    * are added.
@@ -312,7 +312,7 @@ abstract class Encoder(csp: CSP, val satSolver: SatSolver) {
     for (x <- csp.variables)
       varAssign += x -> decode(x)
     for (p <- csp.bools) {
-      boolAssign += p -> satSolver.model(boolCodeMap(p))      
+      boolAssign += p -> satSolver.model(boolCodeMap(p))
     }
 
     Assignment(varAssign, boolAssign)

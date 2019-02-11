@@ -1,7 +1,7 @@
 package jp.kobe_u.scarab
 
 /** `SatSolver` is an abstract class for SAT solver.
- * Currently, only the [[jp.kobe_u.scarab.solver.Sat4j]] is its implementation.
+ * Currently, only the [[jp.kobe_u.scarab.Sat4j]] is its implementation.
  */
 trait SatSolver {
   /* Basic Interface */
@@ -10,9 +10,9 @@ trait SatSolver {
   def addClause(lits: Seq[Int], cIndex: Int): Int
   def addClause(lits: Seq[Int])
   def isSatisfiable: Boolean
-  def model: Array[Int]
+  def getModelArray: Array[Int] // return model array starting with 0, i.e., here 0 means variable numbered 1 in DIMACS
   def model(v: Int): Boolean
-  def reset: Unit  
+  def reset(): Unit
   
   /* Advanced Interface */
   def isSatisfiable(assumps: Seq[Int]): Boolean  
@@ -20,21 +20,21 @@ trait SatSolver {
   def addAtMost(lits: Seq[Int], degree: Int): Unit
   def addExactly(lits: Seq[Int], degree: Int): Unit  
   def addPB(lits: Seq[Int], coef: Seq[Int], degree: Int): Unit
-  def minExplain: Array[Int]
-  def minAllExplain: Unit
-  def clearLearntClauses: Unit
+  def minExplain(): Array[Int]
+  def minAllExplain(): Unit
+  def clearLearntClauses(): Unit
   def findMinimalModel(ps: Seq[Int]): Option[Seq[Boolean]]
   def findBackbone(ps: Seq[Int]): Set[Int]
 
   /* Supplemental Interface */
-  def nVars: Int
+  def nVars(): Int
   def nextFreeVarID(reserve: Boolean): Int
-  def nConstraints: Int
+  def nConstraints(): Int
   def setTimeout(time: Int)
   
-  def dumpStat
+  def dumpStat()
   def dumpStat(filePath: String)  
-  def dumpCnf
+  def dumpCnf()
   def dumpCnf(filePath: String)  
   
 }
