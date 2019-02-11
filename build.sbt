@@ -1,12 +1,13 @@
 val scala212 = "2.12.8"
 val scala211 = "2.11.8"
+val scala210 = "2.10.7"
 
 val buildSettings: Seq[Setting[_]] = inThisBuild(Seq(
   organization := "jp.kobe_u.scarab",
   scalaVersion := scala212, 
   version := "1.9.7-SNAPSHOT",  
   homepage := Some(url("http://tsoh.org/scarab/")),  
-  crossScalaVersions := Seq(scala211, scala212),
+  crossScalaVersions := Seq(scala210, scala211, scala212),
   description := "A prototyping tool for developing SAT-based CP systems",
   licenses := List("BSD New" -> url("https://github.com/TakehideSoh/Scarab/blob/master/LICENSE")),
   scmInfo := Some(ScmInfo(url("https://github.com/TakehideSoh/Scarab.git"), "https://github.com/TakehideSoh/Scarab.git")),

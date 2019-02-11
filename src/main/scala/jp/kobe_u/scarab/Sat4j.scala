@@ -1,8 +1,7 @@
 package jp.kobe_u.scarab
 
-import scala.collection.JavaConverters
 import org.sat4j.minisat.SolverFactory
-import org.sat4j.minisat.core.{ Solver => MinisatSolver }
+import org.sat4j.minisat.core.{Solver => MinisatSolver}
 import org.sat4j.specs.ISolver
 import org.sat4j.specs.ContradictionException
 import org.sat4j.core.VecInt
@@ -12,6 +11,8 @@ import org.sat4j.tools.xplain.HighLevelXplain
 import org.sat4j.tools.SolutionFoundListener
 import org.sat4j.specs.IVecInt
 import org.sat4j.tools.AllMUSes
+
+import scala.collection.JavaConverters._
 
 /**
  * Wrapper class of [[http://www.sat4j.org "Sat4j solver"]].
@@ -207,7 +208,10 @@ class Sat4j(option: String) extends SatSolver {
 
   def nConstraints = sat4j.nConstraints
 
-  def getStat = JavaConverters.mapAsScalaMap(sat4j.getStat).toMap
+  def getStat = {
+    import scala.collection.JavaConverters._
+    sat4j.getStat.asScala
+  }
 
   def setTimeout(time: Int) = {
     if (time > 0)

@@ -7,10 +7,10 @@
 		revision="1.9.7-SNAPSHOT"
 		conf="test-internal"
 		confs="compile, runtime, test, provided, optional, compile-internal, runtime-internal, test-internal, plugin, pom, scala-tool"
-		date="20190211112526"/>
+		date="20190211141804"/>
 	<dependencies>
 		<module organisation="jp.kobe_u.scarab" name="org-sat4j-pb">
-			<revision name="2.3.6-SNAPSHOT" status="integration" pubdate="20190211112526" resolver="inter-project" artresolver="inter-project" homepage="http://tsoh.org/scarab/" downloaded="false" searched="false" default="false" conf="compile, default(compile)" position="2">
+			<revision name="2.3.6-SNAPSHOT" status="integration" pubdate="20190211141803" resolver="inter-project" artresolver="inter-project" homepage="http://tsoh.org/scarab/" downloaded="false" searched="false" default="false" conf="compile, default(compile)" position="2">
 				<license name="EPL-1.0" url="https://www.eclipse.org/legal/epl-v10.html"/>
 				<metadata-artifact status="failed" details="" size="0" time="0" searched="false"/>
 				<caller organisation="jp.kobe_u.scarab" name="scarab_2.12" conf="test, compile, provided, test-internal, runtime, optional" rev="2.3.6-SNAPSHOT" rev-constraint-default="2.3.6-SNAPSHOT" rev-constraint-dynamic="2.3.6-SNAPSHOT" callerrev="1.9.7-SNAPSHOT"/>
@@ -19,7 +19,7 @@
 			</revision>
 		</module>
 		<module organisation="jp.kobe_u.scarab" name="org-sat4j-core">
-			<revision name="2.3.6-SNAPSHOT" status="integration" pubdate="20190211112526" resolver="inter-project" artresolver="inter-project" homepage="http://tsoh.org/scarab/" downloaded="false" searched="false" default="false" conf="compile, default(compile)" position="1">
+			<revision name="2.3.6-SNAPSHOT" status="integration" pubdate="20190211141803" resolver="inter-project" artresolver="inter-project" homepage="http://tsoh.org/scarab/" downloaded="false" searched="false" default="false" conf="compile, default(compile)" position="1">
 				<license name="EPL-1.0" url="https://www.eclipse.org/legal/epl-v10.html"/>
 				<metadata-artifact status="failed" details="" size="0" time="0" searched="false"/>
 				<caller organisation="jp.kobe_u.scarab" name="org-sat4j-pb" conf="compile" rev="2.3.6-SNAPSHOT" rev-constraint-default="2.3.6-SNAPSHOT" rev-constraint-dynamic="2.3.6-SNAPSHOT" callerrev="2.3.6-SNAPSHOT"/>
