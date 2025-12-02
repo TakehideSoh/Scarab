@@ -96,7 +96,7 @@ class Solver(
   /**
    *  Add Constraints that blocks the latest solution.
    */
-  def addBlockConstraint {
+  def addBlockConstraint() {
     _solutionOpt match {
       case Some(n) => {
         val cs1 = for (x <- csp.variables if !x.isAux)
@@ -214,7 +214,7 @@ class Solver(
    * And rollback
    * - csp
    */
-  def reset {
+  def reset() {
     encoder.reset
     satSolver.reset
     csp.reset
@@ -231,7 +231,7 @@ class Solver(
    * Return a minimal set of UNSAT components of CSP.
    * Each component is defined at the addition of CSP.
    */
-  def minAllExplain = satSolver.minAllExplain
+  def minAllExplain() = satSolver.minAllExplain
 
   /**
    * Return the optimal value of `v`
@@ -251,12 +251,12 @@ class Solver(
     case "bin1"         => binarySearch1(v, lb, ub)
     case "bin2" | "bin" => binarySearch2(v, lb, ub)
     case "default"      => binarySearch2(v, lb, ub)
-    case ex             => throw new IllegalArgumentException("no such optimization heuristics $ex")
+    case ex             => throw new IllegalArgumentException(s"no such optimization heuristics $ex")
   }
 
   private def decrementalSearch(v: Var, ub0: Int) = {
     csp.add(v <= ub0)
-    var lb = csp.dom(v).lb; var ub = ub0; var sol = ub0
+    val lb = csp.dom(v).lb; var ub = ub0; var sol = ub0
     while (lb < ub && find) {
       sol = encoder.decode(v)
       //      println(s"lb: $lb, ub: $sol")
@@ -267,7 +267,7 @@ class Solver(
   }
 
   private def incrementalSearch1(v: Var, lb0: Int) = {
-    var lb = lb0; var ub = csp.dom(v).ub
+    var lb = lb0; val ub = csp.dom(v).ub
     println(s"lb: $lb, ub: $ub")
     csp.commit
     csp.add(v <= lb)
@@ -281,7 +281,7 @@ class Solver(
   }
 
   private def incrementalSearch2(v: Var, lb0: Int) = {
-    var lb = lb0; var ub = csp.dom(v).ub
+    var lb = lb0; val ub = csp.dom(v).ub
     println(s"lb: $lb, ub: $ub")
     while (lb < ub && !find(Seq(v <= lb))) {
       lb += 1
@@ -293,7 +293,7 @@ class Solver(
   private def binarySearch1(v: Var, lb0: Int, ub0: Int) = {
     var lb = lb0; var ub = ub0
     while (lb < ub) {
-      var size = (lb + ub) / 2
+      val size = (lb + ub) / 2
       csp.commit
       csp.add(v <= size)
       if (find) {
@@ -309,7 +309,7 @@ class Solver(
   private def binarySearch2(v: Var, lb0: Int, ub0: Int) = {
     var lb = lb0; var ub = ub0
     while (lb < ub) {
-      var size = (lb + ub) / 2
+      val size = (lb + ub) / 2
       if (find(v <= size)) ub = size
       else lb = size + 1
       //      println(s"lb: $lb, ub: $ub")

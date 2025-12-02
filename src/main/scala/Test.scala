@@ -1,5 +1,3 @@
-import jp.kobe_u.scarab._
-
 object Test {
   def main(args: Array[String]) {
     test1  
@@ -9,7 +7,7 @@ object Test {
 //    test3
   }
 
-  def test1 {
+  def test1() {
     import jp.kobe_u.scarab._, dsl._
 
     use(new Sat4j("xplain"))
@@ -33,7 +31,7 @@ object Test {
 
   }
   
-  def test2 {
+  def test2() {
     import jp.kobe_u.scarab._, dsl._
 
     use(new Sat4j("xplain"))
@@ -59,7 +57,7 @@ object Test {
 
   }
   
-  def test3 {
+  def test3() {
     import jp.kobe_u.scarab._, dsl._    
 
     def define(sum: Int) {

@@ -12,8 +12,6 @@ import org.sat4j.tools.SolutionFoundListener
 import org.sat4j.specs.IVecInt
 import org.sat4j.tools.AllMUSes
 
-import scala.collection.JavaConverters._
-
 /**
  * Wrapper class of [[http://www.sat4j.org "Sat4j solver"]].
  *

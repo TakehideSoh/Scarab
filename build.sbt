@@ -36,17 +36,19 @@ lazy val sat4jPB = (project in file("org.sat4j.pb")).
 )
 
 lazy val root = (project in file(".")).
-  dependsOn(sat4jCore).  
-  dependsOn(sat4jPB).  
+  dependsOn(sat4jCore).
+  dependsOn(sat4jPB).
   settings(
-    assemblyJarName in assembly := "scarab.jar",
-    assemblyOption in assembly := (assemblyOption in assembly).value.copy(includeScala = false),
+    assembly / assemblyJarName := "scarab.jar",
+    assembly / mainClass := Some("ScarabMain"),
+    assembly / assemblyMergeStrategy := {
+      case PathList("META-INF", "MANIFEST.MF") => MergeStrategy.discard
+      case PathList("META-INF", xs @ _*) => MergeStrategy.discard
+      case "module-info.class" => MergeStrategy.discard
+      case _ => MergeStrategy.first
+    },
     buildSettings,
     name := "Scarab",
+    libraryDependencies += "net.java.dev.jna" % "jna" % "5.13.0",
 //    autoScalaLibrary := true
   )
-
-mergeStrategy in assembly := {
-case PathList("META-INF", "MANIFEST.MF") => MergeStrategy.discard
-case _ => MergeStrategy.first
-}

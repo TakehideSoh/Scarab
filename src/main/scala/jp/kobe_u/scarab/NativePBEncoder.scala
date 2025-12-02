@@ -1,7 +1,5 @@
 package jp.kobe_u.scarab
 
-import org.sat4j.core.VecInt
-
 class NativePBEncoder(csp: CSP, satSolver: SatSolver) extends OrderEncoder(csp, satSolver) {
 
   def useNativePB(sum: Sum) = {
@@ -59,7 +57,7 @@ class NativePBEncoder(csp: CSP, satSolver: SatSolver) extends OrderEncoder(csp, 
         val left_b = -1 * sum.b + axs.filter(i => i._1 > 0).foldLeft(0)((n, z) => n + z._1 * -1)
         val degree = left_b * -1
 
-        def add {
+        def add() {
           if (left_b * -1 > 0) {
             if (degree == 1)
               satSolver.addClause(vec, 0)

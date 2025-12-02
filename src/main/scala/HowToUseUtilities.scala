@@ -10,7 +10,7 @@ object HowToUseUtilities {
   }
   
   /* SATソルバーの統計情報の出力 */
-  def runWithStatistics = {
+  def runWithStatistics() = {
     defineConst(4)
     find
     println(solution)
@@ -19,7 +19,7 @@ object HowToUseUtilities {
   }
 
   /* CNFの出力 (cnf出力用のソルバーを指定しなければならないことに注意) */
-  def generateCNF = {
+  def generateCNF() = {
     use(new Sat4j("Dimacs")) // cnf出力用のソルバーの使用を
     defineConst(4)
     dumpCnf // dumpCnf("/tmp/test.cnf") と引数を持たせればファイルへCNF出力

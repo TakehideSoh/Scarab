@@ -42,7 +42,7 @@ object HowToWriteProblems {
     reset
   }
 
-  def GraphColoring {
+  def GraphColoring() {
     val nodes = Seq(1, 2, 3, 4, 5)
     val edges = Seq((1, 2), (1, 5), (2, 3), (2, 4), (3, 4), (4, 5))
     var maxColor = 4;
@@ -59,7 +59,7 @@ object HowToWriteProblems {
     reset
   }
 
-  def MagicSquare {
+  def MagicSquare() {
     val xs = for (i <- 1 to 3; j <- 1 to 3) yield csp.int('x(i, j), 1, 9)
     add(alldiff(xs))
 
@@ -74,7 +74,7 @@ object HowToWriteProblems {
     reset
   }
 
-  def AlphameticProblem {
+  def AlphameticProblem() {
     val base = 10
 
     for (v <- Seq('s, 'i, 'f, 't)) yield int(v, 1, base - 1) // S, I, F and T are not zero
@@ -93,7 +93,7 @@ object HowToWriteProblems {
     reset
   }
 
-  def OpenShopScheduling {
+  def OpenShopScheduling() {
     use(new Sat4j("glucose"))
 
     val pt = Seq(

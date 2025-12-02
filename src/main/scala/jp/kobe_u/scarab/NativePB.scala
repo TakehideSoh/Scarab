@@ -2,7 +2,7 @@ package jp.kobe_u.scarab
 
 import org.sat4j.core.VecInt
 import org.sat4j.minisat.core.{ ILits, Undoable, Solver => MinisatSolver }
-import org.sat4j.specs.{ Constr, ContradictionException, IVecInt, IteratorInt, MandatoryLiteralListener,
+import org.sat4j.specs.{ Constr, IVecInt, IteratorInt, MandatoryLiteralListener,
   Propagatable, UnitPropagationListener, ISolver, VarMapper }
 
 /**

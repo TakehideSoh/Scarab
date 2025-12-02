@@ -7,10 +7,6 @@ import scala.sys.process.Process
 import scala.concurrent._
 import scala.concurrent.duration._
 import ExecutionContext.Implicits.global
-import java.io.FileOutputStream
-import java.io.RandomAccessFile
-import java.nio.ByteBuffer
-import java.nio.channels.FileChannel
 
 class ExtSatSolver(cmd: String, var fileName: String = "", keep: Boolean = false) extends SatSolver {
   def this(cmd: String) = this(cmd, "", false)
@@ -282,7 +278,7 @@ class FileProblem(cnfFile: java.io.File) {
   def getAbsolutePath =
     cnfFile.getAbsolutePath
   /* */
-  def open {
+  def open() {
     if (satFileChannel.nonEmpty)
       throw new java.lang.Exception("Internal error: re-opening file " + cnfFile.getAbsolutePath)
     try {
@@ -302,7 +298,7 @@ class FileProblem(cnfFile: java.io.File) {
     if (satFileChannel.isEmpty)
       open
     val len = b.size
-    if (satByteBuffer.get.position + len > SAT_BUFFER_SIZE)
+    if (satByteBuffer.get.position() + len > SAT_BUFFER_SIZE)
       flush
     satByteBuffer.get.put(b.toArray)
     fileSize = fileSize + len
@@ -313,7 +309,7 @@ class FileProblem(cnfFile: java.io.File) {
   def write(s: String): Unit =
     write(s.getBytes)
   /* */
-  def flush: Unit =
+  def flush(): Unit =
     satFileChannel match {
       case None => ()
       case Some(fc) =>
@@ -327,7 +323,7 @@ class FileProblem(cnfFile: java.io.File) {
     }
 
   /* */
-  def close: Unit =
+  def close(): Unit =
     satFileChannel match {
       case None => ()
       case Some(fc) =>
@@ -342,7 +338,7 @@ class FileProblem(cnfFile: java.io.File) {
     }
 
   /* */
-  def update: Unit = {
+  def update(): Unit = {
     val n = 64
     val s: StringBuilder = new StringBuilder
     s.append("p cnf ")
@@ -372,14 +368,14 @@ class FileProblem(cnfFile: java.io.File) {
     }
   }
   /* */
-  def init = {
+  def init() = {
     fileSize = 0
     nofVariables = 0
     nofClauses = 0
     update
   }
   /* */
-  def done {
+  def done() {
     if (nofClauses == 0) {
       if (nofVariables == 0)
         nofVariables += 1
@@ -394,13 +390,13 @@ class FileProblem(cnfFile: java.io.File) {
   def addComment(comment: String) =
     write("c " + comment + "\n")
   /* */
-  def commit = {
+  def commit() = {
     nofVariablesCommitted = nofVariables
     nofClausesCommitted = nofClauses
     fileSizeCommitted = fileSize
   }
   /* */
-  def rollback = {
+  def rollback() = {
     done
     nofVariables = nofVariablesCommitted
     nofClauses = nofClausesCommitted

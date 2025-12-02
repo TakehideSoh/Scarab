@@ -1,7 +1,5 @@
 package jp.kobe_u.scarab
 
-import scala.collection.SortedSet
-import scala.collection.immutable.HashMap
 import scala.collection.immutable.HashSet
 
 /**
@@ -494,7 +492,7 @@ object Or {
  */
 case class Domain private (lb: Int, ub: Int, size: Int, private val domainOpt: Option[Seq[Int]]) {
   require(lb <= ub)
-  private var ar: Array[Int] = Array.fill[Int](ub - lb + 1)(0)
+  private val ar: Array[Int] = Array.fill[Int](ub - lb + 1)(0)
   val binary = lb == 0 && ub == 1
   private var hs = HashSet.empty[Int]
 
@@ -520,7 +518,7 @@ case class Domain private (lb: Int, ub: Int, size: Int, private val domainOpt: O
 //  def domain: Seq[Int] = domainOpt.get 
   def pos(value: Int): Int = if (isContiguous) value - lb else ar(value - offset)
 
-  def show {
+  def show() {
     val s1 = for (a <- ar) yield a
     println(s1.mkString(" "))
   }
@@ -724,7 +722,7 @@ case class CSP(var variables: IndexedSeq[Var] = IndexedSeq.empty,
   }
 
   /** Display CSP */
-  def show {
+  def show() {
     for (x <- variables) println("int(" + x + "," + dom(x) + ")")
     for (p <- bools) println("bool(" + p + ")")
     for (c <- constraints) println(c)
@@ -733,24 +731,24 @@ case class CSP(var variables: IndexedSeq[Var] = IndexedSeq.empty,
   var cStack = Seq.empty[commitPoint]
   var rollbackHappen = false
 
-  def reset {
+  def reset() {
     rollback
-    while(!cStack.isEmpty) 
+    while(!cStack.isEmpty)
       rollback
     boolHash = HashSet.empty[Bool]
     varHash = HashSet.empty[Var]
-    
-    rollbackHappen = true    
+
+    rollbackHappen = true
   }
   
   /**
    * for commit/rollback model
    */
-  def commit {
+  def commit() {
     cStack = commitPoint(bools.size, variables.size, constraints.size) +: cStack
   }
 
-  def rollback {
+  def rollback() {
     if (cStack.isEmpty)
       cStack = commitPoint(0, 0, 0) +: cStack
     //      throw new java.lang.Exception("No Commit Point is Made.")

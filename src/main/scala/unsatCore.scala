@@ -19,7 +19,7 @@ object unsatCore {
 
   }
 
-  def test_newVar_normal {
+  def test_newVar_normal() {
     val xp = new HighLevelXplain[ISolver](SolverFactory.newDefault)
 
     println(" " + xp.nextFreeVarId(false))    
@@ -38,7 +38,7 @@ object unsatCore {
       println(i)
   }
 
-  def test_newVar_addition {
+  def test_newVar_addition() {
     val xp = new HighLevelXplain[ISolver](SolverFactory.newDefault)
 
     xp.newVar(2)
@@ -58,7 +58,7 @@ object unsatCore {
 
   }
 
-  def test_newVar_redundant {
+  def test_newVar_redundant() {
     val xp = new HighLevelXplain[ISolver](SolverFactory.newDefault)
 
     xp.newVar(2)

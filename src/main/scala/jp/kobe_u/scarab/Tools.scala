@@ -1,9 +1,7 @@
 package jp.kobe_u.scarab
 
-import jp.kobe_u.scarab._
-
 object Tools {
-  @deprecated def tt(map: Map[Var, Int], csp: CSP): (Term, Int, Int) = {
+  @deprecated("tt is deprecated", "1.0") def tt(map: Map[Var, Int], csp: CSP): (Term, Int, Int) = {
     def lbd(x: Var, a: Int) =
       if (a < 0) csp.dom(x).ub * a else csp.dom(x).lb * a
     def ubd(x: Var, a: Int) =

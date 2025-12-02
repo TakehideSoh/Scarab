@@ -1,0 +1,31 @@
+# Docker ignore file for Scarab
+
+# Git files
+.git
+.gitignore
+
+# Build artifacts
+target/
+*/target/
+*.jar
+!project/*.jar
+
+# IDE files
+.idea
+.vscode
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Docker files
+Dockerfile
+.dockerignore
+docker-compose.yml
+
+# Logs
+*.log
+
+# Temporary files
+tmp/
+temp/

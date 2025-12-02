@@ -15,7 +15,7 @@ trait ScarabTrait {
   def use(newSolver: Solver): Unit
 
   /* */
-  def abc = println("ok")
+  def abc() = println("ok")
   /* */
   def int(x: Var, a: Int, b: Int) = csp.int(x,a,b)
   /* */
@@ -28,12 +28,12 @@ trait ScarabTrait {
   def add(c: Constraint) = csp.add(c)
   /* */  
   def dom(v: Var) = csp.dom(v)
-  /* */  
-  def commit = csp.commit
-  /* */  
-  def show = csp.show
-  /* */  
-  def rollback = csp.rollback
+  /* */
+  def commit() = csp.commit
+  /* */
+  def show() = csp.show
+  /* */
+  def rollback() = csp.rollback
   /* */
   def find = solver.find
   /* */
@@ -51,13 +51,13 @@ trait ScarabTrait {
   /* */
   def solution = solver.solution
   /* */
-  def reset = solver.reset
+  def reset() = solver.reset
   /* */
   def minExplain = solver.minExplain
   /* */
-  def minAllExplain = solver.minAllExplain
+  def minAllExplain() = solver.minAllExplain
   /* */
-  def encodeCSP = encoder.encodeCSP
+  def encodeCSP() = encoder.encodeCSP
   /* */
   def optimize(v: Var): Int = solver.optimize(v, csp.dom(v).lb, csp.dom(v).ub, "default") 
   /* */
@@ -73,11 +73,11 @@ trait ScarabTrait {
   /* */
   // def alldiff(xs: Iterable[Var]) = Tools.alldiff(xs.toSeq, csp)
   /* */
-  def dumpCnf = { encoder.encodeCSP ; satSolver.dumpCnf }
+  def dumpCnf() = { encoder.encodeCSP ; satSolver.dumpCnf }
   /* */
   def dumpCnf(filePath: String) = { encoder.encodeCSP ; satSolver.dumpCnf(filePath) }
   /* */
-  def dumpStat = satSolver.dumpStat
+  def dumpStat() = satSolver.dumpStat
   /* */
   def dumpStat(filePath: String) = satSolver.dumpStat(filePath)
 }

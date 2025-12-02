@@ -38,18 +38,18 @@ class LogEncoder(csp: CSP, satSolver: SatSolver) extends Encoder(csp, satSolver)
   // a1*negx1 + a2*negx2 + ... + an*negxn >= -k + a1 + a2 + ... + an
 
   def addLeZeroAsNPB(lz: LeZero, c0: Seq[Int]): Seq[Seq[Int]] = {
-    var vec0: Seq[Var] = lz.sum.coef.toSeq.map(xa => xa._1)
+    val vec0: Seq[Var] = lz.sum.coef.toSeq.map(xa => xa._1)
 
     var coef = vec0.flatMap(i => var2coefs(i).map(-1 * lz.sum.coef(i) * _))
-    var b = lz.sum.b * -1 // in LHS
+    val b = lz.sum.b * -1 // in LHS
 
-    var lbs = vec0.map(i => lz.sum.coef(i) * csp.dom(i).lb).sum
+    val lbs = vec0.map(i => lz.sum.coef(i) * csp.dom(i).lb).sum
     var vec: Seq[Int] = vec0.flatMap(i => var2DimacsVars(i))
 
     val n = normalizeCoef(coef, vec, -b + lbs)
     coef = n._1
     vec = n._2
-    var degree = n._3
+    val degree = n._3
 
     if (degree < 0) return Seq(FalseLit +: c0)
 
@@ -81,7 +81,6 @@ class LogEncoder(csp: CSP, satSolver: SatSolver) extends Encoder(csp, satSolver)
       val as = (0 until nofBinaries).map(j => math.pow(2, j).toInt)
       val xs = (code until code + nofBinaries)
       val c = normalizeCoef(as.map(-_), xs, -(csp.dom(x).ub - lb))
-      val a = c._2.toArray
 
       satSolver.addPB(c._2.toArray, c._1, c._3)
 

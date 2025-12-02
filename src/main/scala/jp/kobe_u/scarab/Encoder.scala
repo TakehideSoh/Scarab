@@ -104,8 +104,8 @@ abstract class Encoder(csp: CSP, val satSolver: SatSolver) {
   /** # of constraints which have encoded into SAT */
   object eState {
     var v = 0; var b = 0; var c = 0
-    def reset { v = 0; b = 0; c = 0 }
-    def update {
+    def reset() { v = 0; b = 0; c = 0 }
+    def update() {
       v = csp.variables.size
       b = csp.bools.size
       c = csp.constraints.size
@@ -116,7 +116,7 @@ abstract class Encoder(csp: CSP, val satSolver: SatSolver) {
   /**
    * Reset the followings: satSolver, satVariableCount, satClauseCount, varCodeMap, boolCodeMap, eState
    */
-  def reset {
+  def reset() {
     satSolver.reset
     satVariableCount = 0
     satClauseCount = 0
@@ -244,7 +244,7 @@ abstract class Encoder(csp: CSP, val satSolver: SatSolver) {
   def extractAssumpLits(cs: Seq[Constraint]): Seq[Int]
 
   /** Encodes the whole CSP at 1st time. Otherwise, only the differences are added. */
-  def encodeCSP {
+  def encodeCSP() {
     if (csp.rollbackHappen) {
       //      println("rollback is hapened! care!")
       this.reset

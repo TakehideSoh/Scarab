@@ -1,9 +1,0 @@
-[0m[[0m[0mdebug[0m] [0m[0mFull compilation, no sources in previous analysis.[0m
-[0m[[0m[0mdebug[0m] [0m[0mAll sources are invalidated.[0m
-[0m[[0m[0mdebug[0m] [0m[0mRecompiling all 241 sources: invalidated sources (241) exceeded 50.0% of all sources[0m
-[0m[[0m[0minfo[0m] [0m[0mCompiling 241 Java sources to /Users/soh/02_prog/scarab/org.sat4j.core/target/classes ...[0m
-[0m[[0m[0mdebug[0m] [0m[0mAttempting to call com.sun.tools.javac.api.JavacTool@783e3f12 directly...[0m
-[0m[[0m[0mdebug[0m] [0m[0mJava compilation took 3.909865408 s[0m
-[0m[[0m[0mdebug[0m] [0m[0mJava analysis took 0.072063153 s[0m
-[0m[[0m[0mdebug[0m] [0m[0mJava compilation + analysis took 4.005823978 s[0m
-[0m[[0m[0minfo[0m] [0m[0mDone compiling.[0m
