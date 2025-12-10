@@ -13,21 +13,47 @@ import com.sun.jna.Pointer
  * constraints are not natively supported by CaDiCaL and will use clause-based
  * encodings or throw UnsupportedOperationException.
  *
+ * @param libraryPath optional path to the directory containing libcadical.so/dylib/dll
  * @author Generated for Scarab
  * @see [[https://github.com/arminbiere/cadical CaDiCaL repository]]
  */
-class CaDiCaLSolver extends SatSolver {
-  private val cadical = CaDiCaLNative.INSTANCE
+class CaDiCaLSolver(libraryPath: String = null, bufferSize: Int = CaDiCaLSolver.DEFAULT_BUFFER_SIZE) extends SatSolver {
+  // Set custom library path if provided
+  if (libraryPath != null && libraryPath.nonEmpty) {
+    CaDiCaLNative.setLibraryPath(libraryPath)
+  }
+
+  private val cadical = CaDiCaLNative.getInstance()
   private var solver: Pointer = cadical.ccadical_init()
   private var nVariables: Int = 0
   private var nClauses: Int = 0
   private var lastResult: Option[Int] = None
   private var modelCache: Option[Array[Int]] = None
 
+  // Buffer for batching clause additions to reduce JNA overhead
+  private val clauseBuffer = new Array[Int](bufferSize)
+  private var bufferIndex: Int = 0
+
+  /**
+   * Flush the clause buffer to the solver.
+   * This sends all buffered literals to CaDiCaL in a single batch.
+   */
+  def flushBuffer(): Unit = {
+    if (bufferIndex > 0) {
+      var i = 0
+      while (i < bufferIndex) {
+        cadical.ccadical_add(solver, clauseBuffer(i))
+        i += 1
+      }
+      bufferIndex = 0
+    }
+  }
+
   /**
    * Reset the solver to initial state.
    */
   def reset(): Unit = {
+    bufferIndex = 0 // Clear buffer without flushing
     if (solver != null) {
       cadical.ccadical_release(solver)
     }
@@ -59,16 +85,37 @@ class CaDiCaLSolver extends SatSolver {
 
   /**
    * Add a clause to the solver.
+   * Clauses are buffered and sent to CaDiCaL when the buffer is full or flushed.
    * @param lits sequence of literals (0 should not be included)
    * @param cIndex clause index for tracking (currently unused in CaDiCaL)
    * @return the clause index
    */
   def addClause(lits: Seq[Int], cIndex: Int): Int = {
-    for (lit <- lits) {
-      cadical.ccadical_add(solver, lit)
-      nVariables = Math.max(nVariables, Math.abs(lit))
+    val clauseSize = lits.size + 1 // +1 for terminating 0
+
+    // If clause doesn't fit in remaining buffer, flush first
+    if (bufferIndex + clauseSize > clauseBuffer.length) {
+      flushBuffer()
     }
-    cadical.ccadical_add(solver, 0) // Terminate clause
+
+    // If single clause is larger than buffer, add directly
+    if (clauseSize > clauseBuffer.length) {
+      for (lit <- lits) {
+        cadical.ccadical_add(solver, lit)
+        nVariables = Math.max(nVariables, Math.abs(lit))
+      }
+      cadical.ccadical_add(solver, 0)
+    } else {
+      // Add to buffer
+      for (lit <- lits) {
+        clauseBuffer(bufferIndex) = lit
+        bufferIndex += 1
+        nVariables = Math.max(nVariables, Math.abs(lit))
+      }
+      clauseBuffer(bufferIndex) = 0 // Terminate clause
+      bufferIndex += 1
+    }
+
     nClauses += 1
     modelCache = None // Invalidate model cache
     cIndex
@@ -86,6 +133,7 @@ class CaDiCaLSolver extends SatSolver {
    * @return true if satisfiable, false if unsatisfiable
    */
   def isSatisfiable: Boolean = {
+    flushBuffer() // Ensure all clauses are sent to solver
     val result = cadical.ccadical_solve(solver)
     lastResult = Some(result)
     modelCache = None
@@ -434,4 +482,12 @@ class CaDiCaLSolver extends SatSolver {
     }
     super.finalize()
   }
+}
+
+/**
+ * Companion object for CaDiCaLSolver constants.
+ */
+object CaDiCaLSolver {
+  /** Default buffer size for clause batching (number of integers) */
+  val DEFAULT_BUFFER_SIZE: Int = 1000
 }
