@@ -489,5 +489,5 @@ class CaDiCaLSolver(libraryPath: String = null, bufferSize: Int = CaDiCaLSolver.
  */
 object CaDiCaLSolver {
   /** Default buffer size for clause batching (number of integers) */
-  val DEFAULT_BUFFER_SIZE: Int = 1000
+  val DEFAULT_BUFFER_SIZE: Int = 10000
 }
