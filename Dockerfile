@@ -15,7 +15,19 @@ RUN apt-get update && apt-get install -y \
     apt-transport-https \
     openjdk-11-jdk \
     git \
+    build-essential \
+    g++ \
     && rm -rf /var/lib/apt/lists/*
+
+# Install CaDiCaL SAT solver
+RUN git clone https://github.com/arminbiere/cadical.git /tmp/cadical && \
+    cd /tmp/cadical && \
+    ./configure -fPIC && \
+    make -j$(nproc) && \
+    cp build/libcadical.a /usr/local/lib/ && \
+    g++ -shared -o /usr/local/lib/libcadical.so -fPIC -Wl,--whole-archive build/libcadical.a -Wl,--no-whole-archive && \
+    ldconfig && \
+    rm -rf /tmp/cadical
 
 # Install Scala 2.13.16
 ENV SCALA_VERSION=2.13.16
