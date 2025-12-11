@@ -56,10 +56,6 @@ src_managed/
 .DS_Store
 Thumbs.db
 
-# sat4j build outputs (keep source, ignore builds)
-org.sat4j.core/target/
-org.sat4j.pb/target/
-
 # Assembly output
 assembly/
 
