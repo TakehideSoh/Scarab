@@ -36,7 +36,7 @@ docker run -it scarab:latest
 docker run -it scarab:latest
 
 # コンテナ内で
-scala -cp /scarab/target/scala-2.12/scarab.jar /scarab/examples/test.sc
+scala -cp /scarab/target/scala-2.13/scarab.jar /scarab/examples/test.sc
 ```
 
 ### ホストのファイルをマウントして実行
@@ -51,14 +51,14 @@ docker run -it -v $(pwd)/examples:/work scarab:latest
 
 ```bash
 cd /work
-scala -cp /scarab/target/scala-2.12/scarab.jar your_program.sc
+scala -cp /scarab/target/scala-2.13/scarab.jar your_program.sc
 ```
 
 ### ワンライナーでスクリプト実行
 
 ```bash
 docker run --rm -v $(pwd)/examples:/work scarab:latest \
-  scala -cp /scarab/target/scala-2.12/scarab.jar /work/test.sc
+  scala -cp /scarab/target/scala-2.13/scarab.jar /work/test.sc
 ```
 
 ## 使用例
@@ -67,7 +67,7 @@ docker run --rm -v $(pwd)/examples:/work scarab:latest \
 
 ```bash
 docker run -it scarab:latest bash -c \
-  "scala -cp /scarab/target/scala-2.12/scarab.jar /scarab/examples/hcp.sc"
+  "scala -cp /scarab/target/scala-2.13/scarab.jar /scarab/examples/hcp.sc"
 ```
 
 ### 例2: カスタムプログラムの実行
@@ -78,7 +78,7 @@ docker run -it scarab:latest bash -c \
 # カスタムスクリプトを作成（例: my_problem.sc）
 # 次に Docker コンテナで実行
 docker run -it -v $(pwd):/workspace scarab:latest bash -c \
-  "cd /workspace && scala -cp /scarab/target/scala-2.12/scarab.jar my_problem.sc"
+  "cd /workspace && scala -cp /scarab/target/scala-2.13/scarab.jar my_problem.sc"
 ```
 
 ## 環境情報
@@ -87,8 +87,8 @@ docker run -it -v $(pwd):/workspace scarab:latest bash -c \
 
 - **ベースイメージ**: Ubuntu 22.04
 - **Java**: OpenJDK 11
-- **Scala**: 2.12.8
-- **sbt**: 1.5.8
+- **Scala**: 2.13.16
+- **sbt**: 1.10.7
 - **Scarab**: プロジェクトバージョン（build.sbt 参照）
 
 ## トラブルシューティング
