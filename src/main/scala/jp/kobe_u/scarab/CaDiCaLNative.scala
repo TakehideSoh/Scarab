@@ -101,29 +101,57 @@ trait CaDiCaLNative extends Library {
  * Companion object providing access to the native library.
  */
 object CaDiCaLNative {
+  private var customPath: Option[String] = None
+  private var cachedInstance: CaDiCaLNative = _
+
+  /**
+   * Set a custom library path before loading.
+   * Must be called before getInstance() or INSTANCE is accessed.
+   */
+  def setLibraryPath(path: String): Unit = {
+    customPath = Some(path)
+    cachedInstance = null // Reset cache to reload with new path
+  }
+
   // Automatically add common installation paths to JNA library path
   private def setupLibraryPath(): Unit = {
     val currentPath = System.getProperty("jna.library.path", "")
     val homeDir = System.getProperty("user.home")
-    val commonPaths = Seq(
-      s"$homeDir/.local/lib",
-      "/usr/local/lib",
-      "/usr/lib",
-      "/usr/lib64"
-    )
+
+    // Custom path takes priority
+    val commonPaths = customPath match {
+      case Some(path) => Seq(path)
+      case None => Seq(
+        s"$homeDir/.local/lib",
+        "/usr/local/lib",
+        "/usr/lib",
+        "/usr/lib64"
+      )
+    }
 
     val pathsToAdd = commonPaths.filterNot(currentPath.contains)
     if (pathsToAdd.nonEmpty) {
       val newPath = if (currentPath.isEmpty) {
         pathsToAdd.mkString(java.io.File.pathSeparator)
       } else {
-        currentPath + java.io.File.pathSeparator + pathsToAdd.mkString(java.io.File.pathSeparator)
+        pathsToAdd.mkString(java.io.File.pathSeparator) + java.io.File.pathSeparator + currentPath
       }
       System.setProperty("jna.library.path", newPath)
     }
   }
 
-  lazy val INSTANCE: CaDiCaLNative = {
+  /**
+   * Get the CaDiCaL native instance.
+   * Uses cached instance if available, otherwise loads the library.
+   */
+  def getInstance(): CaDiCaLNative = {
+    if (cachedInstance == null) {
+      cachedInstance = loadLibrary()
+    }
+    cachedInstance
+  }
+
+  private def loadLibrary(): CaDiCaLNative = {
     setupLibraryPath()
     try {
       Native.load("cadical", classOf[CaDiCaLNative]).asInstanceOf[CaDiCaLNative]
@@ -137,4 +165,7 @@ object CaDiCaLNative {
           "You can install CaDiCaL to ~/.local/lib or set LD_LIBRARY_PATH.", e)
     }
   }
+
+  /** For backward compatibility */
+  lazy val INSTANCE: CaDiCaLNative = getInstance()
 }

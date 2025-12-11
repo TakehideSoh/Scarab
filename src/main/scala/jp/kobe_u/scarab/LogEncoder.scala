@@ -82,7 +82,7 @@ class LogEncoder(csp: CSP, satSolver: SatSolver) extends Encoder(csp, satSolver)
       val xs = (code until code + nofBinaries)
       val c = normalizeCoef(as.map(-_), xs, -(csp.dom(x).ub - lb))
 
-      satSolver.addPB(c._2.toArray, c._1, c._3)
+      satSolver.addPB(c._2.toSeq, c._1, c._3)
 
     }
     Seq.empty

@@ -345,7 +345,7 @@ class FileProblem(cnfFile: java.io.File) {
     s.append(nofVariables.toString)
     s.append(" ")
     s.append(nofClauses.toString)
-    while (s.length() < n - 1)
+    while (s.length < n - 1)
       s.append(" ");
 
     s.append("\n");
