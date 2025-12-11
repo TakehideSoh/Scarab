@@ -11,9 +11,10 @@ import org.sat4j.specs.{ Constr, IVecInt, IteratorInt, MandatoryLiteralListener,
  * It reprensents the linear comparison a1*x1 + a2*x2 + ... + an*xn >= -1 * b
  */
 case class NativePB(sat: ISolver, ps: IVecInt, var coef: Seq[Int], var degree: Int) extends Constr with Propagatable with Undoable {
-  def getAssertionLevel(x: IVecInt, y: Int): Int = ???
-  def isSatisfied(): Boolean = ???
-  def toString(x: VarMapper): String = ???
+  def getAssertionLevel(x: IVecInt, y: Int): Int = 0
+  def isSatisfied(): Boolean = false
+  def toString(x: VarMapper): String = s"NativePB(${coef.mkString(" ")} >= $degree)"
+  def dump(): String = toString
 
   var tmpCoef = Seq.empty[Int]
 

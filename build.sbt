@@ -15,28 +15,7 @@ val buildSettings: Seq[Setting[_]] = inThisBuild(Seq(
   ),
 ))
 
-lazy val sat4jCore = (project in file("org.sat4j.core")).
-   settings(
-     name := "org.sat4j.core",
-     version := "2.3.6-SNAPSHOT",
-     autoScalaLibrary := false,
-     crossPaths := false,
-     licenses := List("EPL-1.0" -> url("https://www.eclipse.org/legal/epl-v10.html"))
-   )
-// sat4j 2.3.6-R2404
-lazy val sat4jPB = (project in file("org.sat4j.pb")).
-  dependsOn(sat4jCore).
-  settings(
-    name := "org.sat4j.pb",
-    version := "2.3.6-SNAPSHOT",
-    autoScalaLibrary := false,
-    crossPaths := false,
-    licenses := List("EPL-1.0" -> url("https://www.eclipse.org/legal/epl-v10.html"))
-)
-
 lazy val root = (project in file(".")).
-  dependsOn(sat4jCore).
-  dependsOn(sat4jPB).
   settings(
     assembly / assemblyJarName := "scarab.jar",
     assembly / mainClass := Some("ScarabMain"),
@@ -49,5 +28,7 @@ lazy val root = (project in file(".")).
     buildSettings,
     name := "Scarab",
     libraryDependencies += "net.java.dev.jna" % "jna" % "5.16.0",
+    libraryDependencies += "org.ow2.sat4j" % "org.ow2.sat4j.core" % "2.3.6",
+    libraryDependencies += "org.ow2.sat4j" % "org.ow2.sat4j.pb" % "2.3.6",
     libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.19" % Test
   )
