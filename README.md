@@ -14,13 +14,11 @@ Features of Scarab are follows:
 ### Build from source
 
 ```bash
-sbt assembly                   # Build for default Scala version (2.12)
-sbt +assembly                  # Build for all Scala versions (2.10, 2.11, 2.12)
+sbt assembly                   # Build for default Scala version (2.13)
+sbt +assembly                  # Build for all Scala versions (2.12, 2.13)
 ```
 
 The jar file will be generated at `target/scala-2.1x/scarab.jar`.
-
-Note: The assembled jar does not include Scala library. Make sure Scala is available in your environment.
 
 ### Example
 
@@ -50,9 +48,11 @@ Save this program as **pls.sc** and run it:
 scala -cp scarab.jar pls.sc
 ```
 
-## More resources
+## Documentation
 
-- For CaDiCaL integration, see [CADICAL_README.md](./CADICAL_README.md).
+- [CaDiCaL Integration](./docs/CADICAL_README.md) - Using CaDiCaL SAT solver
+- [JAR Usage Guide](./docs/JAR_USAGE.md) - How to use the fat JAR
+- [Docker Usage](./docs/DOCKER_README.md) - Running Scarab in Docker
 
 ## Note
 
@@ -63,6 +63,11 @@ scala -cp scarab.jar pls.sc
   - Sugar used for preprocessor (from 1.5.4).
 
 # Release Note
+
+- [2025.12.11] Version 1.9.7-SNAPSHOT
+  - Use sat4j from Maven Central instead of local sources
+  - Update to Scala 2.12/2.13, sbt 1.10.7, sbt-assembly 2.3.1
+  - Add unit tests for CaDiCaLSolver, Sat4j, Sat4jPB
 
 - [2025.12.02] Version 1.9.7-SNAPSHOT
   - Added CaDiCaL SAT solver support via JNA (alternative to Sat4j)
