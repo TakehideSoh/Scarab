@@ -50,5 +50,5 @@ lazy val root = (project in file(".")).
     buildSettings,
     name := "Scarab",
     libraryDependencies += "net.java.dev.jna" % "jna" % "5.13.0",
-//    autoScalaLibrary := true
+    libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.17" % Test
   )
